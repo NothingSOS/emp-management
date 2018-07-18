@@ -1,0 +1,4 @@
+runtime: nodejs
+env: flex
+beta_settings:
+  cloud_sql_instances: 'minihrm-205709:asia-southeast1:minihrm'

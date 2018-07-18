@@ -1,0 +1,19 @@
+.late {
+    color: red;
+}
+
+.normal {
+    color: black;
+}
+
+@keyframes blink {
+    to { 
+        color: red; 
+    }
+}
+    
+.warning {
+    color: black;
+    animation: blink 1s steps(2, start) infinite;
+}
+    
