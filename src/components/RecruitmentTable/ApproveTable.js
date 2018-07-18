@@ -51,8 +51,7 @@ const ApproveTable = ({ data, onSearchChange, sortKey, direction, handleSort, on
               <Table.HeaderCell sorted={sortKey === 'firstNameTh' ? direction : null} onClick={() => handleSort('firstNameTh')}>ชื่อ-นามสกุล</Table.HeaderCell>
               <Table.HeaderCell sorted={sortKey === 'position' ? direction : null} onClick={() => handleSort('position')}>Position</Table.HeaderCell>
               <Table.HeaderCell sorted={sortKey === 'interviewDate' ? direction : null} onClick={() => handleSort('interviewDate')}>Interview Date/Time</Table.HeaderCell>
-              <Table.HeaderCell sorted={sortKey === 'examDate' ? direction : null} onClick={() => handleSort('examDate')}>Exam Date/Time</Table.HeaderCell>
-              {/* <Table.HeaderCell >Status</Table.HeaderCell> */}
+              <Table.HeaderCell sorted={sortKey === 'examDate' ? direction : null} onClick={() => handleSort('examDate')}>Exam Date/Time</Table.HeaderCell>              
               <Table.HeaderCell >Details</Table.HeaderCell>
               <Table.HeaderCell >In Progress</Table.HeaderCell>
               {reject && <Table.HeaderCell >Reject</Table.HeaderCell>}
