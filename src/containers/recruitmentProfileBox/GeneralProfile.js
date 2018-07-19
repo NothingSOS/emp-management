@@ -7,37 +7,17 @@ import { Segment, Grid, Header, Icon } from 'semantic-ui-react';
 
 const imgPart = (element) => {
   let cvSrc = ``;
-  let otherSrc1 = ``;
-  let otherSrc2 = ``;
-  let otherSrc3 = ``;
-  let otherSrc4 = ``;
-  let otherSrc5 = ``;
+  let otherSrc = ``;
   if (element.type === 'cv') {
     cvSrc = `http://localhost:3000/static${element.filePath}${element.fileName}`;
   }
-  else if (element.type === 'other1') {
-    otherSrc1 = `http://localhost:3000/static${element.filePath}${element.fileName}`;
-  }
-  else if (element.type === 'other2') {
-    otherSrc2 = `http://localhost:3000/static${element.filePath}${element.fileName}`;
-  }
-  else if (element.type === 'other3') {
-    otherSrc3 = `http://localhost:3000/static${element.filePath}${element.fileName}`;
-  }
-  else if (element.type === 'other4') {
-    otherSrc4 = `http://localhost:3000/static${element.filePath}${element.fileName}`;
-  }
   else {
-    otherSrc5 = `http://localhost:3000/static${element.filePath}${element.fileName}`;
+    otherSrc = `http://localhost:3000/static${element.filePath}${element.fileName}`;
   }
   return (
     <div key={element.fileName}>
       {cvSrc && <a href={cvSrc} rel="noopener noreferrer" target="_blank"><embed src={cvSrc} height="100" width="300" /><br /><Icon name="zoom" />View CV</a>}
-      {otherSrc1 && <a href={otherSrc1} rel="noopener noreferrer" target="_blank"><embed src={otherSrc1} height="100" width="300" /><br /><Icon name="zoom" />View Other</a>}
-      {otherSrc2 && <a href={otherSrc2} rel="noopener noreferrer" target="_blank"><embed src={otherSrc2} height="100" width="300" /><br /><Icon name="zoom" />View Other</a>}
-      {otherSrc3 && <a href={otherSrc3} rel="noopener noreferrer" target="_blank"><embed src={otherSrc3} height="100" width="300" /><br /><Icon name="zoom" />View Other</a>}
-      {otherSrc4 && <a href={otherSrc4} rel="noopener noreferrer" target="_blank"><embed src={otherSrc4} height="100" width="300" /><br /><Icon name="zoom" />View Other</a>}
-      {otherSrc5 && <a href={otherSrc5} rel="noopener noreferrer" target="_blank"><embed src={otherSrc5} height="100" width="300" /><br /><Icon name="zoom" />View Other</a>}
+      {otherSrc && <a href={otherSrc} rel="noopener noreferrer" target="_blank"><embed src={otherSrc} height="100" width="300" /><br /><Icon name="zoom" />View Other</a>}
     </div>
   );
 };

@@ -52,6 +52,7 @@ const getActiveTable = (activeItem, data, onSearchChange, sortKey, direction, ha
         handleSort={handleSort}
         onConfirm={onConfirm}
         checkStatus={checkStatus}
+        reject
         changeStatus={changeStatus}
         clearStatus={clearStatus}
       />);
