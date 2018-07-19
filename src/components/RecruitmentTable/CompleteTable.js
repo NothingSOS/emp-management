@@ -74,11 +74,11 @@ const CompleteTable = ({ data, onSearchChange, sortKey, direction, handleSort, o
                 <Button.Group floated="right">
                   <Button color="blue" icon onClick={onConfirm} >
                     Confirm
-                </Button>
+                  </Button>
                   <Button.Or />
                   <Button basic color="red" icon onClick={clearStatus} >
                     Select None
-                </Button>
+                  </Button>
                 </Button.Group>
               </Table.HeaderCell>
             </Table.Row>

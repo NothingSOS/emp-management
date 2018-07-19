@@ -160,7 +160,7 @@ const Recruitment = ({ activeItem, changeActiveItem, data, onSearchChange, sortK
             <Menu color="blue" inverted fluid compact stackable >
               <Menu.Item name="All" active={activeItem === 'All'} onClick={() => changeActiveItem('All')} />
               <Menu.Item name="New" active={activeItem === 'Apply'} onClick={() => changeActiveItem('Apply')} />
-              <Menu.Item name={"Interview and Exam"} active={activeItem === 'Approve'} onClick={() => changeActiveItem('Approve')} />
+              <Menu.Item name="Interview and Exam" active={activeItem === 'Approve'} onClick={() => changeActiveItem('Approve')} />
               <Menu.Item name="In Progress" active={activeItem === 'In Progress'} onClick={() => changeActiveItem('In Progress')} />
               <Menu.Item name="Reject or Fail" active={activeItem === 'Reject'} onClick={() => changeActiveItem('Reject')} />
               <Menu.Item name="Pass" active={activeItem === 'Pass'} onClick={() => changeActiveItem('Pass')} />

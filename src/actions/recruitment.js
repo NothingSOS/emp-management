@@ -345,3 +345,10 @@ export const updateRecruitmentSignedPositionFailure = message => ({
     message
   }
 });
+
+export const preActivateTakeExamRequest = person => ({
+  type: actionTypes.RECRUITMENT_PRE_ACTIVATE_TAKE_EXAM_REQUEST,
+  payload: {
+    person
+  }
+});
