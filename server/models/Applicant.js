@@ -198,12 +198,9 @@ Applicant.getPosition = () => (
   db.manyOrNone('SELECT name FROM positions WHERE status = $1', ['Active'])
 );
 
-// EmployeeInfo.findById = id => (
-//   db.oneOrNone('SELECT * FROM employee_info WHERE user_id = $1', [id])
-// );
-
-// EmployeeInfo.updateProfileImg = (path, id) => (
-//   db.none('UPDATE employee_info SET picture = $1 WHERE user_id = $2', [path, id])
-// );
-
+Applicant.getExamUser = (id, testDate) => (
+  db.none('INSERT INTO exam_users (id, test_date, latest_activated_time, activation_lifetimes, agreement_status) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (id, test_date) DO NOTHING'
+    , [id, testDate, null, 0, 'NotRead'])
+    .then(() => db.one('SELECT * FROM exam_users WHERE id = $1 AND test_date = $2', [id, testDate]))
+)
 module.exports = Applicant;

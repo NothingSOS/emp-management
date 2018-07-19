@@ -366,6 +366,13 @@ api.fetchRecruitmentFile = id => (
 
 // Recruitment
 
+api.getExamUser = body => (
+  callApi('api/applicants/get-exam-user', {
+    method: 'POST',
+    body
+  })
+);
+
 // Exam
 
 api.uploadImageExam = body => (

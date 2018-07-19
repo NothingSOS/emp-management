@@ -328,3 +328,11 @@ exports.getPosition = (req, res, next) => {
     })
     .catch(next);
 };
+
+exports.getExamUser = (req, res, next) => {
+  Applicant.getExamUser(req.body.id, req.body.testDate)
+    .then((user) => {
+      res.json(user);
+    })
+    .catch(next);
+}

@@ -28,3 +28,4 @@ export const VIEW_EXAM = 'VIEW_EXAM';
 
 // Recruitment
 export const EDIT_RECRUITMENT = 'EDIT_RECRUITMENT';
+export const ACTIVE_EXAM_USER = 'ACTIVE_EXAM_USER';

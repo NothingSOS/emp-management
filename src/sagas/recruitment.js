@@ -1,4 +1,7 @@
 import { call, put, takeEvery, all } from 'redux-saga/effects';
+import moment from 'moment';
+import { openModal } from '../actions/modal';
+import * as modalNames from '../constants/modalNames';
 import * as actionTypes from '../constants/actionTypes';
 import {
   fetchRecruitmentSuccess,
@@ -182,6 +185,29 @@ export function* updateRecruitmentSignedPositionTask(action) {
   }
 }
 
+export function* preActivateTakeExamTask(action) {
+  try {
+    const examUser = yield call(api.getExamUser, {
+      id: action.payload.person.citizenId,
+      testDate: action.payload.person.examDate,
+    });
+
+    let userStatus = 'new';
+    if (examUser.latestActivatedTime !== null) {
+      const isAlive = moment(examUser.latestActivatedTime).add({ minutes: examUser.activationLifetimes }).diff(moment()) > 0;
+      if (isAlive) {
+        userStatus = 'alive';
+      }
+      else {
+        userStatus = 'expired';
+      }
+    }
+    yield put(openModal(modalNames.ACTIVE_EXAM_USER, { examUser, userStatus }));
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
 
 export function* watchFetchRecruitmentRequest() {
   yield takeEvery(actionTypes.RECRUITMENT_FETCH_REQUEST, fetchRecruitmentTask);
@@ -235,6 +261,10 @@ export function* watchUpdateRecruitmentSignedPositionRequest() {
   yield takeEvery(actionTypes.RECRUITMENT_UPDATE_SIGNED_POSITION_REQUEST, updateRecruitmentSignedPositionTask);
 }
 
+export function* watchPreActivateTakeExamRequest() {
+  yield takeEvery(actionTypes.RECRUITMENT_PRE_ACTIVATE_TAKE_EXAM_REQUEST, preActivateTakeExamTask);
+}
+
 export default function* recruitmentSaga() {
   yield all([
     watchFetchRecruitmentRequest(),
@@ -249,6 +279,7 @@ export default function* recruitmentSaga() {
     watchUpdateRecruitmentNoteRequest(),
     watchfetchPositionRecruitmentTask(),
     watchUpdateRecruitmentSignedPositionRequest(),
-    watchUpdateRecruitmentInterviewResultRequest()
+    watchUpdateRecruitmentInterviewResultRequest(),
+    watchPreActivateTakeExamRequest(),
   ]);
 }

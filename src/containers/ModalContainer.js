@@ -17,6 +17,7 @@ import EditRecruitmentModal from './modals/EditRecruitmentModal';
 import AddExamModal from './modals/AddExamModal';
 import EditExamModal from './modals/EditExamModal';
 import ExamFullViewModal from './modals/ExamFullViewModal';
+import ActiveExamUserModal from './modals/ActiveExamUserModal';
 
 const ModalContainer = ({ name, props }) => {
   switch (name) {
@@ -44,6 +45,8 @@ const ModalContainer = ({ name, props }) => {
       return <ConfirmModal {...props} />;
     case modalNames.PROFILE_PICTURE:
       return <ProfilePictureModal {...props} />;
+    case modalNames.ACTIVE_EXAM_USER:
+      return <ActiveExamUserModal {...props} />;
     case modalNames.ADD_NEW_EXAM:
       return <AddExamModal {...props} />;
     case modalNames.EDIT_EXAM:
