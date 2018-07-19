@@ -365,68 +365,6 @@ api.fetchRecruitmentFile = id => (
 // vvvvvvvvvv Exam api (Need to clear unused api) vvvvvvvvvv
 
 // Recruitment
-// 456
-api.fetchAllRecruitment = () => (
-  callApi(`/api/recruitments`)
-);
-
-api.checkUserStatus = (id, testDate) => (
-  callApi(`/api/recruitments/checkUserStatus/`, {
-    method: 'POST',
-    body: {
-      id,
-      testDate,
-    }
-  })
-);
-
-api.activateUser = (id, testDate, lifetimes) => (
-  callApi(`/api/recruitments/activateUser/`, {
-    method: 'POST',
-    body: {
-      id,
-      testDate,
-      lifetimes,
-    }
-  })
-);
-
-api.uploadRandomExIdList = (id, testDate, randomExIdList) => (
-  callApi(`/api/recruitments/uploadRandomExIdList/`, {
-    method: 'POST',
-    body: {
-      id,
-      testDate,
-      randomExIdList,
-    }
-  })
-);
-
-api.getTestDate = id => (
-  callApi(`/api/recruitments/getTestDate/?id=${id}`)
-);
-
-// Recruitment : Grading Part
-
-api.fetchGradingExam = (id, testDate) => (
-  callApi(`/api/recruitments/fetchGradingExam`, {
-    method: 'POST',
-    body: {
-      id,
-      testDate,
-    }
-  })
-);
-
-api.changeStatus = (id, status) => (
-  callApi(`/api/recruitments/changeStatus`, {
-    method: 'POST',
-    body: {
-      id,
-      status,
-    }
-  })
-);
 
 // Exam
 

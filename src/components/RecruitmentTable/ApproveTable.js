@@ -1,33 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table, Input, Button, Checkbox, Form } from 'semantic-ui-react';
+import { Table, Input, Button, Checkbox, Form, Icon } from 'semantic-ui-react';
 import { Field, reduxForm, change } from 'redux-form';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { setDate, setTime } from '../../actions/recruitment';
+import moment from 'moment';
+import { preActivateTakeExamRequest, setDate, setTime } from '../../actions/recruitment';
 import history from '../../history';
 
-const row = (item, { checkStatus, reject, changeStatus, load }) => (
+const row = (item, { checkStatus, changeStatus, load, preActivateTakeExam }) => (
   <Table.Row key={item.citizenId}>
     <Table.Cell collapsing>{`${item.firstName}`}<br />
       {`${item.lastName}`}
-    </Table.Cell>
-    <Table.Cell collapsing>{`${item.firstNameTh}`}<br />
-      {`${item.lastNameTh}`}
     </Table.Cell>
     <Table.Cell>{`${item.position.join('\n')}`}</Table.Cell>
     <Table.Cell>{`${item.interviewDate} ${item.interviewTime}`}</Table.Cell>
     <Table.Cell>{`${item.examDate} ${item.examTime}`}</Table.Cell>
     <Table.Cell><Button icon="list" size="mini" onClick={() => history.push(`/recruitment/${item.citizenId}`)} /></Table.Cell>
-    <Table.Cell><Checkbox name="accept" checked={checkStatus[item.citizenId] === 'In Progress'} onChange={() => changeStatus(item.citizenId, 'In Progress')} /></Table.Cell>
+    {item.testStatus === 'NotTest' && <Table.Cell><Button fluid primary disabled={item.examDate !== moment().format('YYYY-MM-DD')} onClick={() => preActivateTakeExam(item)}>Activate</Button></Table.Cell>}
+    {item.testStatus === 'Testing' && <Table.Cell style={{ color: 'grey' }}>Testing...</Table.Cell>}
+    {item.testStatus === 'Grading' && <Table.Cell><Button fluid color="orange">Grade</Button></Table.Cell>}
+    {item.testStatus === 'Finish' && <Table.Cell><Icon name="check" color="green" /></Table.Cell>}
+    <Table.Cell><Checkbox name="completeInterview" checked={checkStatus[item.citizenId] === 'CompleteInterview'} onChange={() => changeStatus(item.citizenId, 'CompleteInterview')} /></Table.Cell>
     <Table.Cell><Checkbox name="editInterview" checked={checkStatus[item.citizenId] === 'Interview'} onChange={() => { changeStatus(item.citizenId, 'Interview'); load(item.interviewDate, item.interviewTime); }} /></Table.Cell>
     <Table.Cell><Checkbox name="editExam" checked={checkStatus[item.citizenId] === 'Exam'} onChange={() => { changeStatus(item.citizenId, 'Exam'); load(item.examDate, item.examTime); }} /></Table.Cell>
-    {reject && <Table.Cell><Checkbox name="reject" checked={checkStatus[item.citizenId] === 'Cancel'} onChange={() => changeStatus(item.citizenId, 'Cancel')} /></Table.Cell>}
+    <Table.Cell><Checkbox name="cancel" checked={checkStatus[item.citizenId] === 'Cancel'} onChange={() => changeStatus(item.citizenId, 'Cancel')} /></Table.Cell>
     <Table.Cell><Checkbox name="blacklist" checked={checkStatus[item.citizenId] === 'Blacklist'} onChange={() => changeStatus(item.citizenId, 'Blacklist')} /></Table.Cell>
   </Table.Row>
 );
 
-const ApproveTable = ({ data, onSearchChange, sortKey, direction, handleSort, onConfirm, checkStatus, reject, changeStatus, clearStatus, setApproveDate, setApproveTime, load, isUseDate }) => {
+const ApproveTable = ({ data, onSearchChange, sortKey, direction, handleSort, onConfirm, checkStatus, changeStatus, clearStatus, setApproveDate, setApproveTime, load, isUseDate, preActivateTakeExam }) => {
   // Get Now DATE
   let today = new Date();
   let dd = today.getDate();
@@ -48,20 +50,20 @@ const ApproveTable = ({ data, onSearchChange, sortKey, direction, handleSort, on
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell sorted={sortKey === 'firstName' ? direction : null} onClick={() => handleSort('firstName')}>Name</Table.HeaderCell>
-              <Table.HeaderCell sorted={sortKey === 'firstNameTh' ? direction : null} onClick={() => handleSort('firstNameTh')}>ชื่อ-นามสกุล</Table.HeaderCell>
               <Table.HeaderCell sorted={sortKey === 'position' ? direction : null} onClick={() => handleSort('position')}>Position</Table.HeaderCell>
               <Table.HeaderCell sorted={sortKey === 'interviewDate' ? direction : null} onClick={() => handleSort('interviewDate')}>Interview Date/Time</Table.HeaderCell>
               <Table.HeaderCell sorted={sortKey === 'examDate' ? direction : null} onClick={() => handleSort('examDate')}>Exam Date/Time</Table.HeaderCell>
               <Table.HeaderCell >Details</Table.HeaderCell>
-              <Table.HeaderCell >In Progress</Table.HeaderCell>
+              <Table.HeaderCell >Tested</Table.HeaderCell>
+              <Table.HeaderCell >Interviewed</Table.HeaderCell>
               <Table.HeaderCell >Edit Interview Date</Table.HeaderCell>
               <Table.HeaderCell >Edit Exam Date</Table.HeaderCell>
-              {reject && <Table.HeaderCell >Cancel</Table.HeaderCell>}
+              <Table.HeaderCell >Cancel</Table.HeaderCell>
               <Table.HeaderCell >Blacklist</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {data.map(item => row(item, { checkStatus, reject, changeStatus, load }))}
+            {data.map(item => row(item, { checkStatus, changeStatus, load, preActivateTakeExam }))}
           </Table.Body>
           <Table.Footer fullWidth>
             <Table.Row>
@@ -99,6 +101,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  preActivateTakeExam: person => dispatch(preActivateTakeExamRequest(person)),
   setApproveDate: value => dispatch(setDate(value)),
   setApproveTime: value => dispatch(setTime(value)),
   load: (date, time) => {
@@ -109,10 +112,6 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-ApproveTable.defaultProps = {
-  reject: false,
-};
-
 ApproveTable.propTypes = {
   data: PropTypes.array.isRequired,
   onSearchChange: PropTypes.func.isRequired,
@@ -121,13 +120,13 @@ ApproveTable.propTypes = {
   handleSort: PropTypes.func.isRequired,
   onConfirm: PropTypes.func.isRequired,
   checkStatus: PropTypes.object.isRequired,
-  reject: PropTypes.bool,
   load: PropTypes.func.isRequired,
   changeStatus: PropTypes.func.isRequired,
   clearStatus: PropTypes.func.isRequired,
   setApproveDate: PropTypes.func.isRequired,
   setApproveTime: PropTypes.func.isRequired,
   isUseDate: PropTypes.bool.isRequired,
+  preActivateTakeExam: PropTypes.func.isRequired,
 };
 
 const enhance = compose(

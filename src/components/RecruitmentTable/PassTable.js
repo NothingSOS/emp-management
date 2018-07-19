@@ -77,11 +77,11 @@ const PassTable = ({ data, onSearchChange, sortKey, direction, handleSort, onCon
                 <Button.Group floated="right">
                   <Button color="blue" icon onClick={onConfirm} >
                     Confirm
-                </Button>
+                  </Button>
                   <Button.Or />
                   <Button basic color="red" icon onClick={clearStatus} >
                     Select None
-                </Button>
+                  </Button>
                 </Button.Group>
               </Table.HeaderCell>
             </Table.Row>
