@@ -79,7 +79,11 @@ class ActiveExamUserModal extends Component {
             onClick={() => {
               const errorList = ['noError', 'noError'];
               errorList[0] = (this.state.unitTime === undefined) ? 'noUnitTime' : 'noError';
-              errorList[1] = (this.state.timeLength === undefined) ? 'noTimeLength' : ((this.state.timeLength < 1 || this.state.timeLength > 2000) ? 'outBoundTimeLength' : 'noError');
+              errorList[1] = (this.state.timeLength === undefined)
+                ? 'noTimeLength'
+                : (!isNaN(this.state.timeLength))
+                  ? ((this.state.timeLength < 1 || this.state.timeLength > 2000) ? 'outBoundTimeLength' : 'noError')
+                  : 'notNumeric';
               if (errorList.every((val) => val === 'noError')) {
                 this.setState({ error: ['noError', 'noError'] }, () => {
                   console.log('CLEAR');
@@ -92,6 +96,17 @@ class ActiveExamUserModal extends Component {
           >
             ACTIVATE
           </Button>
+          <br />
+          <div style={{ color: 'red' }}>
+            {!this.state.error.every((val) => val === 'noError') && '*'}
+            {this.state.error[1] !== 'noError' &&
+              ((this.state.error[1] === 'noTimeLength')
+                ? ' Please insert activation time length'
+                : ((this.state.error[1] === 'noTimeLength') ? ' Activation time length is out of bound (1-2000)' : ' Activation time length must be a  number'))}
+            {this.state.error[1] !== 'noError' && this.state.error[0] !== 'noError' && ' &'}
+            {this.state.error[0] !== 'noError' && ' Please select activation time unit'}
+            &nbsp;
+          </div>
         </SUIModal.Actions>
       </SUIModal>);
   }
