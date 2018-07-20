@@ -13,7 +13,7 @@ const timeOptions = [
 class ActiveExamUserModal extends Component {
   constructor(props) {
     super(props);
-    this.state = { status: this.props.userStatus };
+    this.state = { status: this.props.userStatus, error: ['noError', 'noError'] };
   }
 
   render() {
@@ -61,14 +61,33 @@ class ActiveExamUserModal extends Component {
         </SUIModal.Content>
         <SUIModal.Actions>
           <Input
-            action={<Dropdown placeholder="Unit Time" selection compact options={timeOptions} onChange={(e, { value }) => this.setState({ unitTime: value })} />}
-            placeholder="Time length (0-2000)"
+            action={
+              <Dropdown
+                placeholder="Time Unit"
+                selection
+                compact
+                options={timeOptions}
+                onChange={(e, { value }) => this.setState({ unitTime: value })}
+                error={this.state.error[0] !== 'noError'}
+              />}
+            placeholder="Time length (1-2000)"
             onChange={(e, { value }) => this.setState({ timeLength: value })}
+            error={this.state.error[1] !== 'noError'}
           />
           <Button
             color="blue"
             onClick={() => {
-              console.log(this.state);
+              const errorList = ['noError', 'noError'];
+              errorList[0] = (this.state.unitTime === undefined) ? 'noUnitTime' : 'noError';
+              errorList[1] = (this.state.timeLength === undefined) ? 'noTimeLength' : ((this.state.timeLength < 1 || this.state.timeLength > 2000) ? 'outBoundTimeLength' : 'noError');
+              if (errorList.every((val) => val === 'noError')) {
+                this.setState({ error: ['noError', 'noError'] }, () => {
+                  console.log('CLEAR');
+                });
+              }
+              else {
+                this.setState({ error: errorList.slice() }, this.forceUpdate());
+              }
             }}
           >
             ACTIVATE
