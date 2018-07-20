@@ -8,7 +8,7 @@ import moment from 'moment';
 import { preActivateTakeExamRequest, setDate, setTime } from '../../actions/recruitment';
 import history from '../../history';
 
-const row = (item, { checkStatus, changeStatus, load, preActivateTakeExam }) => (
+const row = (item, { checkStatus, changeStatus, load, preActivateTakeExam, buttonLoad }) => (
   <Table.Row key={item.citizenId}>
     <Table.Cell collapsing>{`${item.firstName}`}<br />
       {`${item.lastName}`}
@@ -17,9 +17,19 @@ const row = (item, { checkStatus, changeStatus, load, preActivateTakeExam }) => 
     <Table.Cell>{`${item.interviewDate} ${item.interviewTime}`}</Table.Cell>
     <Table.Cell>{`${item.examDate} ${item.examTime}`}</Table.Cell>
     <Table.Cell><Button icon="list" size="mini" onClick={() => history.push(`/recruitment/${item.citizenId}`)} /></Table.Cell>
-    {item.testStatus === 'NotTest' && <Table.Cell><Button fluid primary disabled={item.examDate !== moment().format('YYYY-MM-DD')} onClick={() => preActivateTakeExam(item)}>Activate</Button></Table.Cell>}
+    {item.testStatus === 'NotTest' &&
+      <Table.Cell>
+        <Button
+          loading={buttonLoad}
+          fluid
+          primary
+          disabled={item.examDate !== moment().format('YYYY-MM-DD') || buttonLoad}
+          onClick={() => preActivateTakeExam(item)}>
+          Activate
+        </Button>
+      </Table.Cell>}
     {item.testStatus === 'Testing' && <Table.Cell style={{ color: 'grey' }}>Testing...</Table.Cell>}
-    {item.testStatus === 'Grading' && <Table.Cell><Button fluid color="orange">Grade</Button></Table.Cell>}
+    {item.testStatus === 'Grading' && <Table.Cell><Button disabled={buttonLoad} loading={buttonLoad} fluid color="orange">Grade</Button></Table.Cell>}
     {item.testStatus === 'Finish' && <Table.Cell><Icon name="check" color="green" /></Table.Cell>}
     <Table.Cell><Checkbox name="completeInterview" checked={checkStatus[item.citizenId] === 'CompleteInterview'} onChange={() => changeStatus(item.citizenId, 'CompleteInterview')} /></Table.Cell>
     <Table.Cell><Checkbox name="editInterview" checked={checkStatus[item.citizenId] === 'Interview'} onChange={() => { changeStatus(item.citizenId, 'Interview'); load(item.interviewDate, item.interviewTime); }} /></Table.Cell>
@@ -29,7 +39,7 @@ const row = (item, { checkStatus, changeStatus, load, preActivateTakeExam }) => 
   </Table.Row>
 );
 
-const ApproveTable = ({ data, onSearchChange, sortKey, direction, handleSort, onConfirm, checkStatus, changeStatus, clearStatus, setApproveDate, setApproveTime, load, isUseDate, preActivateTakeExam }) => {
+const ApproveTable = ({ data, onSearchChange, sortKey, direction, handleSort, onConfirm, checkStatus, changeStatus, clearStatus, setApproveDate, setApproveTime, load, isUseDate, preActivateTakeExam, buttonLoad }) => {
   // Get Now DATE
   let today = new Date();
   let dd = today.getDate();
@@ -63,7 +73,7 @@ const ApproveTable = ({ data, onSearchChange, sortKey, direction, handleSort, on
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {data.map(item => row(item, { checkStatus, changeStatus, load, preActivateTakeExam }))}
+            {data.map(item => row(item, { checkStatus, changeStatus, load, preActivateTakeExam, buttonLoad }))}
           </Table.Body>
           <Table.Footer fullWidth>
             <Table.Row>
@@ -98,6 +108,7 @@ const mapStateToProps = state => ({
   date: state.recruitment.date,
   time: state.recruitment.time,
   isUseDate: state.recruitment.isUseDate,
+  buttonLoad: state.recruitment.buttonLoad,
 });
 
 const mapDispatchToProps = dispatch => ({

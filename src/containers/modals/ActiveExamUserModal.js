@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Modal as SUIModal, Table, Button, Dropdown, Input } from 'semantic-ui-react';
 import moment from 'moment';
 import { closeModal } from '../../actions/modal';
+import { activateExamUserRequest } from '../../actions/recruitment';
 
 const timeOptions = [
   { text: 'Minute(s)', value: 'Minute(s)' },
@@ -13,7 +14,30 @@ const timeOptions = [
 class ActiveExamUserModal extends Component {
   constructor(props) {
     super(props);
-    this.state = { status: this.props.userStatus, error: ['noError', 'noError'] };
+    this.state = { error: ['noError', 'noError'] };
+    this.activateExamUser = this.activateExamUser.bind(this);
+  }
+
+  activateExamUser() {
+    const errorList = ['noError', 'noError'];
+    errorList[0] = (this.state.unitTime === undefined) ? 'noUnitTime' : 'noError';
+    errorList[1] = (this.state.timeLength === undefined)
+      ? 'noTimeLength'
+      : (!isNaN(this.state.timeLength))
+        ? ((this.state.timeLength < 1 || this.state.timeLength > 2000) ? 'outBoundTimeLength' : 'noError')
+        : 'notNumeric';
+
+    if (errorList.every(val => val === 'noError')) {
+      this.setState({ error: ['noError', 'noError'] }, () => {
+        console.log('clear');
+        console.log(this.props.data.examUser);
+        this.props.activateExamUser(this.props.data.examUser, this.state.timeLength, this.state.unitTime);
+      });
+    }
+    else {
+      console.log(errorList);
+      this.setState({ error: errorList.slice() }, this.forceUpdate());
+    }
   }
 
   render() {
@@ -39,22 +63,22 @@ class ActiveExamUserModal extends Component {
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {(this.props.examUser.latestActivatedTime === null)
+              {(this.props.data.examUser.latestActivatedTime === null)
                 ?
                 <Table.Row>
-                  <Table.Cell>{this.props.examUser.id}</Table.Cell>
+                  <Table.Cell>{this.props.data.examUser.id}</Table.Cell>
                   <Table.Cell>-</Table.Cell>
                   <Table.Cell>-</Table.Cell>
                   <Table.Cell>Not Activated</Table.Cell>
                 </Table.Row>
                 :
                 <Table.Row>
-                  <Table.Cell>{this.props.examUser.id}</Table.Cell>
+                  <Table.Cell>{this.props.data.examUser.id}</Table.Cell>
                   <Table.Cell>-</Table.Cell>
                   <Table.Cell>-</Table.Cell>
-                  {(this.props.examUser.userStatus === 'expired')
-                    ? <Table.Cell error>Test</Table.Cell>
-                    : <Table.Cell>Test</Table.Cell>}
+                  {(this.props.data.userStatus === 'expired')
+                    ? <Table.Cell error>{this.props.data.userStatus}</Table.Cell>
+                    : <Table.Cell>{this.props.data.userStatus}</Table.Cell>}
                 </Table.Row>}
             </Table.Body>
           </Table>
@@ -67,42 +91,30 @@ class ActiveExamUserModal extends Component {
                 selection
                 compact
                 options={timeOptions}
+                disabled={this.props.submitStatus}
                 onChange={(e, { value }) => this.setState({ unitTime: value })}
                 error={this.state.error[0] !== 'noError'}
               />}
             placeholder="Time length (1-2000)"
+            disabled={this.props.submitStatus}
             onChange={(e, { value }) => this.setState({ timeLength: value })}
             error={this.state.error[1] !== 'noError'}
           />
           <Button
             color="blue"
-            onClick={() => {
-              const errorList = ['noError', 'noError'];
-              errorList[0] = (this.state.unitTime === undefined) ? 'noUnitTime' : 'noError';
-              errorList[1] = (this.state.timeLength === undefined)
-                ? 'noTimeLength'
-                : (!isNaN(this.state.timeLength))
-                  ? ((this.state.timeLength < 1 || this.state.timeLength > 2000) ? 'outBoundTimeLength' : 'noError')
-                  : 'notNumeric';
-              if (errorList.every((val) => val === 'noError')) {
-                this.setState({ error: ['noError', 'noError'] }, () => {
-                  console.log('CLEAR');
-                });
-              }
-              else {
-                this.setState({ error: errorList.slice() }, this.forceUpdate());
-              }
-            }}
+            disabled={this.props.submitStatus}
+            loading={this.props.submitStatus}
+            onClick={this.activateExamUser}
           >
             ACTIVATE
           </Button>
           <br />
           <div style={{ color: 'red' }}>
-            {!this.state.error.every((val) => val === 'noError') && '*'}
+            {!this.state.error.every(val => val === 'noError') && '*'}
             {this.state.error[1] !== 'noError' &&
               ((this.state.error[1] === 'noTimeLength')
                 ? ' Please insert activation time length'
-                : ((this.state.error[1] === 'noTimeLength') ? ' Activation time length is out of bound (1-2000)' : ' Activation time length must be a  number'))}
+                : ((this.state.error[1] === 'outBoundTimeLength') ? ' Activation time length is out of bound (1-2000)' : ' Activation time length must be a  number'))}
             {this.state.error[1] !== 'noError' && this.state.error[0] !== 'noError' && ' &'}
             {this.state.error[0] !== 'noError' && ' Please select activation time unit'}
             &nbsp;
@@ -112,8 +124,14 @@ class ActiveExamUserModal extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  onClose: () => dispatch(closeModal()),
+const mapStateToProps = state => ({
+  data: state.recruitment.dataModal,
+  submitStatus: state.recruitment.modalSubmit,
 });
 
-export default connect(null, mapDispatchToProps)(ActiveExamUserModal);
+const mapDispatchToProps = dispatch => ({
+  onClose: () => dispatch(closeModal()),
+  activateExamUser: (user, timeLength, timeUnit) => dispatch(activateExamUserRequest(user, timeLength, timeUnit)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActiveExamUserModal);

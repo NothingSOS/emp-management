@@ -1,4 +1,5 @@
 import * as actionTypes from '../constants/actionTypes';
+import { userInfo } from 'os';
 
 export const fetchRecruitmentRequest = () => ({
   type: actionTypes.RECRUITMENT_FETCH_REQUEST
@@ -351,4 +352,28 @@ export const preActivateTakeExamRequest = person => ({
   payload: {
     person
   }
+});
+
+export const setUpModal = () => ({
+  type: actionTypes.RECRUITMENT_SET_UP_MODAL
+});
+
+export const setUpModalComplete = data => ({
+  type: actionTypes.RECRUITMENT_SET_UP_MODAL_COMPLETE,
+  payload: {
+    data
+  }
+});
+
+export const activateExamUserRequest = (user, timeLength, timeUnit) => ({
+  type: actionTypes.RECRUITMENT_ACTIVATE_EXAM_USER_REQUEST,
+  payload: {
+    user,
+    timeLength,
+    timeUnit,
+  }
+});
+
+export const activateExamUserSuccess = () => ({
+  type: actionTypes.RECRUITMENT_ACTIVATE_EXAM_USER_SUCCESS,
 });

@@ -336,3 +336,13 @@ exports.getExamUser = (req, res, next) => {
     })
     .catch(next);
 }
+
+exports.activateExamUser = (req, res, next) => {
+  Applicant.getRequiredExam(req.body.id)
+    .then((exam) => {
+      console.log(exam);
+      console.log('test');
+      res.json(exam);
+    })
+    .catch(next);
+}

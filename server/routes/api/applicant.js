@@ -48,4 +48,6 @@ router.post('/upload-file', upload.single('file'), ApplicantController.upload);
 
 router.post('/get-exam-user', ApplicantController.getExamUser);
 
+router.post('/activate-exam-user', ApplicantController.activateExamUser);
+
 module.exports = router;

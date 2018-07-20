@@ -30,6 +30,9 @@ import {
   updateRecruitmentNoteSuccess,
   updateRecruitmentInterviewResultFailure,
   updateRecruitmentInterviewResultSuccess,
+  setUpModal,
+  setUpModalComplete,
+  activateExamUserSuccess
 } from '../actions/recruitment';
 import api from '../services/api';
 
@@ -187,6 +190,7 @@ export function* updateRecruitmentSignedPositionTask(action) {
 
 export function* preActivateTakeExamTask(action) {
   try {
+    yield put(setUpModal());
     const examUser = yield call(api.getExamUser, {
       id: action.payload.person.citizenId,
       testDate: action.payload.person.examDate,
@@ -202,7 +206,23 @@ export function* preActivateTakeExamTask(action) {
         userStatus = 'expired';
       }
     }
+    yield put(setUpModalComplete({ examUser, userStatus }));
     yield put(openModal(modalNames.ACTIVE_EXAM_USER, { examUser, userStatus }));
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+export function* activateExamUserTask(action) {
+  try {
+    console.log(action.payload.user);
+    yield call(api.activateExamUser, {
+      id: action.payload.user.id,
+      timeLength: action.payload.timeLength,
+      timeUnit: action.payload.timeUnit,
+    });
+    yield put(activateExamUserSuccess());
   }
   catch (error) {
     console.log(error);
@@ -265,6 +285,10 @@ export function* watchPreActivateTakeExamRequest() {
   yield takeEvery(actionTypes.RECRUITMENT_PRE_ACTIVATE_TAKE_EXAM_REQUEST, preActivateTakeExamTask);
 }
 
+export function* watchActivateExamUserRequest() {
+  yield takeEvery(actionTypes.RECRUITMENT_ACTIVATE_EXAM_USER_REQUEST, activateExamUserTask);
+}
+
 export default function* recruitmentSaga() {
   yield all([
     watchFetchRecruitmentRequest(),
@@ -281,5 +305,6 @@ export default function* recruitmentSaga() {
     watchUpdateRecruitmentSignedPositionRequest(),
     watchUpdateRecruitmentInterviewResultRequest(),
     watchPreActivateTakeExamRequest(),
+    watchActivateExamUserRequest(),
   ]);
 }

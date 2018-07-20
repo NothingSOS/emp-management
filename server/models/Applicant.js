@@ -203,4 +203,17 @@ Applicant.getExamUser = (id, testDate) => (
     , [id, testDate, null, 0, 'NotRead'])
     .then(() => db.one('SELECT * FROM exam_users WHERE id = $1 AND test_date = $2', [id, testDate]))
 )
+
+Applicant.getRequiredExam = id => (
+  db.manyOrNone('SELECT'
+    + ' epr_ex_category as category'
+    + ', epr_ex_subcategory as subcategory'
+    + ', epr_ex_type as type'
+    + ', epr_requirednumber as required_number'
+    + ' FROM applicants a'
+    + ' JOIN exams_position_required epr'
+    + ' ON epr.epr_position = ANY( a.position )'
+    + ' WHERE a.citizen_id = $1', [id])
+);
+
 module.exports = Applicant;

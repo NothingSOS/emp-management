@@ -373,6 +373,13 @@ api.getExamUser = body => (
   })
 );
 
+api.activateExamUser = body => (
+  callApi('api/applicants/activate-exam-user', {
+    method: 'POST',
+    body
+  })
+);
+
 // Exam
 
 api.uploadImageExam = body => (

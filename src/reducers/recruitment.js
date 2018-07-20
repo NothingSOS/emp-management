@@ -13,6 +13,7 @@ const initialState = {
   positions: [],
   signedPosition: {},
   isUseDate: false,
+  buttonLoad: false,
 };
 
 const Recruitment = (state = initialState, action) => {
@@ -243,6 +244,28 @@ const Recruitment = (state = initialState, action) => {
       return {
         ...state,
         message: action.payload.message
+      };
+    case actionTypes.RECRUITMENT_SET_UP_MODAL:
+      return {
+        ...state,
+        buttonLoad: true
+      };
+    case actionTypes.RECRUITMENT_SET_UP_MODAL_COMPLETE:
+      return {
+        ...state,
+        buttonLoad: false,
+        dataModal: action.payload.data,
+        modalSubmit: false
+      };
+    case actionTypes.RECRUITMENT_ACTIVATE_EXAM_USER_REQUEST:
+      return {
+        ...state,
+        modalSubmit: true
+      };
+    case actionTypes.RECRUITMENT_ACTIVATE_EXAM_USER_SUCCESS:
+      return {
+        ...state,
+        modalSubmit: false
       };
     default:
       return state;
