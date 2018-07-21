@@ -16,6 +16,7 @@ class ActiveExamUserModal extends Component {
     super(props);
     this.state = { error: ['noError', 'noError'] };
     this.activateExamUser = this.activateExamUser.bind(this);
+    this.showLifetime = this.showLifetime.bind(this);
   }
 
   activateExamUser() {
@@ -29,15 +30,26 @@ class ActiveExamUserModal extends Component {
 
     if (errorList.every(val => val === 'noError')) {
       this.setState({ error: ['noError', 'noError'] }, () => {
-        console.log('clear');
-        console.log(this.props.data.examUser);
-        this.props.activateExamUser(this.props.data.examUser, this.state.timeLength, this.state.unitTime);
+        this.props.activateExamUser(this.props.data.examUser, this.state.timeLength, this.state.unitTime, this.props.data.applicantData.registrationDate);
       });
     }
     else {
-      console.log(errorList);
       this.setState({ error: errorList.slice() }, this.forceUpdate());
     }
+  }
+
+  showLifetime(minute) {
+    let showString = '';
+    if (minute / 60 / 24 >= 1) {
+      showString = showString.concat(parseInt(minute / 60 / 24, 10)).concat(' day(s) ');
+    }
+    if (minute / 60 % 24 >= 1) {
+      showString = showString.concat(parseInt(minute / 60 % 24, 10)).concat(' hour(s) ');
+    }
+    if (minute % 60 >= 1) {
+      showString = showString.concat(minute % 60).concat(' minute(s)');
+    }
+    return showString;
   }
 
   render() {
@@ -74,11 +86,11 @@ class ActiveExamUserModal extends Component {
                 :
                 <Table.Row>
                   <Table.Cell>{this.props.data.examUser.id}</Table.Cell>
-                  <Table.Cell>-</Table.Cell>
-                  <Table.Cell>-</Table.Cell>
+                  <Table.Cell>{moment(this.props.data.examUser.latestActivatedTime).format('YYYY-MM-DD HH:mm:ss')}</Table.Cell>
+                  <Table.Cell>{this.showLifetime(this.props.data.examUser.activationLifetimes)}</Table.Cell>
                   {(this.props.data.userStatus === 'expired')
-                    ? <Table.Cell error>{this.props.data.userStatus}</Table.Cell>
-                    : <Table.Cell>{this.props.data.userStatus}</Table.Cell>}
+                    ? <Table.Cell negative>Expired</Table.Cell>
+                    : <Table.Cell positive>Alive</Table.Cell>}
                 </Table.Row>}
             </Table.Body>
           </Table>
@@ -131,7 +143,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onClose: () => dispatch(closeModal()),
-  activateExamUser: (user, timeLength, timeUnit) => dispatch(activateExamUserRequest(user, timeLength, timeUnit)),
+  activateExamUser: (user, timeLength, timeUnit, registerDate) => dispatch(activateExamUserRequest(user, timeLength, timeUnit, registerDate)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActiveExamUserModal);

@@ -50,4 +50,6 @@ router.post('/get-exam-user', ApplicantController.getExamUser);
 
 router.post('/activate-exam-user', ApplicantController.activateExamUser);
 
+router.post('/update-test-status', ApplicantController.updateTestStatus);
+
 module.exports = router;

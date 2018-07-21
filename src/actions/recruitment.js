@@ -365,15 +365,19 @@ export const setUpModalComplete = data => ({
   }
 });
 
-export const activateExamUserRequest = (user, timeLength, timeUnit) => ({
+export const activateExamUserRequest = (user, timeLength, timeUnit, registerDate) => ({
   type: actionTypes.RECRUITMENT_ACTIVATE_EXAM_USER_REQUEST,
   payload: {
     user,
     timeLength,
     timeUnit,
+    registerDate
   }
 });
 
-export const activateExamUserSuccess = () => ({
+export const activateExamUserSuccess = (data) => ({
   type: actionTypes.RECRUITMENT_ACTIVATE_EXAM_USER_SUCCESS,
+  payload: {
+    data
+  }
 });

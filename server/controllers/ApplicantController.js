@@ -338,11 +338,23 @@ exports.getExamUser = (req, res, next) => {
 }
 
 exports.activateExamUser = (req, res, next) => {
-  Applicant.getRequiredExam(req.body.id)
+  let lifetime = parseInt(req.body.timeLength);
+  if (req.body.timeUnit === 'Hour(s)') {
+    lifetime = lifetime * 60;
+  }
+  else if (req.body.timeUnit === 'Day(s)') {
+    lifetime = lifetime * 60 * 24;
+  }
+
+  Applicant.getAndUpdateRequiredExam(req.body.id, req.body.testDate, lifetime, req.body.registerDate)
     .then((exam) => {
-      console.log(exam);
-      console.log('test');
       res.json(exam);
     })
+    .catch(next);
+}
+
+exports.updateTestStatus = (req, res, next) => {
+  Applicant.updateTestStatus(req.body.id, req.body.registerDate, req.body.testStatus)
+    .then(() => res.json('Update test status complete'))
     .catch(next);
 }

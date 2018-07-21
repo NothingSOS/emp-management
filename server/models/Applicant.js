@@ -1,5 +1,15 @@
 const db = require('../db');
+const moment = require('moment');
 // const moment = require('moment');
+
+//utility function to shuffle array
+const shuffle = (a) => {
+  for (let i = a.length - 1; i >= 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+};
 
 const Applicant = {};
 
@@ -204,7 +214,8 @@ Applicant.getExamUser = (id, testDate) => (
     .then(() => db.one('SELECT * FROM exam_users WHERE id = $1 AND test_date = $2', [id, testDate]))
 )
 
-Applicant.getRequiredExam = id => (
+// (find required number of each exam).then((get exam id for each required category).then(get random examId and update exam_users table))
+Applicant.getAndUpdateRequiredExam = (id, testDate, lifetime, registerDate) => (
   db.manyOrNone('SELECT'
     + ' epr_ex_category as category'
     + ', epr_ex_subcategory as subcategory'
@@ -213,7 +224,39 @@ Applicant.getRequiredExam = id => (
     + ' FROM applicants a'
     + ' JOIN exams_position_required epr'
     + ' ON epr.epr_position = ANY( a.position )'
-    + ' WHERE a.citizen_id = $1', [id])
+    + ' WHERE a.citizen_id = $1 AND a.registration_date = $2', [id, registerDate])
+    .then((result) => {
+      // need to have data for each position first! (It's not handle the position that not have exam required list)
+      let getExamIdCommand = 'SELECT ex_category as category, ex_subcategory as subcategory, ex_type as type, ARRAY_AGG( ex_id ) as ex_id_list FROM exams';
+
+      getExamIdCommand += ` WHERE (exams.ex_category = '${result[0].category.toLowerCase()}' AND exams.ex_subcategory = '${result[0].subcategory.toLowerCase()}' AND exams.ex_type = '${result[0].type}')`;
+      for (let i = 1; i < result.length; i += 1) {
+        getExamIdCommand += ` OR (exams.ex_category = '${result[i].category.toLowerCase()}' AND exams.ex_subcategory = '${result[i].subcategory.toLowerCase()}' AND exams.ex_type = '${result[i].type}')`;
+      }
+
+      getExamIdCommand += 'GROUP BY ex_category, ex_subcategory, ex_type ORDER BY ex_category, ex_subcategory, ex_type'
+      return db.manyOrNone(getExamIdCommand).then((examIdList) => {
+        let allRandomIdList = [];
+        for (let i = 0; i < examIdList.length; i += 1) {
+          for (let j = 0; j < result.length; j += 1) {
+            if (examIdList[i].category.toLowerCase() === result[j].category.toLowerCase()
+              && examIdList[i].subcategory.toLowerCase() === result[j].subcategory.toLowerCase()
+              && examIdList[i].category.toLowerCase() === result[j].category.toLowerCase()) {
+              const eachRandomIdList = (shuffle(examIdList[i].exIdList.slice())).slice(0, result[j].requiredNumber);
+              allRandomIdList = allRandomIdList.concat(eachRandomIdList);
+              break;
+            }
+          }
+        }
+        return db.none('UPDATE exam_users SET latest_activated_time = $1, activation_lifetimes = $2, random_ex_id_list = $3 WHERE id = $4 AND test_date = $5'
+          , [moment().format('YYYY-MM-DD HH:mm:ss'), lifetime, allRandomIdList, id, testDate]);
+      });
+    })
+);
+
+Applicant.updateTestStatus = (id, registerDate, testStatus) => (
+  db.none('UPDATE applicants SET test_status = $1 WHERE citizen_id = $2 AND registration_date = $3'
+    , [testStatus, id, registerDate])
 );
 
 module.exports = Applicant;

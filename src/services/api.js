@@ -380,6 +380,13 @@ api.activateExamUser = body => (
   })
 );
 
+api.updateRecruitmentTestStatus = body => (
+  callApi('api/applicants/update-test-status', {
+    method: 'POST',
+    body
+  })
+);
+
 // Exam
 
 api.uploadImageExam = body => (

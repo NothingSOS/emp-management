@@ -206,8 +206,8 @@ export function* preActivateTakeExamTask(action) {
         userStatus = 'expired';
       }
     }
-    yield put(setUpModalComplete({ examUser, userStatus }));
-    yield put(openModal(modalNames.ACTIVE_EXAM_USER, { examUser, userStatus }));
+    yield put(setUpModalComplete({ examUser, userStatus, applicantData: action.payload.person }));
+    yield put(openModal(modalNames.ACTIVE_EXAM_USER));
   }
   catch (error) {
     console.log(error);
@@ -216,13 +216,39 @@ export function* preActivateTakeExamTask(action) {
 
 export function* activateExamUserTask(action) {
   try {
-    console.log(action.payload.user);
     yield call(api.activateExamUser, {
       id: action.payload.user.id,
+      testDate: action.payload.user.testDate,
       timeLength: action.payload.timeLength,
       timeUnit: action.payload.timeUnit,
+      registerDate: action.payload.registerDate,
     });
-    yield put(activateExamUserSuccess());
+
+    const examUser = yield call(api.getExamUser, {
+      id: action.payload.user.id,
+      testDate: action.payload.user.testDate,
+    });
+
+    let userStatus = 'new';
+    if (examUser.latestActivatedTime !== null) {
+      const isAlive = moment(examUser.latestActivatedTime).add({ minutes: examUser.activationLifetimes }).diff(moment()) > 0;
+      if (isAlive) {
+        userStatus = 'alive';
+      }
+      else {
+        userStatus = 'expired';
+      }
+    }
+
+    yield call(api.updateRecruitmentTestStatus, {
+      id: action.payload.user.id,
+      registerDate: action.payload.registerDate,
+      testStatus: 'Testing'
+    });
+    const recruitments = yield call(api.fetchRecruitment);
+    yield put(fetchRecruitmentSuccess(recruitments));
+
+    yield put(activateExamUserSuccess({ examUser, userStatus }));
   }
   catch (error) {
     console.log(error);

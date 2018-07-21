@@ -24,7 +24,8 @@ const row = (item, { checkStatus, changeStatus, load, preActivateTakeExam, butto
           fluid
           primary
           disabled={item.examDate !== moment().format('YYYY-MM-DD') || buttonLoad}
-          onClick={() => preActivateTakeExam(item)}>
+          onClick={() => preActivateTakeExam(item)}
+        >
           Activate
         </Button>
       </Table.Cell>}
@@ -138,6 +139,7 @@ ApproveTable.propTypes = {
   setApproveTime: PropTypes.func.isRequired,
   isUseDate: PropTypes.bool.isRequired,
   preActivateTakeExam: PropTypes.func.isRequired,
+  buttonLoad: PropTypes.bool.isRequired,
 };
 
 const enhance = compose(

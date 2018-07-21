@@ -245,6 +245,17 @@ const Recruitment = (state = initialState, action) => {
         ...state,
         message: action.payload.message
       };
+    case actionTypes.RECRUITMENT_ACTIVATE_EXAM_USER_REQUEST:
+      return {
+        ...state,
+        modalSubmit: true
+      };
+    case actionTypes.RECRUITMENT_ACTIVATE_EXAM_USER_SUCCESS:
+      return {
+        ...state,
+        dataModal: action.payload.data,
+        modalSubmit: false
+      };
     case actionTypes.RECRUITMENT_SET_UP_MODAL:
       return {
         ...state,
@@ -255,16 +266,6 @@ const Recruitment = (state = initialState, action) => {
         ...state,
         buttonLoad: false,
         dataModal: action.payload.data,
-        modalSubmit: false
-      };
-    case actionTypes.RECRUITMENT_ACTIVATE_EXAM_USER_REQUEST:
-      return {
-        ...state,
-        modalSubmit: true
-      };
-    case actionTypes.RECRUITMENT_ACTIVATE_EXAM_USER_SUCCESS:
-      return {
-        ...state,
         modalSubmit: false
       };
     default:
