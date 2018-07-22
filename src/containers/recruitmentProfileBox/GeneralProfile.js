@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Segment, Grid, Header, Icon } from 'semantic-ui-react';
+import { Segment, Grid, Header, Icon, Popup } from 'semantic-ui-react';
 // import { openModal } from '../../actions/modal';
 // import * as modalNames from '../../constants/modalNames';
 
@@ -15,9 +15,10 @@ const imgPart = (element) => {
     otherSrc = `http://localhost:3000/static${element.filePath}${element.fileName}`;
   }
   return (
-    <div key={element.fileName}>
-      {cvSrc && <a href={cvSrc} rel="noopener noreferrer" target="_blank"><embed src={cvSrc} height="100" width="300" /><br /><Icon name="zoom" />View CV</a>}
-      {otherSrc && <a href={otherSrc} rel="noopener noreferrer" target="_blank"><embed src={otherSrc} height="100" width="300" /><br /><Icon name="zoom" />View Other</a>}
+    <div key={element.fileName} style={{ marginBottom: '10px' }} >
+      {/* {cvSrc && <a href={cvSrc} rel="noopener noreferrer" target="_blank"><embed src={cvSrc} height="100" width="300" /><br /><Icon name="zoom" />View CV</a>} */}
+      {cvSrc && <a href={cvSrc} rel="noopener noreferrer" target="_blank"><Popup trigger={<Header size="small"><Icon name="zoom" />View CV</Header>} content={<embed src={cvSrc} height="500" width="300" />} /></a>}
+      {otherSrc && <a href={otherSrc} rel="noopener noreferrer" target="_blank"><Popup trigger={<Header size="small"><Icon name="zoom" />View Other</Header>} content={<embed src={otherSrc} height="500" width="300" />} /></a>}
     </div>
   );
 };
@@ -42,7 +43,7 @@ const GeneralProfile = ({ generalProfile, files }) => (
             <Header size="small">Position <Icon name="clipboard" />: {generalProfile.position !== [] ? generalProfile.position.join('/ ') : '-'}</Header>
             <Header size="small">Signed-Position <Icon name="clipboard" />: {generalProfile.signedPosition !== null ? generalProfile.signedPosition : '-'}</Header>
           </Grid.Column>
-          <Grid.Column width={6} verticalAlign="middle" >
+          <Grid.Column width={6} >
             {files.map(file => imgPart(file))}
           </Grid.Column>
         </Grid.Row>
