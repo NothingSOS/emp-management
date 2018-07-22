@@ -26,6 +26,8 @@ const accessControl = require('./accessControl');
 const report = require('./report');
 const applicant = require('./applicant');
 const exam = require('./exam');
+const takeExam = require('./takeExam');
+const takeExamAgreement = require('./takeExamAgreement');
 
 router.use('/applicants', applicant);
 
@@ -80,5 +82,9 @@ router.use('/access-control', accessControl);
 router.use('/report', report);
 
 router.use('/exam', exam);
+
+router.use('/takeExam', takeExam);
+
+router.use('/takeexamagreement', takeExamAgreement);
 
 module.exports = router;

@@ -24,9 +24,9 @@ const ExamUser = {};
 //   })
 // );
 
-ExamUser.findById = id => (
-  db.oneOrNone('SELECT * FROM exam_users2 WHERE id = $1 AND test_date = $2', [id, moment().format('YYYY-MM-DD')])
-);
+ExamUser.findById = id => {
+  return db.oneOrNone('SELECT * FROM exam_users WHERE id = $1 AND test_date = $2', [id, moment().format('YYYY-MM-DD')]);
+};
 
 // User.findAll = () => (
 // db.manyOrNone('SELECT users.id, employee_info.first_name, employee_info.last_name, employee_info.nick_name,
@@ -39,7 +39,7 @@ ExamUser.findById = id => (
 
 ExamUser.createAdmin = user => (
   db.one(
-    'INSERT INTO exam_users2 (id, password, created_user, updated_user, type, status, id) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+    'INSERT INTO exam_users (id, password, created_user, updated_user, type, status, id) VALUES ($1, $2, $3, $4, $5, $6, $7)',
     [
       user.username,
       user.password,

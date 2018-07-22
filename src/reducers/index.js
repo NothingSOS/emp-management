@@ -13,6 +13,9 @@ import timesheet from './timesheet';
 import recruitment from './recruitment';
 import recruitmentProfile from './recruitmentProfile';
 import exam from './exam';
+import examAuth from './examAuth';
+import takeExamAgreement from './takeExamAgreement';
+import takeExam from './takeExam';
 
 export default combineReducers({
   form: formReducer,
@@ -29,4 +32,7 @@ export default combineReducers({
   recruitment,
   recruitmentProfile,
   exam,
+  examAuth,
+  takeExamAgreement,
+  takeExam,
 });

@@ -10,6 +10,9 @@ import timesheetSaga from './timesheet';
 import recruitmentSaga from './recruitment';
 import recruitmentProfileSaga from './recruitmentProfile';
 import examSaga from './exam';
+import examAuthSaga from './examAuth';
+import takeExamSaga from './takeExam';
+import takeExamAgreementSaga from './takeExamAgreement';
 
 export default function* rootSaga() {
   yield all([
@@ -24,5 +27,8 @@ export default function* rootSaga() {
     recruitmentSaga(),
     recruitmentProfileSaga(),
     examSaga(),
+    examAuthSaga(),
+    takeExamSaga(),
+    takeExamAgreementSaga(),
   ]);
 }
