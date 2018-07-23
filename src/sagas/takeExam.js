@@ -115,6 +115,7 @@ export function* finishExamTask(action) {
     yield call(api.sendMailFinishExam, action.payload.id, currentTime.format('YYYY-MM-DD'), needCheck);
 
     yield call(api.deActivate, action.payload.id, 'deactive');
+    yield call(api.changeTestStatus, action.payload.id, 'regisdate', 'Tested');
     yield put(finishExamSuccess());
     yield put(logout());
   }

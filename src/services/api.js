@@ -387,6 +387,10 @@ api.updateRecruitmentTestStatus = body => (
   })
 );
 
+api.changeTestStatus = (id, regisDate, status) => (
+  callApi(`/api/applicants/changeTestStatus/?id=${id}&regisDate=${regisDate}&status=${status}`)
+);
+
 // Exam
 
 api.uploadImageExam = body => (

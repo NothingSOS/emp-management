@@ -209,10 +209,12 @@ Applicant.getPosition = () => (
 );
 
 Applicant.getExamUser = (id, testDate) => (
-  db.none('INSERT INTO exam_users (id, test_date, latest_activated_time, activation_lifetimes, agreement_status) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (id, test_date) DO NOTHING'
-    , [id, testDate, null, 0, 'NotRead'])
+  db.none(
+    'INSERT INTO exam_users (id, test_date, latest_activated_time, activation_lifetimes, agreement_status) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (id, test_date) DO NOTHING'
+    , [id, testDate, null, 0, 'NotRead']
+  )
     .then(() => db.one('SELECT * FROM exam_users WHERE id = $1 AND test_date = $2', [id, testDate]))
-)
+);
 
 // (find required number of each exam).then((get exam id for each required category).then(get random examId and update exam_users table))
 Applicant.getAndUpdateRequiredExam = (id, testDate, lifetime, registerDate) => (
@@ -234,7 +236,7 @@ Applicant.getAndUpdateRequiredExam = (id, testDate, lifetime, registerDate) => (
         getExamIdCommand += ` OR (exams.ex_category = '${result[i].category.toLowerCase()}' AND exams.ex_subcategory = '${result[i].subcategory.toLowerCase()}' AND exams.ex_type = '${result[i].type}')`;
       }
 
-      getExamIdCommand += 'GROUP BY ex_category, ex_subcategory, ex_type ORDER BY ex_category, ex_subcategory, ex_type'
+      getExamIdCommand += 'GROUP BY ex_category, ex_subcategory, ex_type ORDER BY ex_category, ex_subcategory, ex_type';
       return db.manyOrNone(getExamIdCommand).then((examIdList) => {
         let allRandomIdList = [];
         for (let i = 0; i < examIdList.length; i += 1) {
@@ -248,15 +250,23 @@ Applicant.getAndUpdateRequiredExam = (id, testDate, lifetime, registerDate) => (
             }
           }
         }
-        return db.none('UPDATE exam_users SET latest_activated_time = $1, activation_lifetimes = $2, random_ex_id_list = $3 WHERE id = $4 AND test_date = $5'
-          , [moment().format('YYYY-MM-DD HH:mm:ss'), lifetime, allRandomIdList, id, testDate]);
+        return db.none(
+          'UPDATE exam_users SET latest_activated_time = $1, activation_lifetimes = $2, random_ex_id_list = $3 WHERE id = $4 AND test_date = $5'
+          , [moment().format('YYYY-MM-DD HH:mm:ss'), lifetime, allRandomIdList, id, testDate]
+        );
       });
     })
 );
 
 Applicant.updateTestStatus = (id, registerDate, testStatus) => (
-  db.none('UPDATE applicants SET test_status = $1 WHERE citizen_id = $2 AND registration_date = $3'
-    , [testStatus, id, registerDate])
+  db.none(
+    'UPDATE applicants SET test_status = $1 WHERE citizen_id = $2 AND registration_date = $3'
+    , [testStatus, id, registerDate]
+  )
+);
+
+Applicant.changeStatus = (id, regisDate, status) => (
+  db.none('UPDATE applicants SET test_status = $3 WHERE citizen_id = $1 AND registration_date = $2', [id, regisDate, status])
 );
 
 module.exports = Applicant;
