@@ -1,14 +1,14 @@
 import * as actionTypes from '../constants/actionTypes';
-import { userInfo } from 'os';
 
 export const fetchRecruitmentRequest = () => ({
   type: actionTypes.RECRUITMENT_FETCH_REQUEST
 });
 
-export const fetchRecruitmentSuccess = data => ({
+export const fetchRecruitmentSuccess = (data, today) => ({
   type: actionTypes.RECRUITMENT_FETCH_SUCCESS,
   payload: {
-    data
+    data,
+    today,
   }
 });
 
@@ -375,9 +375,147 @@ export const activateExamUserRequest = (user, timeLength, timeUnit, registerDate
   }
 });
 
-export const activateExamUserSuccess = (data) => ({
+export const activateExamUserSuccess = data => ({
   type: actionTypes.RECRUITMENT_ACTIVATE_EXAM_USER_SUCCESS,
   payload: {
     data
+  }
+});
+
+export const fetchGradingRequest = (rowId, modalWarningExIdList) => ({
+  type: actionTypes.RECRUITMENT_GRADING_FETCH_REQUEST,
+  payload: {
+    rowId,
+    modalWarningExIdList,
+  }
+}
+);
+
+export const fetchGradingSuccess = (gradingList, gradingId, examAmountPerCategory, examAmountPerSubCategory, modalWarningExIdList) => ({
+  type: actionTypes.RECRUITMENT_GRADING_FETCH_SUCCESS,
+  payload: {
+    gradingList,
+    gradingId,
+    examAmountPerCategory,
+    examAmountPerSubCategory,
+    modalWarningExIdList,
+  }
+});
+
+export const fetchGradingFailure = message => ({
+  type: actionTypes.RECRUITMENT_GRADING_FETCH_FAILURE,
+  payload: {
+    message,
+  }
+});
+
+export const modalPageChange = value => ({
+  type: actionTypes.GRADING_MODAL_PAGINATION_CHANGE,
+  payload: {
+    value,
+  }
+});
+
+export const modalCategoryChange = category => ({
+  type: actionTypes.GRADING_MODAL_CATEGORY_CHANGE,
+  payload: {
+    category,
+  }
+});
+
+export const viewResult = (id, testDate) => ({
+  type: actionTypes.VIEW_RESULT_EVALUATE_EXAM,
+  payload: {
+    id,
+    testDate,
+  }
+});
+
+export const fetchResultFailure = message => ({
+  type: actionTypes.VIEW_RESULT_FETCH_FAILURE,
+  payload: {
+    message,
+  }
+});
+
+export const onInputModalComment = (text, exId) => ({
+  type: actionTypes.GRADING_MODAL_ON_INPUT_COMMENT,
+  payload: {
+    text,
+    exId,
+  }
+});
+
+export const onScoreModalChange = (value, exId) => ({
+  type: actionTypes.GRADING_MODAL_ON_SCORE_CHANGE,
+  payload: {
+    value,
+    exId,
+  }
+});
+export const onFullScoreModalChange = (value, exId) => ({
+  type: actionTypes.GRADING_MODAL_ON_FULLSCORE_CHANGE,
+  payload: {
+    value,
+    exId,
+  }
+});
+
+export const saveGradingListRequest = (gradingList, modalWarningExIdList) => ({
+  type: actionTypes.GRADING_MODAL_SAVE_REQUEST,
+  payload: {
+    gradingList,
+    modalWarningExIdList,
+  }
+});
+
+export const saveGradingListFailure = message => ({
+  type: actionTypes.GRADING_MODAL_SAVE_FAILURE,
+  payload: {
+    message,
+  }
+});
+
+export const saveGradingListSuccess = () => ({
+  type: actionTypes.GRADING_MODAL_SAVE_SUCCESS,
+  payload: {
+  }
+});
+
+export const sendGradingListRequest = gradingList => ({
+  type: actionTypes.GRADING_MODAL_SEND_REQUEST,
+  payload: {
+    gradingList,
+  }
+});
+
+export const sendGradingListFailure = message => ({
+  type: actionTypes.GRADING_MODAL_SEND_FAILURE,
+  payload: {
+    message,
+  }
+});
+
+export const sendGradingListSuccess = () => ({
+  type: actionTypes.GRADING_MODAL_SEND_SUCCESS,
+  payload: {
+  }
+});
+
+export const scoreStatusHandle = (scoreStatus, exId, gradingList, modalWarningExIdList) => ({
+  type: actionTypes.GRADING_MODAL_SCROLL_HANDLE,
+  payload: {
+    scoreStatus,
+    exId,
+    gradingList,
+    modalWarningExIdList,
+  }
+});
+
+export const scoreStatusPushBack = (gradingList, modalWarningExIdList) => ({
+  type: actionTypes.GRADING_MODAL_SCROLL_PUSHBACK,
+  payload: {
+    gradingList,
+    modalWarningExIdList,
   }
 });

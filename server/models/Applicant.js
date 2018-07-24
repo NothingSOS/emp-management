@@ -2,7 +2,7 @@ const db = require('../db');
 const moment = require('moment');
 // const moment = require('moment');
 
-//utility function to shuffle array
+// utility function to shuffle array
 const shuffle = (a) => {
   for (let i = a.length - 1; i >= 0; i -= 1) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -242,8 +242,7 @@ Applicant.getAndUpdateRequiredExam = (id, testDate, lifetime, registerDate) => (
         for (let i = 0; i < examIdList.length; i += 1) {
           for (let j = 0; j < result.length; j += 1) {
             if (examIdList[i].category.toLowerCase() === result[j].category.toLowerCase()
-              && examIdList[i].subcategory.toLowerCase() === result[j].subcategory.toLowerCase()
-              && examIdList[i].category.toLowerCase() === result[j].category.toLowerCase()) {
+              && examIdList[i].subcategory.toLowerCase() === result[j].subcategory.toLowerCase()) {
               const eachRandomIdList = (shuffle(examIdList[i].exIdList.slice())).slice(0, result[j].requiredNumber);
               allRandomIdList = allRandomIdList.concat(eachRandomIdList);
               break;
@@ -265,8 +264,40 @@ Applicant.updateTestStatus = (id, registerDate, testStatus) => (
   )
 );
 
-Applicant.changeStatus = (id, regisDate, status) => (
+Applicant.changeTestStatus = (id, regisDate, status) => (
   db.none('UPDATE applicants SET test_status = $3 WHERE citizen_id = $1 AND registration_date = $2', [id, regisDate, status])
+);
+
+Applicant.getExamDate = citizenId => (
+  db.oneOrNone('SELECT exam_date FROM applicants WHERE citizen_id = $1', citizenId)
+);
+
+// Recruitment : View Result part
+// 456 refactor
+// exCorrect , exAnswer for more clear-&-clean-ness
+// maybe ex_choices or ex_choice too
+Applicant.fetchGradingExam = rowId => (
+  db.manyOrNone(
+    'SELECT'
+    + ' exam_result.cd_id AS cd_id,'
+    + ' exam_result.ex_id AS ex_id,'
+    + ' exam_result.test_date AS test_date,'
+    + ' exam_result.cd_answer AS cd_answer,'
+    + ' exam_result.point AS point,'
+    + ' exam_result.status AS status,'
+    + ' exam_result.comment AS comment,'
+    + ' exams.ex_type AS ex_type,'
+    + ' exams.ex_choice AS ex_choices,'
+    + ' exams.ex_answer AS ex_correct,'
+    + ' exams.ex_question AS ex_question,'
+    + ' exams.ex_category AS ex_category,'
+    + ' exams.ex_subcategory AS ex_sub_category,'
+    + ' ARRAY_LENGTH(exams.ex_answer, 1) AS ex_answer_length'
+    + ' FROM exam_result, exams'
+    + ' WHERE exam_result.ex_id = exams.ex_id'
+    + ' AND exam_result.row_id = $1',
+    [rowId]
+  )
 );
 
 module.exports = Applicant;

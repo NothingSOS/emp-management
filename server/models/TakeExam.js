@@ -76,13 +76,9 @@ TakeExam.uploadResult = resultList => (
           eachObject.cd_id,
           eachObject.ex_id,
           eachObject.test_date,
-          // eachObject.ex_question,
-          // eachObject.ex_choices,
-          // eachObject.ex_type,
           eachObject.cd_answer,
           eachObject.point,
           eachObject.status,
-          // eachObject.ex_correct
         ]
       );
       queryList.push(aquery);
@@ -99,9 +95,6 @@ TakeExam.createBufferAnswer = (id, answerList, testDate, startTime) => (
 );
 
 TakeExam.findUploadedAnswer = (id, type, testDate) => {
-  // this 2 query do similar thing in same table
-  // their difference is only return value type
-  // so write it together or wait for reason to
   if (type === 'existing check') {
     return db.oneOrNone('SELECT 1 FROM exam_candidate_submitted WHERE id = $1 AND test_date = $2', [id, testDate]);
   }
@@ -129,7 +122,7 @@ TakeExam.expiredActivationLifetime = id => (
 );
 
 TakeExam.getName = (id, current) => (
-  db.oneOrNone('SELECT first_name, last_name FROM recruitments WHERE citizen_id = $1 AND appointment = $2', [id, current])
+  db.oneOrNone('SELECT first_name, last_name FROM applicants WHERE citizen_id = $1 AND exam_date = $2', [id, current])
 );
 
 module.exports = TakeExam;

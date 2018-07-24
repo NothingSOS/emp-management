@@ -2,14 +2,36 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose, lifecycle } from 'recompose';
-import { fetchRecruitmentRequest, changeActiveItemRequest, filterRecruitment, sortRecruitment, changeStatus, clearStatus } from '../../actions/recruitment';
+import {
+  fetchRecruitmentRequest,
+  changeActiveItemRequest,
+  filterRecruitment,
+  sortRecruitment,
+  changeStatus,
+  clearStatus,
+  fetchGradingRequest, } from '../../actions/recruitment';
 import Recruitment from '../../components/Recruitment';
 import Loader from '../../components/Loader';
 import { getVisibleRecruitment } from '../../selectors/recruitment';
 import { openModal } from '../../actions/modal';
 import * as modalNames from '../../constants/modalNames';
 
-const RecruitmentPage = ({ isFetching, activeItem, changeActiveItem, data, onSearchChange, sortKey, sortByKey, direction, onConfirm, checkStatus, changedStatus, clearedStatus }) => {
+const RecruitmentPage = ({
+  isFetching,
+  activeItem,
+  changeActiveItem,
+  data,
+  onSearchChange,
+  sortKey,
+  sortByKey,
+  direction,
+  onConfirm,
+  checkStatus,
+  changedStatus,
+  clearedStatus,
+  onClickGrade,
+  modalWarningExIdList,
+}) => {
   const handleSort = (key) => {
     if (sortKey !== key) {
       sortByKey(key, 'ascending');
@@ -20,19 +42,23 @@ const RecruitmentPage = ({ isFetching, activeItem, changeActiveItem, data, onSea
   };
   return (
     <div>
-      {isFetching ? <Loader /> : <Recruitment
-        activeItem={activeItem}
-        changeActiveItem={changeActiveItem}
-        data={data}
-        onSearchChange={onSearchChange}
-        sortKey={sortKey}
-        direction={direction}
-        handleSort={handleSort}
-        onConfirm={onConfirm}
-        checkStatus={checkStatus}
-        changeStatus={changedStatus}
-        clearStatus={clearedStatus}
-      />
+      {isFetching ?
+        <Loader /> :
+        <Recruitment
+          activeItem={activeItem}
+          changeActiveItem={changeActiveItem}
+          data={data}
+          onSearchChange={onSearchChange}
+          sortKey={sortKey}
+          direction={direction}
+          handleSort={handleSort}
+          onConfirm={onConfirm}
+          checkStatus={checkStatus}
+          changeStatus={changedStatus}
+          clearStatus={clearedStatus}
+          onClickGrade={onClickGrade}
+          modalWarningExIdList={modalWarningExIdList}
+        />
       }
     </div>
   );
@@ -58,6 +84,8 @@ RecruitmentPage.propTypes = {
   checkStatus: PropTypes.object,
   changedStatus: PropTypes.func.isRequired,
   clearedStatus: PropTypes.func.isRequired,
+  onClickGrade: PropTypes.func.isRequired,
+  modalWarningExIdList: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -70,6 +98,7 @@ const mapStateToProps = state => ({
   checkStatus: state.recruitment.checkStatus,
   date: state.recruitment.date,
   time: state.recruitment.time,
+  modalWarningExIdList: state.recruitment.modalWarningExIdList,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -82,6 +111,8 @@ const mapDispatchToProps = dispatch => ({
   },
   changedStatus: (key, status) => dispatch(changeStatus(key, status)),
   clearedStatus: () => dispatch(clearStatus()),
+  // 456 : onClickActivate function
+  onClickGrade: (id, modalWarningExIdList) => dispatch(fetchGradingRequest(id, modalWarningExIdList)),
 });
 
 const enhance = compose(

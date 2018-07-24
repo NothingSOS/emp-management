@@ -18,6 +18,7 @@ import AddExamModal from './modals/AddExamModal';
 import EditExamModal from './modals/EditExamModal';
 import ExamFullViewModal from './modals/ExamFullViewModal';
 import ActiveExamUserModal from './modals/ActiveExamUserModal';
+import GradingExamsModal from './modals/GradingExamsModal';
 
 const ModalContainer = ({ name, props }) => {
   switch (name) {
@@ -53,6 +54,8 @@ const ModalContainer = ({ name, props }) => {
       return <EditExamModal {...props} />;
     case modalNames.VIEW_EXAM:
       return <ExamFullViewModal {...props} />;
+    case modalNames.GRADING_EXAM:
+      return <GradingExamsModal {...props} />;
     default:
       return <div />;
   }
