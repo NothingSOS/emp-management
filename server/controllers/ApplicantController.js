@@ -340,10 +340,10 @@ exports.getExamUser = (req, res, next) => {
 exports.activateExamUser = (req, res, next) => {
   let lifetime = parseInt(req.body.timeLength);
   if (req.body.timeUnit === 'Hour(s)') {
-    lifetime = lifetime * 60;
+    lifetime *= 60;
   }
   else if (req.body.timeUnit === 'Day(s)') {
-    lifetime = lifetime * 60 * 24;
+    lifetime *= (60 * 24);
   }
 
   Applicant.getAndUpdateRequiredExam(req.body.rowId, req.body.testDate, lifetime, req.body.registerDate)
@@ -372,5 +372,10 @@ exports.changeInterviewDone = (req, res, next) => {
     .then((data) => {
       res.json(data);
     })
+    .catch(next);
+};
+exports.changeStatus = (req, res, next) => {
+  Applicant.changeStatus(req.query.id, req.query.regisDate, req.query.status)
+    .then()
     .catch(next);
 };

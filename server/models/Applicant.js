@@ -236,7 +236,7 @@ Applicant.getAndUpdateRequiredExam = (rowId, testDate, lifetime) => (
         getExamIdCommand += ` OR (exams.ex_category = '${result[i].category.toLowerCase()}' AND exams.ex_subcategory = '${result[i].subcategory.toLowerCase()}' AND exams.ex_type = '${result[i].type}')`;
       }
 
-      getExamIdCommand += 'GROUP BY ex_category, ex_subcategory, ex_type ORDER BY ex_category, ex_subcategory, ex_type'
+      getExamIdCommand += 'GROUP BY ex_category, ex_subcategory, ex_type ORDER BY ex_category, ex_subcategory, ex_type';
       return db.manyOrNone(getExamIdCommand).then((examIdList) => {
         let allRandomIdList = [];
         for (let i = 0; i < examIdList.length; i += 1) {
@@ -250,7 +250,8 @@ Applicant.getAndUpdateRequiredExam = (rowId, testDate, lifetime) => (
             }
           }
         }
-        return db.none('UPDATE exam_users SET latest_activated_time = $1, activation_lifetimes = $2, random_ex_id_list = $3 WHERE row_id = $4 AND test_date = $5'
+        return db.none(
+          'UPDATE exam_users SET latest_activated_time = $1, activation_lifetimes = $2, random_ex_id_list = $3 WHERE row_id = $4 AND test_date = $5'
           , [moment().format('YYYY-MM-DD HH:mm:ss'), lifetime, allRandomIdList, rowId, testDate]
         );
       });
@@ -279,7 +280,10 @@ Applicant.changeInterviewDone = rowId => (
     , [true, rowId]
   )
     .then(() => db.manyOrNone(`SELECT * FROM applicants`))
+);
 
+Applicant.changeStatus = (id, regisDate, status) => (
+  db.none('UPDATE applicants SET test_status = $3 WHERE citizen_id = $1 AND registration_date = $2', [id, regisDate, status])
 );
 
 module.exports = Applicant;

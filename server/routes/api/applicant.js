@@ -35,6 +35,8 @@ router.get('/applicant-file', ApplicantController.findFileById);
 
 router.get('/get-position', ApplicantController.getPosition);
 
+router.get('/changeStatus', ApplicantController.changeStatus);
+
 const storage = multer.diskStorage({
   destination: (req, res, cb) => {
     cb(null, 'server/storage/public/applicants-files');
