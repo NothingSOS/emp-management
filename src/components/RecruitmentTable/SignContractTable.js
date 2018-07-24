@@ -8,7 +8,7 @@ import { setDate, setTime } from '../../actions/recruitment';
 import history from '../../history';
 
 const row = (item, { checkStatus, reject, changeStatus, load }) => (
-  <Table.Row key={item.citizenId}>
+  <Table.Row key={item.rowId}>
     <Table.Cell collapsing>{`${item.firstName}`}<br />
       {`${item.lastName}`}
     </Table.Cell>
@@ -19,10 +19,10 @@ const row = (item, { checkStatus, reject, changeStatus, load }) => (
     <Table.Cell collapsing>{`${item.mobileNumber}`}</Table.Cell>
     <Table.Cell>{`${item.signDate} ${item.signTime}`}</Table.Cell>
     <Table.Cell><Button icon="list" size="mini" onClick={() => history.push(`/recruitment/${item.citizenId}`)} /></Table.Cell>
-    <Table.Cell><Checkbox name="accept" checked={checkStatus[item.citizenId] === 'Complete'} onChange={() => changeStatus(item.citizenId, 'Complete')} /></Table.Cell>
-    {reject && <Table.Cell><Checkbox name="reject" checked={checkStatus[item.citizenId] === 'Cancel'} onChange={() => changeStatus(item.citizenId, 'Cancel')} /></Table.Cell>}
-    <Table.Cell><Checkbox name="edit" checked={checkStatus[item.citizenId] === 'Sign Contract'} onChange={() => { changeStatus(item.citizenId, 'Sign Contract'); load(item.signDate, item.signTime); }} /></Table.Cell>
-    <Table.Cell><Checkbox name="blacklist" checked={checkStatus[item.citizenId] === 'Blacklist'} onChange={() => changeStatus(item.citizenId, 'Blacklist')} /></Table.Cell>
+    <Table.Cell><Checkbox name="accept" checked={checkStatus[item.rowId] === 'Complete'} onChange={() => changeStatus(item.rowId, 'Complete')} /></Table.Cell>
+    {reject && <Table.Cell><Checkbox name="reject" checked={checkStatus[item.rowId] === 'Cancel'} onChange={() => changeStatus(item.rowId, 'Cancel')} /></Table.Cell>}
+    <Table.Cell><Checkbox name="edit" checked={checkStatus[item.rowId] === 'Sign Contract'} onChange={() => { changeStatus(item.rowId, 'Sign Contract'); load(item.signDate, item.signTime); }} /></Table.Cell>
+    <Table.Cell><Checkbox name="blacklist" checked={checkStatus[item.rowId] === 'Blacklist'} onChange={() => changeStatus(item.rowId, 'Blacklist')} /></Table.Cell>
   </Table.Row>
 );
 

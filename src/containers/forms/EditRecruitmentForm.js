@@ -30,33 +30,33 @@ const row = (item, { checkStatus, date, time, submitting, positions, selectPosit
     return '';
   });
   return (
-    <Table.Row key={item.citizenId}>
+    <Table.Row key={item.rowId}>
       <Table.Cell>{`${item.firstName} ${item.lastName}`}</Table.Cell>
-      {checkStatus[item.citizenId] !== 'Exam' && checkStatus[item.citizenId] !== 'Sign Contract' && <Table.Cell>{checkStatus[item.citizenId]}</Table.Cell>}
-      {checkStatus[item.citizenId] === 'Exam' && <Table.Cell>Approve</Table.Cell>}
+      {checkStatus[item.rowId] !== 'Exam' && checkStatus[item.rowId] !== 'Sign Contract' && <Table.Cell>{checkStatus[item.rowId]}</Table.Cell>}
+      {checkStatus[item.rowId] === 'Exam' && <Table.Cell>Approve</Table.Cell>}
       {
-        (checkStatus[item.citizenId] === 'Reject' ||
-          checkStatus[item.citizenId] === 'Fail' ||
-          checkStatus[item.citizenId] === 'Cancel' ||
-          checkStatus[item.citizenId] === 'Blacklist' ||
-          checkStatus[item.citizenId] === 'Pass')
+        (checkStatus[item.rowId] === 'Reject' ||
+          checkStatus[item.rowId] === 'Fail' ||
+          checkStatus[item.rowId] === 'Cancel' ||
+          checkStatus[item.rowId] === 'Blacklist' ||
+          checkStatus[item.rowId] === 'Pass')
         &&
         // <Table.Cell><input /></Table.Cell>
         <Table.Cell>
           {/* <Form onSubmit={handleSubmit}> */}
           <Form.Group widths="equal">
-            <Field name={`note_${item.citizenId}`} as={Form.Input} component={Input} label="" placeholder="Note(can not save with empty note)" disabled={submitting} />
+            <Field name={`note_${item.rowId}`} as={Form.Input} component={Input} label="" placeholder="Note(can not save with empty note)" disabled={submitting} />
           </Form.Group>
           {/* </Form> */}
         </Table.Cell>
       }
-      {(checkStatus[item.citizenId] === 'Approve') && <Table.Cell>Interview & Exam Date : {date} ({time})</Table.Cell>}
-      {(checkStatus[item.citizenId] === 'Interview') && <Table.Cell>Interview Date : {date} ({time})</Table.Cell>}
-      {(checkStatus[item.citizenId] === 'Exam') && <Table.Cell>Exam Date : {date} ({time})</Table.Cell>}
-      {(checkStatus[item.citizenId] === 'Sign Contract') && <Table.Cell>Sign Contract Date : {date} ({time})</Table.Cell>}
-      {(checkStatus[item.citizenId] === 'Complete') && <Table.Cell>First Date : {date}</Table.Cell>}
-      {(checkStatus[item.citizenId] === 'Sign Contract' && item.signedPosition !== null) && <Table.Cell><Dropdown placeholder="Please select a position." defaultValue={item.signedPosition} selectOnNavigation={false} selection options={options} onChange={(e, data) => selectPosition(data, item.citizenId)} /></Table.Cell>}
-      {(checkStatus[item.citizenId] === 'Sign Contract' && item.signedPosition === null) && <Table.Cell><Dropdown placeholder="Please select a position." selectOnNavigation={false} selection options={options} onChange={(e, data) => selectPosition(data, item.citizenId)} /></Table.Cell>}
+      {(checkStatus[item.rowId] === 'Approve') && <Table.Cell>Interview & Exam Date : {date} ({time})</Table.Cell>}
+      {(checkStatus[item.rowId] === 'Interview') && <Table.Cell>Interview Date : {date} ({time})</Table.Cell>}
+      {(checkStatus[item.rowId] === 'Exam') && <Table.Cell>Exam Date : {date} ({time})</Table.Cell>}
+      {(checkStatus[item.rowId] === 'Sign Contract') && <Table.Cell>Sign Contract Date : {date} ({time})</Table.Cell>}
+      {(checkStatus[item.rowId] === 'Complete') && <Table.Cell>First Date : {date}</Table.Cell>}
+      {(checkStatus[item.rowId] === 'Sign Contract' && item.signedPosition !== null) && <Table.Cell><Dropdown placeholder="Please select a position." defaultValue={item.signedPosition} selectOnNavigation={false} selection options={options} onChange={(e, data) => selectPosition(data, item.rowId)} /></Table.Cell>}
+      {(checkStatus[item.rowId] === 'Sign Contract' && item.signedPosition === null) && <Table.Cell><Dropdown placeholder="Please select a position." selectOnNavigation={false} selection options={options} onChange={(e, data) => selectPosition(data, item.rowId)} /></Table.Cell>}
     </Table.Row>
   );
 };
@@ -96,7 +96,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   fetchPositionRecruitment: () => dispatch(fetchPositionRecruitmentRequest()),
-  selectPosition: (data, citizenId) => dispatch(setSelectPosition(citizenId, data.value)),
+  selectPosition: (data, rowId) => dispatch(setSelectPosition(rowId, data.value)),
 });
 // const mapDispatchToProps = dispatch => ({
 //   onSubmit: values => new Promise((resolve, reject) => {

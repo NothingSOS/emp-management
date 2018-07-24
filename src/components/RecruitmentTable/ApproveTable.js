@@ -8,7 +8,7 @@ import moment from 'moment';
 import { preActivateTakeExamRequest, setDate, setTime } from '../../actions/recruitment';
 import history from '../../history';
 
-const row = (item, { checkStatus, changeStatus, load, preActivateTakeExam, buttonLoad, onClickGrade, today, modalWarningExIdList }) => (
+const row = (item, { checkStatus, changeStatus, load, preActivateTakeExam, buttonLoad, onClickGrade, modalWarningExIdList }) => (
   <Table.Row key={item.citizenId}>
     <Table.Cell collapsing>{`${item.firstName}`}<br />
       {`${item.lastName}`}
@@ -44,11 +44,11 @@ const row = (item, { checkStatus, changeStatus, load, preActivateTakeExam, butto
       </Table.Cell>
     }
     {item.testStatus === 'Finish' && <Table.Cell><Icon name="check" color="green" /></Table.Cell>}
-    <Table.Cell><Checkbox name="completeInterview" checked={checkStatus[item.citizenId] === 'CompleteInterview'} onChange={() => changeStatus(item.citizenId, 'CompleteInterview')} /></Table.Cell>
-    <Table.Cell><Checkbox name="editInterview" checked={checkStatus[item.citizenId] === 'Interview'} onChange={() => { changeStatus(item.citizenId, 'Interview'); load(item.interviewDate, item.interviewTime); }} /></Table.Cell>
-    <Table.Cell><Checkbox name="editExam" checked={checkStatus[item.citizenId] === 'Exam'} onChange={() => { changeStatus(item.citizenId, 'Exam'); load(item.examDate, item.examTime); }} /></Table.Cell>
-    <Table.Cell><Checkbox name="cancel" checked={checkStatus[item.citizenId] === 'Cancel'} onChange={() => changeStatus(item.citizenId, 'Cancel')} /></Table.Cell>
-    <Table.Cell><Checkbox name="blacklist" checked={checkStatus[item.citizenId] === 'Blacklist'} onChange={() => changeStatus(item.citizenId, 'Blacklist')} /></Table.Cell>
+    {item.interviewDone === false ? <Table.Cell><Checkbox name="completeInterview" checked={checkStatus[item.rowId] === 'CompleteInterview'} onChange={() => changeStatus(item.rowId, 'CompleteInterview')} /></Table.Cell> : <Table.Cell><Icon name="check" color="green" /></Table.Cell>}
+    <Table.Cell><Checkbox name="editInterview" checked={checkStatus[item.rowId] === 'Interview'} onChange={() => { changeStatus(item.rowId, 'Interview'); load(item.interviewDate, item.interviewTime); }} /></Table.Cell>
+    <Table.Cell><Checkbox name="editExam" checked={checkStatus[item.rowId] === 'Exam'} onChange={() => { changeStatus(item.rowId, 'Exam'); load(item.examDate, item.examTime); }} /></Table.Cell>
+    <Table.Cell><Checkbox name="cancel" checked={checkStatus[item.rowId] === 'Cancel'} onChange={() => changeStatus(item.rowId, 'Cancel')} /></Table.Cell>
+    <Table.Cell><Checkbox name="blacklist" checked={checkStatus[item.rowId] === 'Blacklist'} onChange={() => changeStatus(item.rowId, 'Blacklist')} /></Table.Cell>
   </Table.Row>
 );
 
@@ -126,7 +126,6 @@ const mapStateToProps = state => ({
   time: state.recruitment.time,
   isUseDate: state.recruitment.isUseDate,
   buttonLoad: state.recruitment.buttonLoad,
-  today: state.recruitment.today,
 });
 
 const mapDispatchToProps = dispatch => ({

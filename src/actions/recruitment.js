@@ -382,6 +382,7 @@ export const activateExamUserSuccess = data => ({
   }
 });
 
+<<<<<<< HEAD
 export const fetchGradingRequest = (rowId, modalWarningExIdList) => ({
   type: actionTypes.RECRUITMENT_GRADING_FETCH_REQUEST,
   payload: {
@@ -519,3 +520,33 @@ export const scoreStatusPushBack = (gradingList, modalWarningExIdList) => ({
     modalWarningExIdList,
   }
 });
+=======
+export const fetchTestStatusResponse = testStatus => ({
+  type: actionTypes.RECRUITMENT_FETCH_TEST_STATUS_RESPONSE,
+  payload: {
+    testStatus,
+  }
+});
+
+export const fetchTestStatusRequest = rowId => ({
+  type: actionTypes.RECRUITMENT_FETCH_TEST_STATUS_REQUEST,
+  payload: {
+    rowId,
+  }
+});
+
+export const changeInterviewStatusRequest = rowId => ({
+  type: actionTypes.CHANGE_INTERVIEW_STATUS_REQUEST,
+  payload: {
+    rowId,
+  }
+});
+
+export const changeInterviewStatusResponse = data => ({
+  type: actionTypes.CHANGE_INTERVIEW_STATUS_RESPONSE,
+  payload: {
+    data,
+  }
+});
+
+>>>>>>> 2c38d6d26cb1523fe2b486238a8deca13ff93af9

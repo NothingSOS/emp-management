@@ -13,34 +13,36 @@ import {
   updateRecruitmentSignDateTimeRequest, updateRecruitmentCompleteDateTimeRequest,
   updateRecruitmentRejectDateRequest, updateRecruitmentCancelDateRequest,
   updateRecruitmentBlacklistDateRequest, updateRecruitmentNoteRequest,
-  updateRecruitmentExamDateTimeRequest, updateRecruitmentSignedPositionRequest, clearStatus, clearDateTime, clearPosition, updateRecruitmentInterviewResultRequest
+  updateRecruitmentExamDateTimeRequest, updateRecruitmentSignedPositionRequest,
+  clearStatus, clearDateTime, clearPosition, updateRecruitmentInterviewResultRequest,
+  changeInterviewStatusRequest
 } from '../../actions/recruitment';
 
 const EditRecruitmentModal = ({
   onClick, onClose, submitting, data, checkStatus, date, time, buttons, confirm, note,
   signedPosition, updateSignedPosition, resetOnClose, validateSign, updateStatus,
 }) => (
-  <SUIModal
-    dimmer="blurring"
-    size="small"
-    closeIcon
-    open
-    onClose={resetOnClose}
-  >
-    <SUIModal.Header>
-      Edit Recruitment
+    <SUIModal
+      dimmer="blurring"
+      size="small"
+      closeIcon
+      open
+      onClose={resetOnClose}
+    >
+      <SUIModal.Header>
+        Edit Recruitment
     </SUIModal.Header>
-    <SUIModal.Content>
-      <EditRecruitmentForm data={data.filter(row => Object.keys(checkStatus).includes(row.citizenId))} checkStatus={checkStatus} date={date} time={time} />
-    </SUIModal.Content>
-    <SUIModal.Actions>
-      {buttons.map(B => B)}
-      {/* Clean code by bind all function in one function onclick */}
-      <Button color="blue" loading={submitting} disabled={submitting} onClick={() => onClick(checkStatus, date, time, note, signedPosition, validateSign, updateStatus, updateSignedPosition)}>Save</Button>
-      {confirm && <Button loading={submitting} disabled={submitting} onClick={onClose}>No</Button>}
-    </SUIModal.Actions>
-  </SUIModal>
-);
+      <SUIModal.Content>
+        <EditRecruitmentForm data={data.filter(row => Object.keys(checkStatus).includes(row.rowId.toString()))} checkStatus={checkStatus} date={date} time={time} />
+      </SUIModal.Content>
+      <SUIModal.Actions>
+        {buttons.map(B => B)}
+        {/* Clean code by bind all function in one function onclick */}
+        <Button color="blue" loading={submitting} disabled={submitting} onClick={() => onClick(checkStatus, date, time, note, signedPosition, validateSign, updateStatus, updateSignedPosition, data)}>Save</Button>
+        {confirm && <Button loading={submitting} disabled={submitting} onClick={onClose}>No</Button>}
+      </SUIModal.Actions>
+    </SUIModal>
+  );
 
 EditRecruitmentModal.defaultProps = {
   confirm: false,
@@ -78,13 +80,13 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onClick: (checkStatus, date, time, note, signedPosition, validateSign, updateStatus, updateSignedPosition) => {
+  onClick: (checkStatus, date, time, note, signedPosition, validateSign, updateStatus, updateSignedPosition, data) => {
     const isValidateSign = validateSign(checkStatus, signedPosition);
     if (!isValidateSign) {
       alert('Please choose position for every applicant'); // eslint-disable-line no-alert
       return '';
     }
-    updateStatus(checkStatus, date, time, note);
+    updateStatus(checkStatus, date, time, note, data);
     if (Object.keys(signedPosition).length > 0) {
       updateSignedPosition(signedPosition);
     }
@@ -93,18 +95,18 @@ const mapDispatchToProps = dispatch => ({
   },
   // Validate position dropdown fields
   validateSign: (checkStatus, signedPosition) => {
-    const signedApplicant = Object.keys(checkStatus).filter(id => checkStatus[id] === 'Sign Contract');
+    const signedApplicant = Object.keys(checkStatus).filter(rowId => checkStatus[rowId] === 'Sign Contract');
     return signedApplicant.length === Object.keys(signedPosition).length;
     // console.log(signedApplicant.length === Object.keys(signedPosition).length);
   },
   // function สำหรับการเปลี่ยนสเตตัส อาจจะเพิ่มการเช็คเงื่อนไขการเปลี่ยนสถานะเพื่อความถูกต้อง
-  updateStatus: (checkStatus, date, time, note) => {
+  updateStatus: (checkStatus, date, time, note, data) => {
     Object.keys(checkStatus)
       .filter(status => checkStatus[status] !== '')
       .forEach((key) => {
         // UPDATE DATETIME => apply-->approve pass-->sign ?-->cancel ?-->blacklist
         const dateTime = {
-          citizenId: key,
+          rowId: Number(key),
           date,
           time
         };
@@ -114,7 +116,7 @@ const mapDispatchToProps = dispatch => ({
           const tmp = note.editRecruitment.values;
           const strIndex = `note_${key}`;
           addNote.note = tmp[strIndex];
-          addNote.citizenId = key;
+          addNote.rowId = key;
         }
         // Get Now DATE
         let today = new Date();
@@ -157,6 +159,25 @@ const mapDispatchToProps = dispatch => ({
             break;
           // case 'In Progress':
           //   break;
+          case 'CompleteInterview':
+            console.log(key, typeof key);
+            const status = data.filter(row => row.rowId.toString() === key);
+            console.log('=======', status);
+            if (status[0].testStatus === 'Finish') {
+              console.log('AAAAAAAA', status);
+              // change status for In Progress
+              // =================>> change interview done = true
+              dispatch(changeInterviewStatusRequest(10));
+              const form = {
+                rowId: key,
+                status: 'In Progress',
+              };
+              dispatch(createRecruitmentRequest(form));
+              return true;
+            }
+            // =================>> change interview done = true
+            dispatch(changeInterviewStatusRequest(10));
+            return '';
           case 'Pass':
             addNote.interviewResult = addNote.note;
             delete addNote.note;
@@ -182,7 +203,7 @@ const mapDispatchToProps = dispatch => ({
         }
         // CHANGE STATUS
         const form = {
-          citizenId: key,
+          rowId: key,
           status: checkStatus[key],
         };
         dispatch(createRecruitmentRequest(form));
@@ -199,7 +220,7 @@ const mapDispatchToProps = dispatch => ({
   updateSignedPosition: (signedPosition) => {
     Object.keys(signedPosition).forEach((key) => {
       const form = {
-        citizenId: key,
+        rowId: key,
         signedPosition: signedPosition[key],
       };
       dispatch(updateRecruitmentSignedPositionRequest(form));

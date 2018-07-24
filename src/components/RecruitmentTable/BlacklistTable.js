@@ -4,7 +4,7 @@ import { Table, Button, Input } from 'semantic-ui-react';
 import history from '../../history';
 
 const row = item => (
-  <Table.Row key={item.citizenId}>
+  <Table.Row key={item.rowId}>
     <Table.Cell collapsing>{`${item.firstName}`}<br />
       {`${item.lastName}`}
     </Table.Cell>

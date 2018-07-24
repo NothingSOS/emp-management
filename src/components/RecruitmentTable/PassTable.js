@@ -9,7 +9,7 @@ import history from '../../history';
 
 
 const row = (item, { checkStatus, reject, changeStatus }) => (
-  <Table.Row key={item.citizenId}>
+  <Table.Row key={item.rowId}>
     <Table.Cell collapsing>{`${item.firstName}`}<br />
       {`${item.lastName}`}
     </Table.Cell>
@@ -21,9 +21,9 @@ const row = (item, { checkStatus, reject, changeStatus }) => (
     <Table.Cell collapsing>{`${item.mobileNumber}`}</Table.Cell>
     <Table.Cell>{`${item.interviewDate}  ${item.interviewTime}`}</Table.Cell>
     <Table.Cell><Button icon="list" size="mini" onClick={() => history.push(`/recruitment/${item.citizenId}`)} /></Table.Cell>
-    <Table.Cell><Checkbox name="accept" checked={checkStatus[item.citizenId] === 'Sign Contract'} onChange={() => changeStatus(item.citizenId, 'Sign Contract')} /></Table.Cell>
-    {reject && <Table.Cell><Checkbox name="reject" checked={checkStatus[item.citizenId] === 'Reject'} onChange={() => changeStatus(item.citizenId, 'Reject')} /></Table.Cell>}
-    <Table.Cell><Checkbox name="blacklist" checked={checkStatus[item.citizenId] === 'Blacklist'} onChange={() => changeStatus(item.citizenId, 'Blacklist')} /></Table.Cell>
+    <Table.Cell><Checkbox name="accept" checked={checkStatus[item.rowId] === 'Sign Contract'} onChange={() => changeStatus(item.rowId, 'Sign Contract')} /></Table.Cell>
+    {reject && <Table.Cell><Checkbox name="reject" checked={checkStatus[item.rowId] === 'Reject'} onChange={() => changeStatus(item.rowId, 'Reject')} /></Table.Cell>}
+    <Table.Cell><Checkbox name="blacklist" checked={checkStatus[item.rowId] === 'Blacklist'} onChange={() => changeStatus(item.rowId, 'Blacklist')} /></Table.Cell>
   </Table.Row>
 );
 

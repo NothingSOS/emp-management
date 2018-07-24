@@ -40,10 +40,10 @@ Applicant.updateStatus = applicant => (
     `UPDATE applicants
     SET
     status = $1
-    WHERE citizen_id = $2`,
+    WHERE row_id = $2`,
     [
       applicant.status,
-      applicant.citizenId,
+      applicant.rowId,
     ]
   )
     .then(() => db.manyOrNone(`SELECT * FROM applicants`))
@@ -54,11 +54,11 @@ Applicant.updateInterviewDateTime = applicant => (
     `UPDATE applicants
     SET
     interview_date = $1, interview_time = $2
-    WHERE  citizen_id = $3`,
+    WHERE  row_id = $3`,
     [
       applicant.date,
       applicant.time,
-      applicant.citizenId
+      applicant.rowId
     ]
   )
     .then(() => db.manyOrNone(`SELECT * FROM applicants`))
@@ -69,11 +69,11 @@ Applicant.updateSignDateTime = applicant => (
     `UPDATE applicants
     SET
     sign_date = $1, sign_time = $2
-    WHERE citizen_id = $3`,
+    WHERE row_id = $3`,
     [
       applicant.date,
       applicant.time,
-      applicant.citizenId
+      applicant.rowId
     ]
   )
     .then(() => db.manyOrNone(`SELECT * FROM applicants`))
@@ -84,10 +84,10 @@ Applicant.updateFirstDate = applicant => (
     `UPDATE applicants
     SET
     first_date = $1
-    WHERE citizen_id = $2`,
+    WHERE row_id = $2`,
     [
       applicant.date,
-      applicant.citizenId
+      applicant.rowId
     ]
   )
     .then(() => db.manyOrNone(`SELECT * FROM applicants`))
@@ -98,10 +98,10 @@ Applicant.updateRejectDate = applicant => (
     `UPDATE applicants
     SET
     reject_date = $1
-    WHERE citizen_id = $2`,
+    WHERE row_id = $2`,
     [
       applicant.date,
-      applicant.citizenId
+      applicant.rowId
     ]
   )
     .then(() => db.manyOrNone(`SELECT * FROM applicants`))
@@ -112,10 +112,10 @@ Applicant.updateCancelDate = applicant => (
     `UPDATE applicants
     SET
     cancel_date = $1
-    WHERE citizen_id = $2`,
+    WHERE row_id = $2`,
     [
       applicant.date,
-      applicant.citizenId
+      applicant.rowId
     ]
   )
     .then(() => db.manyOrNone(`SELECT * FROM applicants`))
@@ -126,10 +126,10 @@ Applicant.updateBlacklistDate = applicant => (
     `UPDATE applicants
     SET
     blacklist_date = $1
-    WHERE citizen_id = $2`,
+    WHERE row_id = $2`,
     [
       applicant.date,
-      applicant.citizenId
+      applicant.rowId
     ]
   )
     .then(() => db.manyOrNone(`SELECT * FROM applicants`))
@@ -140,10 +140,10 @@ Applicant.updateSignedPosition = applicant => (
     `UPDATE applicants
     SET
     signed_position = $1
-    WHERE citizen_id = $2`,
+    WHERE row_id = $2`,
     [
       applicant.signedPosition,
-      applicant.citizenId
+      applicant.rowId
     ]
   )
     .then(() => db.manyOrNone(`SELECT * FROM applicants`))
@@ -154,11 +154,11 @@ Applicant.updateExamDate = applicant => (
     `UPDATE applicants
     SET
     exam_date = $1, exam_time = $2
-    WHERE citizen_id = $3`,
+    WHERE row_id = $3`,
     [
       applicant.date,
       applicant.time,
-      applicant.citizenId
+      applicant.rowId
     ]
   )
     .then(() => db.manyOrNone(`SELECT * FROM applicants`))
@@ -169,10 +169,10 @@ Applicant.updateNote = applicant => (
     `UPDATE applicants
     SET
     note = $1
-    WHERE citizen_id = $2`,
+    WHERE row_id = $2`,
     [
       applicant.note,
-      applicant.citizenId
+      applicant.rowId
     ]
   )
     .then(() => db.manyOrNone(`SELECT * FROM applicants`))
@@ -183,25 +183,25 @@ Applicant.updateInterviewResult = applicant => (
     `UPDATE applicants
     SET
     interview_result = $1
-    WHERE citizen_id = $2`,
+    WHERE row_id = $2`,
     [
       applicant.interviewResult,
-      applicant.citizenId
+      applicant.rowId
     ]
   )
     .then(() => db.manyOrNone(`SELECT * FROM applicants`))
 );
 
-Applicant.findInfoById = id => (
-  db.oneOrNone('SELECT * FROM applicants WHERE citizen_id = $1', [id])
+Applicant.findInfoById = rowId => (
+  db.oneOrNone('SELECT * FROM applicants WHERE row_id = $1', [rowId])
 );
 
-Applicant.findFileById = id => (
-  db.manyOrNone('SELECT * FROM applicants_files WHERE citizen_id = $1', [id])
+Applicant.findFileById = rowId => (
+  db.manyOrNone('SELECT * FROM applicants_files WHERE row_id = $1', [rowId])
 );
 
-Applicant.upload = (path, name, id, type) => (
-  db.none('INSERT INTO applicants_files (citizen_id, file_path, file_name, type) VALUES ($1, $2, $3, $4);', [id, path, name, type])
+Applicant.upload = (path, name, rowId, type) => (
+  db.none('INSERT INTO applicants_files (row_id, file_path, file_name, type) VALUES ($1, $2, $3, $4);', [rowId, path, name, type])
 );
 
 Applicant.getPosition = () => (
@@ -217,7 +217,7 @@ Applicant.getExamUser = (id, testDate) => (
 );
 
 // (find required number of each exam).then((get exam id for each required category).then(get random examId and update exam_users table))
-Applicant.getAndUpdateRequiredExam = (id, testDate, lifetime, registerDate) => (
+Applicant.getAndUpdateRequiredExam = (rowId, testDate, lifetime) => (
   db.manyOrNone('SELECT'
     + ' epr_ex_category as category'
     + ', epr_ex_subcategory as subcategory'
@@ -226,7 +226,7 @@ Applicant.getAndUpdateRequiredExam = (id, testDate, lifetime, registerDate) => (
     + ' FROM applicants a'
     + ' JOIN exams_position_required epr'
     + ' ON epr.epr_position = ANY( a.position )'
-    + ' WHERE a.citizen_id = $1 AND a.registration_date = $2', [id, registerDate])
+    + ' WHERE a.row_id = $1', [rowId])
     .then((result) => {
       // need to have data for each position first! (It's not handle the position that not have exam required list)
       let getExamIdCommand = 'SELECT ex_category as category, ex_subcategory as subcategory, ex_type as type, ARRAY_AGG( ex_id ) as ex_id_list FROM exams';
@@ -250,18 +250,35 @@ Applicant.getAndUpdateRequiredExam = (id, testDate, lifetime, registerDate) => (
           }
         }
         return db.none(
-          'UPDATE exam_users SET latest_activated_time = $1, activation_lifetimes = $2, random_ex_id_list = $3 WHERE id = $4 AND test_date = $5'
-          , [moment().format('YYYY-MM-DD HH:mm:ss'), lifetime, allRandomIdList, id, testDate]
+          'UPDATE exam_users SET latest_activated_time = $1, activation_lifetimes = $2, random_ex_id_list = $3 WHERE row_id = $4 AND test_date = $5'
+          , [moment().format('YYYY-MM-DD HH:mm:ss'), lifetime, allRandomIdList, rowId, testDate]
         );
       });
     })
 );
 
-Applicant.updateTestStatus = (id, registerDate, testStatus) => (
+Applicant.updateTestStatus = (rowId, registerDate, testStatus) => (
   db.none(
-    'UPDATE applicants SET test_status = $1 WHERE citizen_id = $2 AND registration_date = $3'
-    , [testStatus, id, registerDate]
+    'UPDATE applicants SET test_status = $1 WHERE row_id = $2'
+    , [testStatus, rowId]
   )
+
+);
+
+Applicant.getTestStatus = rowId => (
+  db.oneOrNone(
+    'SELECT test_status FROM applicants WHERE row_id = $1 '
+    , [rowId]
+  )
+
+);
+
+Applicant.changeInterviewDone = rowId => (
+  db.none(
+    'UPDATE applicants SET interview_done = $1 WHERE row_id = $2'
+    , [true, rowId]
+  )
+    .then(() => db.manyOrNone(`SELECT * FROM applicants`))
 );
 
 Applicant.changeTestStatus = (id, regisDate, status) => (

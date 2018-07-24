@@ -23,6 +23,7 @@ const initialState = {
   modalSubCategoryList: [],
   modalWarningExIdList: new Set([]),
   today: '',
+  testStatus: '',
 };
 
 const Recruitment = (state = initialState, action) => {
@@ -404,6 +405,20 @@ const Recruitment = (state = initialState, action) => {
         ...state,
         gradingList: action.payload.gradingList,
         modalWarningExIdList: action.payload.modalWarningExIdList,
+      };
+    case actionTypes.RECRUITMENT_FETCH_TEST_STATUS_REQUEST:
+      return {
+        ...state,
+      };
+    case actionTypes.RECRUITMENT_FETCH_TEST_STATUS_RESPONSE:
+      return {
+        ...state,
+        testStatus: action.payload.testStatus,
+      };
+    case actionTypes.CHANGE_INTERVIEW_STATUS_RESPONSE:
+      return {
+        ...state,
+        data: action.payload.data,
       };
     default:
       return state;

@@ -58,4 +58,8 @@ router.get('/getExamDate', ApplicantController.getExamDate);
 
 router.get('/fetchGradingExam', ApplicantController.fetchGradingExam);
 
+router.post('/get-test-status', ApplicantController.getTestStatus);
+
+router.put('/change-test-status', ApplicantController.changeInterviewDone);
+
 module.exports = router;

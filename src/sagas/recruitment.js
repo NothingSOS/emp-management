@@ -35,6 +35,8 @@ import {
   activateExamUserSuccess,
   fetchGradingFailure,
   fetchGradingSuccess
+  // fetchTestStatusResponse,
+  // changeInterviewStatusResponse,
 } from '../actions/recruitment';
 import api from '../services/api';
 
@@ -242,7 +244,7 @@ export function* preActivateTakeExamTask(action) {
   try {
     yield put(setUpModal());
     const examUser = yield call(api.getExamUser, {
-      id: action.payload.person.citizenId,
+      rowId: action.payload.person.rowId,
       testDate: action.payload.person.examDate,
     });
 
@@ -267,7 +269,7 @@ export function* preActivateTakeExamTask(action) {
 export function* activateExamUserTask(action) {
   try {
     yield call(api.activateExamUser, {
-      id: action.payload.user.id,
+      rowId: action.payload.user.rowId,
       testDate: action.payload.user.testDate,
       timeLength: action.payload.timeLength,
       timeUnit: action.payload.timeUnit,
@@ -275,7 +277,7 @@ export function* activateExamUserTask(action) {
     });
 
     const examUser = yield call(api.getExamUser, {
-      id: action.payload.user.id,
+      rowId: action.payload.user.rowId,
       testDate: action.payload.user.testDate,
     });
 
@@ -291,7 +293,7 @@ export function* activateExamUserTask(action) {
     }
 
     yield call(api.updateRecruitmentTestStatus, {
-      id: action.payload.user.id,
+      rowId: action.payload.user.rowId,
       registerDate: action.payload.registerDate,
       testStatus: 'Testing'
     });
@@ -402,6 +404,14 @@ export function* watchFetchGradingRequest() {
   yield takeEvery(actionTypes.RECRUITMENT_GRADING_FETCH_REQUEST, fetchGradingTask);
 }
 
+// export function* watchFetchTestStatusRequest() {
+//   yield takeEvery(actionTypes.RECRUITMENT_FETCH_TEST_STATUS_REQUEST, fetchTestStatusTask);
+// }
+
+// export function* watchChangeStatus() {
+//   yield takeEvery(actionTypes.CHANGE_INTERVIEW_STATUS_REQUEST, changeInterviewStatus);
+// }
+
 export default function* recruitmentSaga() {
   yield all([
     watchFetchRecruitmentRequest(),
@@ -420,5 +430,7 @@ export default function* recruitmentSaga() {
     watchPreActivateTakeExamRequest(),
     watchActivateExamUserRequest(),
     watchFetchGradingRequest(),
+    // watchFetchTestStatusRequest(),
+    // watchChangeStatus(),
   ]);
 }
