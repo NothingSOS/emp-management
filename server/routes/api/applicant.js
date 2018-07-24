@@ -52,4 +52,8 @@ router.post('/activate-exam-user', ApplicantController.activateExamUser);
 
 router.post('/update-test-status', ApplicantController.updateTestStatus);
 
+router.post('/get-test-status', ApplicantController.getTestStatus);
+
+router.put('/change-test-status', ApplicantController.changeInterviewDone);
+
 module.exports = router;

@@ -375,9 +375,38 @@ export const activateExamUserRequest = (user, timeLength, timeUnit, registerDate
   }
 });
 
-export const activateExamUserSuccess = (data) => ({
+export const activateExamUserSuccess = data => ({
   type: actionTypes.RECRUITMENT_ACTIVATE_EXAM_USER_SUCCESS,
   payload: {
     data
   }
 });
+
+export const fetchTestStatusResponse = testStatus => ({
+  type: actionTypes.RECRUITMENT_FETCH_TEST_STATUS_RESPONSE,
+  payload: {
+    testStatus,
+  }
+});
+
+export const fetchTestStatusRequest = rowId => ({
+  type: actionTypes.RECRUITMENT_FETCH_TEST_STATUS_REQUEST,
+  payload: {
+    rowId,
+  }
+});
+
+export const changeInterviewStatusRequest = rowId => ({
+  type: actionTypes.CHANGE_INTERVIEW_STATUS_REQUEST,
+  payload: {
+    rowId,
+  }
+});
+
+export const changeInterviewStatusResponse = data => ({
+  type: actionTypes.CHANGE_INTERVIEW_STATUS_RESPONSE,
+  payload: {
+    data,
+  }
+});
+

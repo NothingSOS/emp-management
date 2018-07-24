@@ -14,6 +14,7 @@ const initialState = {
   signedPosition: {},
   isUseDate: false,
   buttonLoad: false,
+  testStatus: '',
 };
 
 const Recruitment = (state = initialState, action) => {
@@ -267,6 +268,20 @@ const Recruitment = (state = initialState, action) => {
         buttonLoad: false,
         dataModal: action.payload.data,
         modalSubmit: false
+      };
+    case actionTypes.RECRUITMENT_FETCH_TEST_STATUS_REQUEST:
+      return {
+        ...state,
+      };
+    case actionTypes.RECRUITMENT_FETCH_TEST_STATUS_RESPONSE:
+      return {
+        ...state,
+        testStatus: action.payload.testStatus,
+      };
+    case actionTypes.CHANGE_INTERVIEW_STATUS_RESPONSE:
+      return {
+        ...state,
+        data: action.payload.data,
       };
     default:
       return state;

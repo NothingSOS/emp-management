@@ -4,7 +4,7 @@ import { Table, Input, Button, Checkbox } from 'semantic-ui-react';
 import history from '../../history';
 
 const row = (item, { checkStatus, changeStatus }) => (
-  <Table.Row key={item.citizenId}>
+  <Table.Row key={item.rowId}>
     <Table.Cell collapsing>{`${item.firstName}`}<br />
       {`${item.lastName}`}
     </Table.Cell>
@@ -18,7 +18,7 @@ const row = (item, { checkStatus, changeStatus }) => (
     <Table.Cell>{`${item.note}`}</Table.Cell>
     <Table.Cell><Button icon="list" size="mini" onClick={() => history.push(`/recruitment/${item.citizenId}`)} /></Table.Cell>
     {/* <Table.Cell>{`${item.status}`}</Table.Cell> */}
-    <Table.Cell><Checkbox name="blacklist" checked={checkStatus[item.citizenId] === 'Blacklist'} onChange={() => changeStatus(item.citizenId, 'Blacklist')} /></Table.Cell>
+    <Table.Cell><Checkbox name="blacklist" checked={checkStatus[item.rowId] === 'Blacklist'} onChange={() => changeStatus(item.citizenId, 'Blacklist')} /></Table.Cell>
   </Table.Row>
 );
 

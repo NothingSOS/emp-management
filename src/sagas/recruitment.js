@@ -32,7 +32,9 @@ import {
   updateRecruitmentInterviewResultSuccess,
   setUpModal,
   setUpModalComplete,
-  activateExamUserSuccess
+  activateExamUserSuccess,
+  fetchTestStatusResponse,
+  changeInterviewStatusResponse,
 } from '../actions/recruitment';
 import api from '../services/api';
 
@@ -192,7 +194,7 @@ export function* preActivateTakeExamTask(action) {
   try {
     yield put(setUpModal());
     const examUser = yield call(api.getExamUser, {
-      id: action.payload.person.citizenId,
+      rowId: action.payload.person.rowId,
       testDate: action.payload.person.examDate,
     });
 
@@ -217,7 +219,7 @@ export function* preActivateTakeExamTask(action) {
 export function* activateExamUserTask(action) {
   try {
     yield call(api.activateExamUser, {
-      id: action.payload.user.id,
+      rowId: action.payload.user.rowId,
       testDate: action.payload.user.testDate,
       timeLength: action.payload.timeLength,
       timeUnit: action.payload.timeUnit,
@@ -225,7 +227,7 @@ export function* activateExamUserTask(action) {
     });
 
     const examUser = yield call(api.getExamUser, {
-      id: action.payload.user.id,
+      rowId: action.payload.user.rowId,
       testDate: action.payload.user.testDate,
     });
 
@@ -241,7 +243,7 @@ export function* activateExamUserTask(action) {
     }
 
     yield call(api.updateRecruitmentTestStatus, {
-      id: action.payload.user.id,
+      rowId: action.payload.user.rowId,
       registerDate: action.payload.registerDate,
       testStatus: 'Testing'
     });
@@ -249,6 +251,28 @@ export function* activateExamUserTask(action) {
     yield put(fetchRecruitmentSuccess(recruitments));
 
     yield put(activateExamUserSuccess({ examUser, userStatus }));
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+export function* fetchTestStatusTask(action) {
+  try {
+    const status = yield call(api.fetchTestStatus, action.payload.rowId);
+    yield put(fetchTestStatusResponse(status));
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+export function* changeInterviewStatus(action) {
+  try {
+    console.log(action.payload.rowId);
+    const recruitments = yield call(api.changeInterviewStatus, action.payload.rowId);
+    console.log(recruitments);
+    yield put(changeInterviewStatusResponse(recruitments));
   }
   catch (error) {
     console.log(error);
@@ -315,6 +339,14 @@ export function* watchActivateExamUserRequest() {
   yield takeEvery(actionTypes.RECRUITMENT_ACTIVATE_EXAM_USER_REQUEST, activateExamUserTask);
 }
 
+export function* watchFetchTestStatusRequest() {
+  yield takeEvery(actionTypes.RECRUITMENT_FETCH_TEST_STATUS_REQUEST, fetchTestStatusTask);
+}
+
+export function* watchChangeStatus() {
+  yield takeEvery(actionTypes.CHANGE_INTERVIEW_STATUS_REQUEST, changeInterviewStatus);
+}
+
 export default function* recruitmentSaga() {
   yield all([
     watchFetchRecruitmentRequest(),
@@ -332,5 +364,7 @@ export default function* recruitmentSaga() {
     watchUpdateRecruitmentInterviewResultRequest(),
     watchPreActivateTakeExamRequest(),
     watchActivateExamUserRequest(),
+    watchFetchTestStatusRequest(),
+    watchChangeStatus(),
   ]);
 }

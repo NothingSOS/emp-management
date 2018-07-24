@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport(smtpTransport({
 
 exports.create = (req, res, next) => {
   const newApplicant = req.body;
-  Applicant.create(newApplicant, req.user.id)
+  Applicant.create(newApplicant, req.user.rowId)
     .then((createdApplicant) => {
       res.json(createdApplicant);
     })
@@ -40,7 +40,7 @@ exports.updateStatus = (req, res, next) => {
 
 exports.updateInterviewDateTime = (req, res, next) => {
   const editApplicant = req.body.applicant;
-  Applicant.findInfoById(editApplicant.citizenId).then((selectApplicant) => {
+  Applicant.findInfoById(editApplicant.rowId).then((selectApplicant) => {
     if (!(selectApplicant.interviewDate === null && selectApplicant.interviewTime === null)) {
       const mailOptions = {
         from: 'masaru39@playtorium.co.th',
@@ -138,7 +138,7 @@ exports.updateSignedPosition = (req, res, next) => {
 
 exports.updateSignDateTime = (req, res, next) => {
   const editApplicant = req.body.applicant;
-  Applicant.findInfoById(editApplicant.citizenId).then((selectApplicant) => {
+  Applicant.findInfoById(editApplicant.rowId).then((selectApplicant) => {
     if (!(selectApplicant.signDate === null && selectApplicant.signTime === null)) {
       const mailOptions = {
         from: 'masaru39@playtorium.co.th',
@@ -231,7 +231,7 @@ exports.updateBlacklistDate = (req, res, next) => {
 
 exports.updateExamDate = (req, res, next) => {
   const editApplicant = req.body.applicant;
-  Applicant.findInfoById(editApplicant.citizenId).then((selectApplicant) => {
+  Applicant.findInfoById(editApplicant.rowId).then((selectApplicant) => {
     if (!(selectApplicant.examDate === null && selectApplicant.examTime === null)) {
       const mailOptions = {
         from: 'masaru39@playtorium.co.th',
@@ -297,7 +297,7 @@ exports.updateInterviewResult = (req, res, next) => {
 };
 
 exports.findInfoById = (req, res, next) => {
-  Applicant.findInfoById(req.query.id)
+  Applicant.findInfoById(req.query.rowId)
     .then((applicantInfo) => {
       res.json(applicantInfo);
     })
@@ -305,7 +305,7 @@ exports.findInfoById = (req, res, next) => {
 };
 
 exports.findFileById = (req, res, next) => {
-  Applicant.findFileById(req.query.id)
+  Applicant.findFileById(req.query.rowId)
     .then((applicantInfo) => {
       res.json(applicantInfo);
     })
@@ -314,7 +314,7 @@ exports.findFileById = (req, res, next) => {
 
 exports.upload = (req, res, next) => {
   // console.log(req);
-  Applicant.upload(`/applicants-files/`, `${req.body.citizenId}_${req.body.type}.pdf`, req.body.citizenId)
+  Applicant.upload(`/applicants-files/`, `${req.body.rowId}_${req.body.type}.pdf`, req.body.rowId)
     .then(() => {
       res.json('complete');
     })
@@ -330,12 +330,12 @@ exports.getPosition = (req, res, next) => {
 };
 
 exports.getExamUser = (req, res, next) => {
-  Applicant.getExamUser(req.body.id, req.body.testDate)
+  Applicant.getExamUser(req.body.rowId, req.body.testDate)
     .then((user) => {
       res.json(user);
     })
     .catch(next);
-}
+};
 
 exports.activateExamUser = (req, res, next) => {
   let lifetime = parseInt(req.body.timeLength);
@@ -346,15 +346,31 @@ exports.activateExamUser = (req, res, next) => {
     lifetime = lifetime * 60 * 24;
   }
 
-  Applicant.getAndUpdateRequiredExam(req.body.id, req.body.testDate, lifetime, req.body.registerDate)
+  Applicant.getAndUpdateRequiredExam(req.body.rowId, req.body.testDate, lifetime, req.body.registerDate)
     .then((exam) => {
       res.json(exam);
     })
     .catch(next);
-}
+};
 
 exports.updateTestStatus = (req, res, next) => {
-  Applicant.updateTestStatus(req.body.id, req.body.registerDate, req.body.testStatus)
+  Applicant.updateTestStatus(req.body.rowId, req.body.registerDate, req.body.testStatus)
     .then(() => res.json('Update test status complete'))
     .catch(next);
-}
+};
+
+exports.getTestStatus = (req, res, next) => {
+  Applicant.getTestStatus(req.body.rowId, /* req.body.registerDate */)
+    .then((testStatus) => {
+      res.json(testStatus);
+    })
+    .catch(next);
+};
+
+exports.changeInterviewDone = (req, res, next) => {
+  Applicant.changeInterviewDone(req.body.rowId)
+    .then((data) => {
+      res.json(data);
+    })
+    .catch(next);
+};

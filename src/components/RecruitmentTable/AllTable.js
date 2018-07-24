@@ -16,7 +16,7 @@ const row = (item, { checkStatus, changeStatus }) => {
     };
   }
   return (
-    <Table.Row key={item.citizenId} style={blacklistColor} >
+    <Table.Row key={item.rowId} style={blacklistColor} >
       <Table.Cell>{`${item.firstName} 
     ${item.lastName}`}
       </Table.Cell>
@@ -31,7 +31,7 @@ const row = (item, { checkStatus, changeStatus }) => {
       <Table.Cell>{`${item.status}`}</Table.Cell>
       <Table.Cell><Button icon="list" size="mini" onClick={() => history.push(`/recruitment/${item.citizenId}`)} /></Table.Cell>
       <Table.Cell>
-        {item.status === 'Blacklist' ? <Icon name="cancel" /> : <Checkbox name="blacklist" checked={checkStatus[item.citizenId] === 'Blacklist'} onChange={() => changeStatus(item.citizenId, 'Blacklist')} />}
+        {item.status === 'Blacklist' ? <Icon name="cancel" /> : <Checkbox name="blacklist" checked={checkStatus[item.rowId] === 'Blacklist'} onChange={() => changeStatus(item.rowId, 'Blacklist')} />}
       </Table.Cell>
     </Table.Row>
   );
@@ -64,7 +64,7 @@ const AllTable = ({ data, onSearchChange, sortKey, direction, handleSort, onConf
           <Table.Row>
             <Table.HeaderCell colSpan="11">
               <Button.Group floated="right">
-                <Button color="blue" icon onClick={onConfirm} >
+                <Button color="blue" icon onClick={() => { onConfirm(); }} >
                   Confirm
                 </Button>
                 <Button.Or />

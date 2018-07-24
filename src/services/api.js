@@ -268,6 +268,15 @@ api.fetchApplicant = () => (
   callApi('/api/applicants')
 );
 
+api.fetchTestStatus = rowId => (
+  callApi('api/applicants/get-test-status', {
+    method: 'POST',
+    body: {
+      rowId,
+    }
+  })
+);
+
 // Recruitment
 api.fetchRecruitment = () => (
   callApi('/api/applicants')
@@ -354,12 +363,12 @@ api.updateRecruitmentSignedPosition = body => (
   })
 );
 
-api.fetchRecruitmentProfile = id => (
-  callApi(`../api/applicants/applicant-info/?id=${id}`)
+api.fetchRecruitmentProfile = rowId => (
+  callApi(`../api/applicants/applicant-info/?id=${rowId}`)
 );
 
-api.fetchRecruitmentFile = id => (
-  callApi(`../api/applicants/applicant-file/?id=${id}`)
+api.fetchRecruitmentFile = rowId => (
+  callApi(`../api/applicants/applicant-file/?id=${rowId}`)
 );
 
 // vvvvvvvvvv Exam api (Need to clear unused api) vvvvvvvvvv
@@ -383,6 +392,13 @@ api.activateExamUser = body => (
 api.updateRecruitmentTestStatus = body => (
   callApi('api/applicants/update-test-status', {
     method: 'POST',
+    body
+  })
+);
+
+api.changeInterviewStatus = body => (
+  callApi('/api/applicants/change-test-status', {
+    method: 'PUT',
     body
   })
 );

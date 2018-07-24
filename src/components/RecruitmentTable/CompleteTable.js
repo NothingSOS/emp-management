@@ -8,7 +8,7 @@ import { setDate } from '../../actions/recruitment';
 import history from '../../history';
 
 const row = (item, { checkStatus, changeStatus, load }) => (
-  <Table.Row key={item.citizenId}>
+  <Table.Row key={item.rowId}>
     <Table.Cell collapsing>{`${item.firstName}`}<br />
       {`${item.lastName}`}
     </Table.Cell>
@@ -20,9 +20,9 @@ const row = (item, { checkStatus, changeStatus, load }) => (
     <Table.Cell collapsing>{`${item.mobileNumber}`}</Table.Cell>
     <Table.Cell>{`${item.firstDate}`}</Table.Cell>
     <Table.Cell><Button icon="list" size="mini" onClick={() => history.push(`/recruitment/${item.citizenId}`)} /></Table.Cell>
-    <Table.Cell><Checkbox name="edit" checked={checkStatus[item.citizenId] === 'Complete'} onChange={() => { changeStatus(item.citizenId, 'Complete'); load(item.firstDate); }} /></Table.Cell>
+    <Table.Cell><Checkbox name="edit" checked={checkStatus[item.rowId] === 'Complete'} onChange={() => { changeStatus(item.rowId, 'Complete'); load(item.firstDate); }} /></Table.Cell>
     {/* <Table.Cell>{`${item.status}`}</Table.Cell> */}
-    <Table.Cell><Checkbox name="blacklist" checked={checkStatus[item.citizenId] === 'Blacklist'} onChange={() => changeStatus(item.citizenId, 'Blacklist')} /></Table.Cell>
+    <Table.Cell><Checkbox name="blacklist" checked={checkStatus[item.rowId] === 'Blacklist'} onChange={() => changeStatus(item.rowId, 'Blacklist')} /></Table.Cell>
   </Table.Row>
 );
 
