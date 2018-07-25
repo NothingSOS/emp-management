@@ -35,7 +35,7 @@ router.get('/applicant-file', ApplicantController.findFileById);
 
 router.get('/get-position', ApplicantController.getPosition);
 
-router.get('/changeStatus', ApplicantController.changeStatus);
+router.get('/changeTestStatus', ApplicantController.changeTestStatus);
 
 const storage = multer.diskStorage({
   destination: (req, res, cb) => {
@@ -53,6 +53,10 @@ router.post('/get-exam-user', ApplicantController.getExamUser);
 router.post('/activate-exam-user', ApplicantController.activateExamUser);
 
 router.post('/update-test-status', ApplicantController.updateTestStatus);
+
+router.get('/getExamDate', ApplicantController.getExamDate);
+
+router.get('/fetchGradingExam', ApplicantController.fetchGradingExam);
 
 router.post('/get-test-status', ApplicantController.getTestStatus);
 

@@ -371,6 +371,18 @@ api.fetchRecruitmentFile = rowId => (
   callApi(`../api/applicants/applicant-file/?id=${rowId}`)
 );
 
+// Recruitment : Basic API
+
+api.getExamDate = citizenId => (
+  callApi(`/api/applicants/getExamDate/?citizenId=${citizenId}`)
+);
+
+// Recruitment : Grading
+
+api.fetchGradingExam = rowId => (
+  callApi(`/api/applicants/fetchGradingExam/?rowId=${rowId}`)
+);
+
 // vvvvvvvvvv Exam api (Need to clear unused api) vvvvvvvvvv
 
 // Recruitment

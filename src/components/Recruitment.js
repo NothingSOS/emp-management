@@ -13,7 +13,20 @@ import CancelTable from './RecruitmentTable/CancelTable';
 import BlacklistTable from './RecruitmentTable/BlacklistTable';
 import { getFilterRecruitment, getFilterRecruitmentTwoParam } from '../selectors/recruitment';
 
-const getActiveTable = (activeItem, data, onSearchChange, sortKey, direction, handleSort, onConfirm, checkStatus, changeStatus, clearStatus) => {
+const getActiveTable = (
+  activeItem,
+  data,
+  onSearchChange,
+  sortKey,
+  direction,
+  handleSort,
+  onConfirm,
+  checkStatus,
+  changeStatus,
+  clearStatus,
+  onClickGrade,
+  modalWarningExIdList,
+) => {
   let filteredData = [];
   switch (activeItem) {
     case 'All':
@@ -55,6 +68,8 @@ const getActiveTable = (activeItem, data, onSearchChange, sortKey, direction, ha
         reject
         changeStatus={changeStatus}
         clearStatus={clearStatus}
+        onClickGrade={onClickGrade}
+        modalWarningExIdList={modalWarningExIdList}
       />);
     case 'In Progress':
       filteredData = getFilterRecruitment(data, 'In Progress');
@@ -151,10 +166,21 @@ const getActiveTable = (activeItem, data, onSearchChange, sortKey, direction, ha
   }
 };
 
-// const Recruitment = ({ activeItem, changeActiveItem, data, onSearchChange, sortKey, direction, handleSort, onConfirm, checkStatus, selectStatus, changeStatus, addStatus, clearStatus }) => (
-const Recruitment = ({ activeItem, changeActiveItem, data, onSearchChange, sortKey, direction, handleSort, onConfirm, checkStatus, changeStatus, clearStatus }) => (
-  <div>
-    <Segment>
+const Recruitment = ({
+  activeItem,
+  changeActiveItem,
+  data,
+  onSearchChange,
+  sortKey,
+  direction,
+  handleSort,
+  onConfirm,
+  checkStatus,
+  changeStatus,
+  clearStatus,
+  onClickGrade,
+  modalWarningExIdList, }) => (
+    <Segment raised>
       <Grid>
         <Grid.Row>
           <Grid.Column width={16}>
@@ -174,13 +200,25 @@ const Recruitment = ({ activeItem, changeActiveItem, data, onSearchChange, sortK
         </Grid.Row>
         <Grid.Row>
           <Grid.Column stretched width={16}>
-            {getActiveTable(activeItem, data, onSearchChange, sortKey, direction, handleSort, onConfirm, checkStatus, changeStatus, clearStatus)}
+            {getActiveTable(
+              activeItem,
+              data,
+              onSearchChange,
+              sortKey,
+              direction,
+              handleSort,
+              onConfirm,
+              checkStatus,
+              changeStatus,
+              clearStatus,
+              onClickGrade,
+              modalWarningExIdList,
+            )}
           </Grid.Column>
         </Grid.Row>
       </Grid>
     </Segment>
-  </div >
-);
+  );
 
 Recruitment.propTypes = {
   changeActiveItem: PropTypes.func.isRequired,
@@ -194,6 +232,8 @@ Recruitment.propTypes = {
   checkStatus: PropTypes.object.isRequired,
   changeStatus: PropTypes.func.isRequired,
   clearStatus: PropTypes.func.isRequired,
+  onClickGrade: PropTypes.func.isRequired,
+  modalWarningExIdList: PropTypes.array.isRequired,
 };
 
 export default Recruitment;

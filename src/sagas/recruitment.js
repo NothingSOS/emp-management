@@ -33,15 +33,65 @@ import {
   setUpModal,
   setUpModalComplete,
   activateExamUserSuccess,
-  fetchTestStatusResponse,
+  fetchGradingFailure,
+  fetchGradingSuccess,
   changeInterviewStatusResponse,
+  // fetchTestStatusResponse,
 } from '../actions/recruitment';
 import api from '../services/api';
+
+const countTheCategory = (examList) => {
+  const categoryList = [];
+  const subCategoryList = [];
+  console.log(examList);
+  Object(examList).map((item) => {
+    if (!categoryList.includes(item.exCategory)) categoryList.push(item.exCategory);
+    if (!subCategoryList.includes([item.exCategory, item.exSubCategory].join(' '))) {
+      subCategoryList.push([item.exCategory, item.exSubCategory].join(' '));
+    }
+    return 1;
+  });
+
+  const examAmountPerCategory = [];
+  const examAmountPerSubCategory = [];
+  for (let i = 0; i < categoryList.length; i += 1) {
+    let count = 0;
+    for (let j = 0; j < examList.length; j += 1) {
+      if (categoryList[i] === examList[j].exCategory) { count += 1; }
+    }
+    examAmountPerCategory.push([categoryList[i], count]);
+  }
+
+  for (let i = 0; i < subCategoryList.length; i += 1) {
+    let count = 0;
+    for (let j = 0; j < examList.length; j += 1) {
+      if (categoryList[i] === examList[j].exCategory
+        && subCategoryList[i].split(' ')[1] === examList[j].exSubCategory) { count += 1; }
+    }
+    examAmountPerSubCategory.push([subCategoryList[i], count]);
+  }
+
+  return {
+    examAmountPerCategory,
+    examAmountPerSubCategory,
+  };
+};
+
+const addWarningExIdMemo = (set, exId) => {
+  set.add(exId);
+  return set;
+};
+
+const removeWarningExIdMemo = (set, exId) => {
+  console.log(set, '??');
+  set.delete(exId);
+  return set;
+};
 
 export function* fetchRecruitmentTask() {
   try {
     const recruitments = yield call(api.fetchRecruitment);
-    yield put(fetchRecruitmentSuccess(recruitments));
+    yield put(fetchRecruitmentSuccess(recruitments, moment().format('YYYY-MM-DD')));
   }
   catch (error) {
     yield put(fetchRecruitmentFailure(error));
@@ -257,19 +307,42 @@ export function* activateExamUserTask(action) {
   }
 }
 
-export function* fetchTestStatusTask(action) {
+export function* fetchGradingTask(action) {
   try {
-    const status = yield call(api.fetchTestStatus, action.payload.rowId);
-    yield put(fetchTestStatusResponse(status));
+    const gradingExamList = yield call(api.fetchGradingExam, action.payload.rowId);
+    console.log('after call api:', gradingExamList);
+    let tempModalWarningExIdList = action.payload.modalWarningExIdList;
+    for (let i = 0; i < gradingExamList.length; i += 1) {
+      const scoreWarning = gradingExamList[i].point[0] === 'UNKNOWN' ? '*requried' : gradingExamList[i].point[0];
+      const fullScoreWarning = gradingExamList[i].point[1] === 'UNKNOWN' ? '*requried' : gradingExamList[i].point[1];
+      gradingExamList[i] = {
+        ...gradingExamList[i],
+        scoreWarning,
+        fullScoreWarning,
+      };
+      tempModalWarningExIdList = gradingExamList[i].status !== 'Graded' ?
+        addWarningExIdMemo(tempModalWarningExIdList, gradingExamList[i].exId) :
+        removeWarningExIdMemo(tempModalWarningExIdList, gradingExamList[i].exId);
+    }
+    console.log('before send:', gradingExamList);
+    const object = countTheCategory(gradingExamList);
+    yield put(fetchGradingSuccess(
+      gradingExamList,
+      action.payload.id,
+      object.examAmountPerCategory,
+      object.examAmountPerSubCategory,
+      tempModalWarningExIdList,
+    ));
+    yield put(openModal(modalNames.GRADING_EXAM));
   }
   catch (error) {
-    console.log(error);
+    yield put(fetchGradingFailure(error));
   }
 }
 
 export function* changeInterviewStatus(action) {
   try {
-    console.log(action.payload.rowId);
+    console.log('=-=-=-=-=-=-=');
     const recruitments = yield call(api.changeInterviewStatus, {
       applicant: action.payload.rowId
     });
@@ -340,9 +413,13 @@ export function* watchActivateExamUserRequest() {
   yield takeEvery(actionTypes.RECRUITMENT_ACTIVATE_EXAM_USER_REQUEST, activateExamUserTask);
 }
 
-export function* watchFetchTestStatusRequest() {
-  yield takeEvery(actionTypes.RECRUITMENT_FETCH_TEST_STATUS_REQUEST, fetchTestStatusTask);
+export function* watchFetchGradingRequest() {
+  yield takeEvery(actionTypes.RECRUITMENT_GRADING_FETCH_REQUEST, fetchGradingTask);
 }
+
+// export function* watchFetchTestStatusRequest() {
+//   yield takeEvery(actionTypes.RECRUITMENT_FETCH_TEST_STATUS_REQUEST, fetchTestStatusTask);
+// }
 
 export function* watchChangeStatus() {
   yield takeEvery(actionTypes.CHANGE_INTERVIEW_STATUS_REQUEST, changeInterviewStatus);
@@ -365,7 +442,8 @@ export default function* recruitmentSaga() {
     watchUpdateRecruitmentInterviewResultRequest(),
     watchPreActivateTakeExamRequest(),
     watchActivateExamUserRequest(),
-    watchFetchTestStatusRequest(),
+    watchFetchGradingRequest(),
+    // watchFetchTestStatusRequest(),
     watchChangeStatus(),
   ]);
 }

@@ -14,6 +14,15 @@ const initialState = {
   signedPosition: {},
   isUseDate: false,
   buttonLoad: false,
+  isModalFetching: false,
+  gradingId: '',
+  gradingList: [],
+  activeModalCategory: '',
+  currentActiveModalPage: '',
+  modalCategoryList: [],
+  modalSubCategoryList: [],
+  modalWarningExIdList: new Set([]),
+  today: '',
   testStatus: '',
 };
 
@@ -29,6 +38,7 @@ const Recruitment = (state = initialState, action) => {
         ...state,
         isFetching: false,
         data: action.payload.data,
+        today: action.payload.today,
       };
     case actionTypes.RECRUITMENT_FETCH_FAILURE:
       return {
@@ -268,6 +278,133 @@ const Recruitment = (state = initialState, action) => {
         buttonLoad: false,
         dataModal: action.payload.data,
         modalSubmit: false
+      };
+    case actionTypes.RECRUITMENT_GRADING_FETCH_REQUEST:
+      return {
+        ...state,
+        isModalFetching: true,
+      };
+    case actionTypes.RECRUITMENT_GRADING_FETCH_FAILURE:
+      return {
+        ...state,
+        isModalFetching: false,
+        message: action.payload.message,
+      };
+    case actionTypes.RECRUITMENT_GRADING_FETCH_SUCCESS:
+      return {
+        ...state,
+        gradingId: action.payload.gradingId,
+        gradingList: action.payload.gradingList,
+        isModalFetching: false,
+        activeModalCategory: action.payload.gradingList[0].exCategory,
+        currentActiveModalPage: 1,
+        modalCategoryList: action.payload.examAmountPerCategory,
+        modalSubCategoryList: action.payload.examAmountPerSubCategory,
+        modalWarningExIdList: action.payload.modalWarningExIdList,
+      };
+    case actionTypes.GRADING_MODAL_PAGINATION_CHANGE:
+      return {
+        ...state,
+        currentActiveModalPage: action.payload.value,
+      };
+    case actionTypes.GRADING_MODAL_CATEGORY_CHANGE:
+      return {
+        ...state,
+        activeModalCategory: action.payload.category,
+      };
+    case actionTypes.GRADING_MODAL_ON_INPUT_COMMENT: {
+      const tempGradingList = [...state.gradingList].slice();
+      for (let i = 0; i < tempGradingList.length; i += 1) {
+        if (tempGradingList[i].exId === action.payload.exId) {
+          tempGradingList[i] = {
+            ...tempGradingList[i],
+            comment: action.payload.text,
+          };
+        }
+      }
+      return {
+        ...state,
+        gradingList: tempGradingList,
+      };
+    }
+    case actionTypes.GRADING_MODAL_ON_SCORE_CHANGE: {
+      const tempGradingList = [...state.gradingList].slice();
+      for (let i = 0; i < tempGradingList.length; i += 1) {
+        if (tempGradingList[i].exId === action.payload.exId) {
+          const tempPoint = tempGradingList[i].point;
+          tempPoint[0] = action.payload.value;
+          tempGradingList[i] = {
+            ...tempGradingList[i],
+            point: tempPoint,
+          };
+        }
+      }
+      return {
+        ...state,
+        gradingList: tempGradingList,
+      };
+    }
+    case actionTypes.GRADING_MODAL_ON_FULLSCORE_CHANGE: {
+      const tempGradingList = [...state.gradingList].slice();
+      for (let i = 0; i < tempGradingList.length; i += 1) {
+        if (tempGradingList[i].exId === action.payload.exId) {
+          const tempPoint = tempGradingList[i].point;
+          tempPoint[1] = action.payload.value;
+          tempGradingList[i] = {
+            ...tempGradingList[i],
+            point: tempPoint,
+          };
+        }
+      }
+      return {
+        ...state,
+        gradingList: tempGradingList,
+      };
+    }
+    case actionTypes.GRADING_MODAL_SAVE_REQUEST:
+      return {
+        ...state,
+        isModalFetching: true,
+        gradingList: action.payload.gradingList,
+        modalWarningExIdList: action.payload.modalWarningExIdList,
+      };
+    case actionTypes.GRADING_MODAL_SAVE_FAILURE:
+      return {
+        ...state,
+        isModalFetching: false,
+        message: action.payload.message,
+      };
+    case actionTypes.GRADING_MODAL_SAVE_SUCCESS:
+      return {
+        ...state,
+        isModalFetching: false,
+      };
+    case actionTypes.GRADING_MODAL_SEND_REQUEST:
+      return {
+        ...state,
+        isModalFetching: true,
+      };
+    case actionTypes.GRADING_MODAL_SEND_FAILURE:
+      return {
+        ...state,
+        isModalFetching: false,
+        message: action.payload.message,
+      };
+    case actionTypes.GRADING_MODAL_SEND_SUCCESS:
+      return {
+        ...state,
+        isModalFetching: false,
+      };
+    case actionTypes.GRADING_MODAL_SCROLL_HANDLE:
+      return {
+        ...state,
+        // nothing to update to state yet
+      };
+    case actionTypes.GRADING_MODAL_SCROLL_PUSHBACK:
+      return {
+        ...state,
+        gradingList: action.payload.gradingList,
+        modalWarningExIdList: action.payload.modalWarningExIdList,
       };
     case actionTypes.RECRUITMENT_FETCH_TEST_STATUS_REQUEST:
       return {

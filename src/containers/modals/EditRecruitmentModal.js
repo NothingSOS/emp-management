@@ -31,7 +31,7 @@ const EditRecruitmentModal = ({
     >
       <SUIModal.Header>
         Edit Recruitment
-    </SUIModal.Header>
+      </SUIModal.Header>
       <SUIModal.Content>
         <EditRecruitmentForm data={data.filter(row => Object.keys(checkStatus).includes(row.rowId.toString()))} checkStatus={checkStatus} date={date} time={time} />
       </SUIModal.Content>
@@ -160,9 +160,9 @@ const mapDispatchToProps = dispatch => ({
           // case 'In Progress':
           //   break;
           case 'CompleteInterview':
-            // console.log(key, typeof key);
+            console.log(key, typeof key);
             const status = data.filter(row => row.rowId.toString() === key);
-            // console.log('=======', status);
+            console.log('=======', status[0].testStatus);
             if (status[0].testStatus === 'Finish') {
               console.log('AAAAAAAA', status);
               // change status for In Progress

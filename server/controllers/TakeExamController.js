@@ -171,6 +171,7 @@ exports.grading = (req, res, next) => {
 };
 
 exports.sendMail = (req, res, next) => {
+  console.log('?>', req.body);
   TakeExam.getName(req.body.id, req.body.currentTime)
     .then((name) => {
       let messageStatus = '<p>You can see the result in Playtorium HR site.</p>';

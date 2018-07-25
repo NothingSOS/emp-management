@@ -8,8 +8,8 @@ import moment from 'moment';
 import { preActivateTakeExamRequest, setDate, setTime } from '../../actions/recruitment';
 import history from '../../history';
 
-const row = (item, { checkStatus, changeStatus, load, preActivateTakeExam, buttonLoad }) => (
-  <Table.Row key={item.rowId}>
+const row = (item, { checkStatus, changeStatus, load, preActivateTakeExam, buttonLoad, onClickGrade, modalWarningExIdList }) => (
+  <Table.Row key={item.citizenId}>
     <Table.Cell collapsing>{`${item.firstName}`}<br />
       {`${item.lastName}`}
     </Table.Cell>
@@ -30,7 +30,19 @@ const row = (item, { checkStatus, changeStatus, load, preActivateTakeExam, butto
         </Button>
       </Table.Cell>}
     {item.testStatus === 'Testing' && <Table.Cell style={{ color: 'grey' }}>Testing...</Table.Cell>}
-    {item.testStatus === 'Grading' && <Table.Cell><Button disabled={buttonLoad} loading={buttonLoad} fluid color="orange">Grade</Button></Table.Cell>}
+    {item.testStatus === 'Grading' &&
+      <Table.Cell>
+        <Button
+          onClick={() => (onClickGrade(item.rowId, modalWarningExIdList))}
+          disabled={buttonLoad}
+          loading={buttonLoad}
+          fluid
+          color="orange"
+        >
+          Grade
+        </Button>
+      </Table.Cell>
+    }
     {item.testStatus === 'Finish' && <Table.Cell><Icon name="check" color="green" /></Table.Cell>}
     {item.interviewDone === false ? <Table.Cell><Checkbox name="completeInterview" checked={checkStatus[item.rowId] === 'CompleteInterview'} onChange={() => changeStatus(item.rowId, 'CompleteInterview')} /></Table.Cell> : <Table.Cell><Icon name="check" color="green" /></Table.Cell>}
     <Table.Cell><Checkbox name="editInterview" checked={checkStatus[item.rowId] === 'Interview'} onChange={() => { changeStatus(item.rowId, 'Interview'); load(item.interviewDate, item.interviewTime); }} /></Table.Cell>
@@ -40,20 +52,25 @@ const row = (item, { checkStatus, changeStatus, load, preActivateTakeExam, butto
   </Table.Row>
 );
 
-const ApproveTable = ({ data, onSearchChange, sortKey, direction, handleSort, onConfirm, checkStatus, changeStatus, clearStatus, setApproveDate, setApproveTime, load, isUseDate, preActivateTakeExam, buttonLoad }) => {
-  // Get Now DATE
-  let today = new Date();
-  let dd = today.getDate();
-  let mm = today.getMonth() + 1;// January is 0!
-  const yyyy = today.getFullYear();
-  if (dd < 10) {
-    dd = '0'.concat(dd);
-  }
-  if (mm < 10) {
-    mm = '0'.concat(mm);
-  }
-  today = `${yyyy}-${mm}-${dd}`;
-  return (
+const ApproveTable = ({
+  data,
+  onSearchChange,
+  sortKey,
+  direction,
+  handleSort,
+  onConfirm,
+  checkStatus,
+  changeStatus,
+  clearStatus,
+  setApproveDate,
+  setApproveTime,
+  load,
+  isUseDate,
+  preActivateTakeExam,
+  buttonLoad,
+  onClickGrade,
+  today,
+  modalWarningExIdList, }) => (
     <div>
       <Input icon="search" placeholder="Search projects..." onChange={onSearchChange} />
       <div style={{ overflowX: 'auto' }}>
@@ -74,7 +91,7 @@ const ApproveTable = ({ data, onSearchChange, sortKey, direction, handleSort, on
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {data.map(item => row(item, { checkStatus, changeStatus, load, preActivateTakeExam, buttonLoad }))}
+            {data.map(item => row(item, { checkStatus, changeStatus, load, preActivateTakeExam, buttonLoad, onClickGrade, today, modalWarningExIdList }))}
           </Table.Body>
           <Table.Footer fullWidth>
             <Table.Row>
@@ -103,7 +120,6 @@ const ApproveTable = ({ data, onSearchChange, sortKey, direction, handleSort, on
       </div>
     </div>
   );
-};
 
 const mapStateToProps = state => ({
   date: state.recruitment.date,
@@ -140,6 +156,9 @@ ApproveTable.propTypes = {
   isUseDate: PropTypes.bool.isRequired,
   preActivateTakeExam: PropTypes.func.isRequired,
   buttonLoad: PropTypes.bool.isRequired,
+  onClickGrade: PropTypes.func.isRequired,
+  today: PropTypes.string.isRequired,
+  modalWarningExIdList: PropTypes.array.isRequired,
 };
 
 const enhance = compose(

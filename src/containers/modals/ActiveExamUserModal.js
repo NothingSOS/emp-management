@@ -75,8 +75,7 @@ class ActiveExamUserModal extends Component {
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {(this.props.data.examUser.latestActivatedTime === null)
-                ?
+              {(this.props.data.examUser.latestActivatedTime === null) ?
                 <Table.Row>
                   <Table.Cell>{this.props.data.examUser.id}</Table.Cell>
                   <Table.Cell>-</Table.Cell>

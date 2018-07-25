@@ -359,6 +359,12 @@ exports.updateTestStatus = (req, res, next) => {
     .catch(next);
 };
 
+exports.changeTestStatus = (req, res, next) => {
+  Applicant.changeTestStatus(req.query.id, req.query.regisDate, req.query.status)
+    .then()
+    .catch(next);
+};
+
 exports.getTestStatus = (req, res, next) => {
   Applicant.getTestStatus(req.body.rowId, /* req.body.registerDate */)
     .then((testStatus) => {
@@ -378,5 +384,22 @@ exports.changeInterviewDone = (req, res, next) => {
 exports.changeStatus = (req, res, next) => {
   Applicant.changeStatus(req.query.id, req.query.status)
     .then()
+    .catch(next);
+};
+
+exports.getExamDate = (req, res, next) => {
+  Applicant.getExamDate(req.query.citizenId)
+    .then((examDate) => {
+      res.json(examDate);
+    })
+    .catch(next);
+};
+
+exports.fetchGradingExam = (req, res, next) => {
+  Applicant.fetchGradingExam(req.query.rowId)
+    .then((exam) => {
+      console.log(exam);
+      res.json(exam);
+    })
     .catch(next);
 };
