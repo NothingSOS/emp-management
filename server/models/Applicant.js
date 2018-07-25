@@ -282,8 +282,8 @@ Applicant.changeInterviewDone = rowId => (
     .then(() => db.manyOrNone(`SELECT * FROM applicants`))
 );
 
-Applicant.changeStatus = (id, regisDate, status) => (
-  db.none('UPDATE applicants SET test_status = $3 WHERE citizen_id = $1 AND registration_date = $2', [id, regisDate, status])
+Applicant.changeStatus = (id, status) => (
+  db.none('UPDATE applicants SET test_status = $2 WHERE citizen_id = $1', [id, status])
 );
 
 module.exports = Applicant;

@@ -160,14 +160,14 @@ const mapDispatchToProps = dispatch => ({
           // case 'In Progress':
           //   break;
           case 'CompleteInterview':
-            console.log(key, typeof key);
+            // console.log(key, typeof key);
             const status = data.filter(row => row.rowId.toString() === key);
-            console.log('=======', status);
+            // console.log('=======', status);
             if (status[0].testStatus === 'Finish') {
               console.log('AAAAAAAA', status);
               // change status for In Progress
               // =================>> change interview done = true
-              dispatch(changeInterviewStatusRequest(10));
+              dispatch(changeInterviewStatusRequest(Number(key)));
               const form = {
                 rowId: key,
                 status: 'In Progress',
@@ -176,7 +176,7 @@ const mapDispatchToProps = dispatch => ({
               return true;
             }
             // =================>> change interview done = true
-            dispatch(changeInterviewStatusRequest(10));
+            dispatch(changeInterviewStatusRequest(Number(key)));
             return '';
           case 'Pass':
             addNote.interviewResult = addNote.note;

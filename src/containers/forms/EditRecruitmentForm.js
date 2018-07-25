@@ -29,36 +29,38 @@ const row = (item, { checkStatus, date, time, submitting, positions, selectPosit
     options.push(positionRow);
     return '';
   });
-  return (
-    <Table.Row key={item.rowId}>
-      <Table.Cell>{`${item.firstName} ${item.lastName}`}</Table.Cell>
-      {checkStatus[item.rowId] !== 'Exam' && checkStatus[item.rowId] !== 'Sign Contract' && <Table.Cell>{checkStatus[item.rowId]}</Table.Cell>}
-      {checkStatus[item.rowId] === 'Exam' && <Table.Cell>Approve</Table.Cell>}
-      {
-        (checkStatus[item.rowId] === 'Reject' ||
-          checkStatus[item.rowId] === 'Fail' ||
-          checkStatus[item.rowId] === 'Cancel' ||
-          checkStatus[item.rowId] === 'Blacklist' ||
-          checkStatus[item.rowId] === 'Pass')
-        &&
-        // <Table.Cell><input /></Table.Cell>
-        <Table.Cell>
-          {/* <Form onSubmit={handleSubmit}> */}
-          <Form.Group widths="equal">
-            <Field name={`note_${item.rowId}`} as={Form.Input} component={Input} label="" placeholder="Note(can not save with empty note)" disabled={submitting} />
-          </Form.Group>
-          {/* </Form> */}
-        </Table.Cell>
-      }
-      {(checkStatus[item.rowId] === 'Approve') && <Table.Cell>Interview & Exam Date : {date} ({time})</Table.Cell>}
-      {(checkStatus[item.rowId] === 'Interview') && <Table.Cell>Interview Date : {date} ({time})</Table.Cell>}
-      {(checkStatus[item.rowId] === 'Exam') && <Table.Cell>Exam Date : {date} ({time})</Table.Cell>}
-      {(checkStatus[item.rowId] === 'Sign Contract') && <Table.Cell>Sign Contract Date : {date} ({time})</Table.Cell>}
-      {(checkStatus[item.rowId] === 'Complete') && <Table.Cell>First Date : {date}</Table.Cell>}
-      {(checkStatus[item.rowId] === 'Sign Contract' && item.signedPosition !== null) && <Table.Cell><Dropdown placeholder="Please select a position." defaultValue={item.signedPosition} selectOnNavigation={false} selection options={options} onChange={(e, data) => selectPosition(data, item.rowId)} /></Table.Cell>}
-      {(checkStatus[item.rowId] === 'Sign Contract' && item.signedPosition === null) && <Table.Cell><Dropdown placeholder="Please select a position." selectOnNavigation={false} selection options={options} onChange={(e, data) => selectPosition(data, item.rowId)} /></Table.Cell>}
-    </Table.Row>
-  );
+  if (checkStatus[item.rowId] !== '') {
+    return (
+      <Table.Row key={item.rowId}>
+        <Table.Cell>{`${item.firstName} ${item.lastName}`}</Table.Cell>
+        {checkStatus[item.rowId] !== 'Exam' && checkStatus[item.rowId] !== 'Sign Contract' && <Table.Cell>{checkStatus[item.rowId]}</Table.Cell>}
+        {checkStatus[item.rowId] === 'Exam' && <Table.Cell>Approve</Table.Cell>}
+        {
+          (checkStatus[item.rowId] === 'Reject' ||
+            checkStatus[item.rowId] === 'Fail' ||
+            checkStatus[item.rowId] === 'Cancel' ||
+            checkStatus[item.rowId] === 'Blacklist' ||
+            checkStatus[item.rowId] === 'Pass')
+          &&
+          // <Table.Cell><input /></Table.Cell>
+          <Table.Cell>
+            {/* <Form onSubmit={handleSubmit}> */}
+            <Form.Group widths="equal">
+              <Field name={`note_${item.rowId}`} as={Form.Input} component={Input} label="" placeholder="Note(can not save with empty note)" disabled={submitting} />
+            </Form.Group>
+            {/* </Form> */}
+          </Table.Cell>
+        }
+        {(checkStatus[item.rowId] === 'Approve') && <Table.Cell>Interview & Exam Date : {date} ({time})</Table.Cell>}
+        {(checkStatus[item.rowId] === 'Interview') && <Table.Cell>Interview Date : {date} ({time})</Table.Cell>}
+        {(checkStatus[item.rowId] === 'Exam') && <Table.Cell>Exam Date : {date} ({time})</Table.Cell>}
+        {(checkStatus[item.rowId] === 'Sign Contract') && <Table.Cell>Sign Contract Date : {date} ({time})</Table.Cell>}
+        {(checkStatus[item.rowId] === 'Complete') && <Table.Cell>First Date : {date}</Table.Cell>}
+        {(checkStatus[item.rowId] === 'Sign Contract' && item.signedPosition !== null) && <Table.Cell><Dropdown placeholder="Please select a position." defaultValue={item.signedPosition} selectOnNavigation={false} selection options={options} onChange={(e, data) => selectPosition(data, item.rowId)} /></Table.Cell>}
+        {(checkStatus[item.rowId] === 'Sign Contract' && item.signedPosition === null) && <Table.Cell><Dropdown placeholder="Please select a position." selectOnNavigation={false} selection options={options} onChange={(e, data) => selectPosition(data, item.rowId)} /></Table.Cell>}
+      </Table.Row>
+    );
+  }
 };
 // const EditRecruitmentForm = ({ data, checkStatus, onConfirm, date, time }) => (
 const EditRecruitmentForm = ({ data, checkStatus, date, time, handleSubmit, submitting, positions, selectPosition }) => (

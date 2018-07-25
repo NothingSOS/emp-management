@@ -354,7 +354,7 @@ exports.activateExamUser = (req, res, next) => {
 };
 
 exports.updateTestStatus = (req, res, next) => {
-  Applicant.updateTestStatus(req.body.rowId, req.body.registerDate, req.body.testStatus)
+  Applicant.updateTestStatus(req.body.rowId, req.body.testStatus)
     .then(() => res.json('Update test status complete'))
     .catch(next);
 };
@@ -368,14 +368,15 @@ exports.getTestStatus = (req, res, next) => {
 };
 
 exports.changeInterviewDone = (req, res, next) => {
-  Applicant.changeInterviewDone(req.body.rowId)
+  console.log(req.body.applicant, typeof req.body.applicant);
+  Applicant.changeInterviewDone(req.body.applicant)
     .then((data) => {
       res.json(data);
     })
     .catch(next);
 };
 exports.changeStatus = (req, res, next) => {
-  Applicant.changeStatus(req.query.id, req.query.regisDate, req.query.status)
+  Applicant.changeStatus(req.query.id, req.query.status)
     .then()
     .catch(next);
 };

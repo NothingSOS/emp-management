@@ -270,8 +270,9 @@ export function* fetchTestStatusTask(action) {
 export function* changeInterviewStatus(action) {
   try {
     console.log(action.payload.rowId);
-    const recruitments = yield call(api.changeInterviewStatus, action.payload.rowId);
-    console.log(recruitments);
+    const recruitments = yield call(api.changeInterviewStatus, {
+      applicant: action.payload.rowId
+    });
     yield put(changeInterviewStatusResponse(recruitments));
   }
   catch (error) {
