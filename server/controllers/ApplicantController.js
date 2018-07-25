@@ -15,8 +15,8 @@ const transporter = nodemailer.createTransport(smtpTransport({
 exports.create = (req, res, next) => {
   const newApplicant = req.body;
   Applicant.create(newApplicant, req.user.rowId)
-    .then((createdApplicant) => {
-      res.json(createdApplicant);
+    .then((result) => {
+      res.json(result.rowId);
     })
     .catch(next);
 };
@@ -297,7 +297,7 @@ exports.updateInterviewResult = (req, res, next) => {
 };
 
 exports.findInfoById = (req, res, next) => {
-  Applicant.findInfoById(req.query.rowId)
+  Applicant.findInfoById(req.query.id)
     .then((applicantInfo) => {
       res.json(applicantInfo);
     })
@@ -305,7 +305,7 @@ exports.findInfoById = (req, res, next) => {
 };
 
 exports.findFileById = (req, res, next) => {
-  Applicant.findFileById(req.query.rowId)
+  Applicant.findFileById(req.query.id)
     .then((applicantInfo) => {
       res.json(applicantInfo);
     })
@@ -314,7 +314,7 @@ exports.findFileById = (req, res, next) => {
 
 exports.upload = (req, res, next) => {
   // console.log(req);
-  Applicant.upload(`/applicants-files/`, `${req.body.rowId}_${req.body.type}.pdf`, req.body.rowId)
+  Applicant.upload(`/applicants-files/`, `${req.body.rowId}_${req.body.type}.pdf`, req.body.citizenId, req.body.type, req.body.rowId)
     .then(() => {
       res.json('complete');
     })

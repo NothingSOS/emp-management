@@ -16,7 +16,7 @@ const row = item => (
     <Table.Cell collapsing>{`${item.mobileNumber}`}</Table.Cell>
     <Table.Cell>{`${item.blacklistDate}`}</Table.Cell>
     <Table.Cell>{`${item.note}`}</Table.Cell>
-    <Table.Cell><Button icon="list" size="mini" onClick={() => history.push(`/recruitment/${item.citizenId}`)} /></Table.Cell>
+    <Table.Cell><Button icon="list" size="mini" onClick={() => history.push(`/recruitment/${item.rowId}`)} /></Table.Cell>
     {/* <Table.Cell>{`${item.status}`}</Table.Cell> */}
   </Table.Row>
 );

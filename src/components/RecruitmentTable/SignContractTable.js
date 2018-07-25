@@ -18,7 +18,7 @@ const row = (item, { checkStatus, reject, changeStatus, load }) => (
     <Table.Cell>{`${item.signedPosition}`}</Table.Cell>
     <Table.Cell collapsing>{`${item.mobileNumber}`}</Table.Cell>
     <Table.Cell>{`${item.signDate} ${item.signTime}`}</Table.Cell>
-    <Table.Cell><Button icon="list" size="mini" onClick={() => history.push(`/recruitment/${item.citizenId}`)} /></Table.Cell>
+    <Table.Cell><Button icon="list" size="mini" onClick={() => history.push(`/recruitment/${item.rowId}`)} /></Table.Cell>
     <Table.Cell><Checkbox name="accept" checked={checkStatus[item.rowId] === 'Complete'} onChange={() => changeStatus(item.rowId, 'Complete')} /></Table.Cell>
     {reject && <Table.Cell><Checkbox name="reject" checked={checkStatus[item.rowId] === 'Cancel'} onChange={() => changeStatus(item.rowId, 'Cancel')} /></Table.Cell>}
     <Table.Cell><Checkbox name="edit" checked={checkStatus[item.rowId] === 'Sign Contract'} onChange={() => { changeStatus(item.rowId, 'Sign Contract'); load(item.signDate, item.signTime); }} /></Table.Cell>

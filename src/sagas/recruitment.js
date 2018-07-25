@@ -342,10 +342,10 @@ export function* fetchGradingTask(action) {
 
 export function* changeInterviewStatus(action) {
   try {
-    console.log('=-=-=-=-=-=-=');
     const recruitments = yield call(api.changeInterviewStatus, {
       applicant: action.payload.rowId
     });
+    console.log('===============', recruitments);
     yield put(changeInterviewStatusResponse(recruitments));
   }
   catch (error) {

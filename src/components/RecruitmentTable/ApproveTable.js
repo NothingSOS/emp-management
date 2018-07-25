@@ -9,14 +9,14 @@ import { preActivateTakeExamRequest, setDate, setTime } from '../../actions/recr
 import history from '../../history';
 
 const row = (item, { checkStatus, changeStatus, load, preActivateTakeExam, buttonLoad, onClickGrade, modalWarningExIdList }) => (
-  <Table.Row key={item.citizenId}>
+  <Table.Row key={item.rowId}>
     <Table.Cell collapsing>{`${item.firstName}`}<br />
       {`${item.lastName}`}
     </Table.Cell>
     <Table.Cell>{`${item.position.join('\n')}`}</Table.Cell>
     <Table.Cell>{`${item.interviewDate} ${item.interviewTime}`}</Table.Cell>
     <Table.Cell>{`${item.examDate} ${item.examTime}`}</Table.Cell>
-    <Table.Cell><Button icon="list" size="mini" onClick={() => history.push(`/recruitment/${item.citizenId}`)} /></Table.Cell>
+    <Table.Cell><Button icon="list" size="mini" onClick={() => history.push(`/recruitment/${item.rowId}`)} /></Table.Cell>
     {item.testStatus === 'NotTest' &&
       <Table.Cell>
         <Button

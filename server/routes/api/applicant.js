@@ -42,7 +42,7 @@ const storage = multer.diskStorage({
     cb(null, 'server/storage/public/applicants-files');
   },
   filename: (req, res, cb) => {
-    cb(null, `${req.body.citizenId}_${req.body.type}.pdf`);
+    cb(null, `${req.body.rowId}_${req.body.type}.pdf`);
   }
 });
 const upload = multer({ storage });

@@ -15,7 +15,7 @@ const Applicant = {};
 
 Applicant.create = applicant => (
   db.one(
-    'INSERT INTO applicants (first_name, last_name, position, mobile_number, email, first_name_th, last_name_th, citizen_id, status, registration_date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING 1',
+    'INSERT INTO applicants (first_name, last_name, position, mobile_number, email, first_name_th, last_name_th, citizen_id, status, registration_date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING row_id',
     [
       applicant.firstName,
       applicant.lastName,
@@ -29,6 +29,7 @@ Applicant.create = applicant => (
       applicant.registrationDate,
     ]
   )
+  // edit here
 );
 
 Applicant.findAll = () => (
@@ -200,8 +201,8 @@ Applicant.findFileById = rowId => (
   db.manyOrNone('SELECT * FROM applicants_files WHERE row_id = $1', [rowId])
 );
 
-Applicant.upload = (path, name, rowId, type) => (
-  db.none('INSERT INTO applicants_files (row_id, file_path, file_name, type) VALUES ($1, $2, $3, $4);', [rowId, path, name, type])
+Applicant.upload = (path, name, citizenId, type, rowId) => (
+  db.none('INSERT INTO applicants_files (citizen_id, file_path, file_name, type, row_id) VALUES ($1, $2, $3, $4,$5);', [citizenId, path, name, type, rowId])
 );
 
 Applicant.getPosition = () => (
