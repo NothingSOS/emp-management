@@ -248,7 +248,7 @@ const enhance = compose(
       // Check that date time is empty or not (validation)
       let applicantsStatus = Object.keys(checkStatus)
         .filter(key => checkStatus[key] === 'Complete' || checkStatus[key] === 'Approve'
-          || checkStatus[key] === 'Sign Contract' || checkStatus[key] === 'Exam');
+          || checkStatus[key] === 'Sign Contract' || checkStatus[key] === 'Exam' || checkStatus[key] === 'Interview');
       if (applicantsStatus.length > 0) {
         // Complete doesn't use time so filter non complete out
         applicantsStatus = Object.keys(checkStatus).filter(key => checkStatus[key] === 'Complete');
