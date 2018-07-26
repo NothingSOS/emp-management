@@ -34,11 +34,31 @@ import {
   setUpModalComplete,
   activateExamUserSuccess,
   fetchGradingFailure,
-  fetchGradingSuccess
-  // fetchTestStatusResponse,
-  // changeInterviewStatusResponse,
+  fetchGradingSuccess,
+  scoreStatusPushBack,
+  saveGradingListSuccess,
+  saveGradingListFailure,
+  saveGradingListRequest,
+  sendGradingListSuccess,
+  sendGradingListFailure,
+  fetchGradingRequest,
 } from '../actions/recruitment';
 import api from '../services/api';
+
+const invalidAnswer = answer => (
+  answer.includes(undefined)
+  || answer.includes('')
+  || answer.includes(null)
+  || answer.includes('UNKNOWN')
+);
+
+const shuffle = (a) => {
+  for (let i = a.length - 1; i >= 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+};
 
 const countTheCategory = (examList) => {
   const categoryList = [];
@@ -83,9 +103,44 @@ const addWarningExIdMemo = (set, exId) => {
 };
 
 const removeWarningExIdMemo = (set, exId) => {
-  console.log(set, '??');
   set.delete(exId);
   return set;
+};
+
+const setWarning = (list, id, [scoreWarning, fullScoreWarning], modalWarningExIdList) => {
+  console.log(list, id);
+  for (let i = 0; i < list.length; i += 1) {
+    if (list[i].exId === id) {
+      if (scoreWarning) list[i].scoreWarning = scoreWarning;
+      if (fullScoreWarning) list[i].fullScoreWarning = fullScoreWarning;
+      if (list[i].scoreWarning === ' ' && list[i].fullScoreWarning === ' ') {
+        modalWarningExIdList = addWarningExIdMemo(modalWarningExIdList, id);
+        list[i].status = 'Graded';
+      }
+      else {
+        modalWarningExIdList = removeWarningExIdMemo(modalWarningExIdList, id);
+        list[i].status = 'Wait for grading';
+      }
+    }
+  }
+  console.log(list, modalWarningExIdList);
+  return [list, modalWarningExIdList];
+};
+
+const matchStatusToWarning = (status) => {
+  const invalidInput = 'Please insert an non negative (1 decimal place or integer)';
+  const inputExceed = 'Score can\'t more than Fullscore';
+  const nonZero = 'Non-zero isn\'t allow for Scroll when Fullscore is zero';
+  const mapping = {
+    scoreValueError: [invalidInput, null],
+    fullScoreValueError: [null, invalidInput],
+    bothScoreValueError: [invalidInput, invalidInput],
+    scoreValueExceed: [inputExceed, inputExceed],
+    scoreWithNoFullScore: [nonZero, null],
+    OK: [' ', ' ']
+  };
+  console.log('Mapping Status:', mapping[status]);
+  return mapping[status] ? mapping[status] : [null, null];
 };
 
 export function* fetchRecruitmentTask() {
@@ -246,6 +301,7 @@ export function* preActivateTakeExamTask(action) {
     const examUser = yield call(api.getExamUser, {
       rowId: action.payload.person.rowId,
       testDate: action.payload.person.examDate,
+      citizenId: action.payload.person.citizenId,
     });
 
     let userStatus = 'new';
@@ -279,6 +335,7 @@ export function* activateExamUserTask(action) {
     const examUser = yield call(api.getExamUser, {
       rowId: action.payload.user.rowId,
       testDate: action.payload.user.testDate,
+      citizenId: action.payload.user.id,
     });
 
     let userStatus = 'new';
@@ -313,8 +370,8 @@ export function* fetchGradingTask(action) {
     console.log('after call api:', gradingExamList);
     let tempModalWarningExIdList = action.payload.modalWarningExIdList;
     for (let i = 0; i < gradingExamList.length; i += 1) {
-      const scoreWarning = gradingExamList[i].point[0] === 'UNKNOWN' ? '*requried' : gradingExamList[i].point[0];
-      const fullScoreWarning = gradingExamList[i].point[1] === 'UNKNOWN' ? '*requried' : gradingExamList[i].point[1];
+      const scoreWarning = gradingExamList[i].point[0] === 'UNKNOWN' ? '*requried' : ' ';
+      const fullScoreWarning = gradingExamList[i].point[1] === 'UNKNOWN' ? '*requried' : ' ';
       gradingExamList[i] = {
         ...gradingExamList[i],
         scoreWarning,
@@ -332,11 +389,126 @@ export function* fetchGradingTask(action) {
       object.examAmountPerCategory,
       object.examAmountPerSubCategory,
       tempModalWarningExIdList,
+      action.payload.rowId,
     ));
-    yield put(openModal(modalNames.GRADING_EXAM));
+    if (!action.payload.isSend) {
+      yield put(openModal(modalNames.GRADING_EXAM));
+    }
   }
   catch (error) {
     yield put(fetchGradingFailure(error));
+  }
+}
+export function* randomExamTask(action) {
+  try {
+    const EPRList = yield call(api.fetchEPRList, action.payload.rowId);
+    const rawExamList = yield call(api.fetchExamId);
+    const randomExIdList = [];
+    console.log('EPRList', EPRList);
+    console.log('rawExamList', rawExamList);
+    for (let i = 0; i < EPRList.length; i += 1) {
+      for (let j = 0; j < rawExamList.length; j += 1) {
+        if (rawExamList[j].category.toLowerCase() === EPRList[i].category.toLowerCase()
+          && rawExamList[j].subcategory.toLowerCase() === EPRList[i].subcategory.toLowerCase()
+          && rawExamList[j].type.toLowerCase() === EPRList[i].type.toLowerCase()) {
+          const idList = (shuffle(rawExamList[j].exIdList.slice())).slice(0, EPRList[i].requiredNumber);
+          const temp = Object.assign({}, rawExamList[j]);
+          temp.exIdList = idList.slice();
+          randomExIdList.push(temp);
+          break;
+        }
+      }
+    }
+    console.log('before upload', randomExIdList);
+    yield call(api.uploadRandomExIdList, action.payload.rowId, randomExIdList);
+    console.log('after that');
+  }
+  catch (error) {
+    console.log('random exam error:', error);
+  }
+}
+
+export function* gradingModalScoreHandleTask(action) {
+  try {
+    // action.payload: scoreStatus, exId, gradingList, modalWarningExIdList
+    yield console.log(action);
+    let tempModalWarningExIdList = action.payload.modalWarningExIdList;
+    let gradingExamList = action.payload.gradingList.slice();
+
+    [gradingExamList, tempModalWarningExIdList] = setWarning(gradingExamList, action.payload.exId, matchStatusToWarning([action.payload.scoreStatus]), tempModalWarningExIdList);
+
+    yield put(scoreStatusPushBack(gradingExamList, tempModalWarningExIdList));
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+export function* saveGradingTask(action) {
+  try {
+    const tempGradingList = action.payload.gradingList.slice();
+    let tempModalWarningExIdList = action.payload.modalWarningExIdList;
+    for (let i = 0; i < tempGradingList.length; i += 1) {
+      const tempPoint = tempGradingList[i].point;
+      if (tempPoint[0].substring(tempPoint[0].length - 1) === '.') {
+        tempPoint[0] = tempPoint[0].substring(0, tempPoint[0].length - 1);
+      }
+      if (tempPoint[1].substring(tempPoint[1].length - 1) === '.') {
+        tempPoint[1] = tempPoint[1].substring(0, tempPoint[1].length - 1);
+      }
+      if (!invalidAnswer(tempPoint)
+        && tempGradingList[i].scoreWarning === ' '
+        && tempGradingList[i].scoreWarning === ' ') {
+        tempGradingList[i] = {
+          ...tempGradingList[i],
+          point: tempPoint,
+          status: 'Graded',
+        };
+        tempModalWarningExIdList = removeWarningExIdMemo(tempModalWarningExIdList, tempGradingList[i].exId);
+      }
+      else {
+        tempGradingList[i] = {
+          ...tempGradingList[i],
+          status: 'Wait for Grading',
+        };
+        tempModalWarningExIdList = addWarningExIdMemo(tempModalWarningExIdList, tempGradingList[i].exId);
+      }
+    }
+    console.log('eiei', tempGradingList);
+    const uploadTemp = [];
+    for (let i = 0; i < tempGradingList.length; i += 1) {
+      if (tempGradingList[i].status === 'Graded') {
+        uploadTemp.push(tempGradingList[i]);
+      }
+      else {
+        tempModalWarningExIdList = addWarningExIdMemo(tempModalWarningExIdList, tempGradingList[i].exId);
+      }
+    }
+    yield call(api.uploadGradeProgress, uploadTemp);
+    console.log('????', action.payload.rowId, tempModalWarningExIdList, action.payload.id);
+    yield put(fetchGradingRequest(action.payload.rowId, tempModalWarningExIdList, action.payload.id, true));
+    yield put(saveGradingListSuccess());
+  }
+  catch (error) {
+    yield put(saveGradingListFailure(error));
+  }
+}
+
+export function* sendGradingTask(action) {
+  try {
+    console.log('send grading payload', action.payload);
+    yield put(saveGradingListRequest(action.payload.gradingList, action.payload.rowId, action.payload.modalWarningExIdList, action.payload.id, true));
+    if (action.payload.modalWarningExIdList.size < 1) {
+      yield call(api.changeTestStatus, action.payload.rowId.toString(), 'Finish');
+      yield put(sendGradingListSuccess());
+    }
+    else {
+      console.log('adlkadadkladlknadskljsdalk', action.payload.modalWarningExIdList);
+      yield put(sendGradingListFailure('there is un-graded'));
+    }
+  }
+  catch (error) {
+    yield put(sendGradingListFailure(error));
   }
 }
 
@@ -404,13 +576,21 @@ export function* watchFetchGradingRequest() {
   yield takeEvery(actionTypes.RECRUITMENT_GRADING_FETCH_REQUEST, fetchGradingTask);
 }
 
-// export function* watchFetchTestStatusRequest() {
-//   yield takeEvery(actionTypes.RECRUITMENT_FETCH_TEST_STATUS_REQUEST, fetchTestStatusTask);
-// }
+export function* watchSaveGradingRequest() {
+  yield takeEvery(actionTypes.GRADING_MODAL_SAVE_REQUEST, saveGradingTask);
+}
 
-// export function* watchChangeStatus() {
-//   yield takeEvery(actionTypes.CHANGE_INTERVIEW_STATUS_REQUEST, changeInterviewStatus);
-// }
+export function* watchSendGradingRequest() {
+  yield takeEvery(actionTypes.GRADING_MODAL_SEND_REQUEST, sendGradingTask);
+}
+
+export function* watchRandomExamRequest() {
+  yield takeEvery(actionTypes.RECRUITMENT_RANDOM_EXAM, randomExamTask);
+}
+
+export function* watchGradingModalScoreHanldeRequest() {
+  yield takeEvery(actionTypes.GRADING_MODAL_SCORE_HANDLE, gradingModalScoreHandleTask);
+}
 
 export default function* recruitmentSaga() {
   yield all([
@@ -430,7 +610,9 @@ export default function* recruitmentSaga() {
     watchPreActivateTakeExamRequest(),
     watchActivateExamUserRequest(),
     watchFetchGradingRequest(),
-    // watchFetchTestStatusRequest(),
-    // watchChangeStatus(),
+    watchRandomExamRequest(),
+    watchGradingModalScoreHanldeRequest(),
+    watchSaveGradingRequest(),
+    watchSendGradingRequest(),
   ]);
 }

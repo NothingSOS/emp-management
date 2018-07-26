@@ -87,8 +87,8 @@ const mapDispatchToProps = dispatch => ({
   onScoreChange: (e, exId) => dispatch(onScoreModalChange(e.target.value, exId)),
   onFullScoreChange: (e, exId) => dispatch(onFullScoreModalChange(e.target.value, exId)),
   onClose: () => dispatch(closeModal()),
-  onClickSave: (gradingList, modalWarningExIdList) => dispatch(saveGradingListRequest(gradingList, modalWarningExIdList)),
-  onClickSend: (gradingList, modalWarningExIdList) => dispatch(sendGradingListRequest(gradingList, modalWarningExIdList)),
+  onClickSave: (gradingList, rowId, modalWarningExIdList, id) => dispatch(saveGradingListRequest(gradingList, rowId, modalWarningExIdList, id)),
+  onClickSend: (gradingList, rowId, modalWarningExIdList, id) => dispatch(sendGradingListRequest(gradingList, rowId, modalWarningExIdList, id)),
   updateScoreStatus: (scoreStatus, exId, gradingList, modalWarningExIdList) => dispatch(scoreStatusHandle(scoreStatus, exId, gradingList, modalWarningExIdList)),
 });
 

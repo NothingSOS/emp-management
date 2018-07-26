@@ -8,10 +8,11 @@ export const fetchTakeExamRequest = id => ({
   }
 });
 
-export const fetchTakeExamSuccess = (examList, startTime) => ({
+export const fetchTakeExamSuccess = (examList, rowId, startTime) => ({
   type: actionTypes.TAKE_EXAM_FETCH_SUCCESS,
   payload: {
     examList,
+    rowId,
     startTime,
   }
 });
@@ -80,19 +81,16 @@ export const onInputTextAreaAnswer = (text, currentActivePage, exId) => ({
   },
 });
 
-export const uploadAnswerListRequest = (id, answerList, isLogoutRequest, isEndExam, testDate) => {
-  console.log('ACTION', testDate);
-  return {
-    type: actionTypes.TAKE_EXAM_UPLOAD_REQUEST,
-    payload: {
-      id,
-      answerList,
-      isLogoutRequest,
-      isEndExam,
-      testDate,
-    }
-  };
-};
+export const uploadAnswerListRequest = (rowId, answerList, isLogoutRequest, isEndExam, id) => ({
+  type: actionTypes.TAKE_EXAM_UPLOAD_REQUEST,
+  payload: {
+    rowId,
+    answerList,
+    isLogoutRequest,
+    isEndExam,
+    id,
+  }
+});
 
 export const uploadAnswerListSuccess = progress => ({
   type: actionTypes.TAKE_EXAM_UPLOAD_SUCCESS,

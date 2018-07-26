@@ -78,7 +78,7 @@ const TakeExam = ({
   saveStatus,
   startTime,
   onClickLogout,
-  today, }) =>
+  rowId, }) =>
   (
     <div>
       <br />
@@ -116,7 +116,7 @@ const TakeExam = ({
                                 </h1>
                               </Grid.Column>
                               <Grid.Column width={6} style={{ textAlign: 'right' }}>
-                                {(startTime) ? <TakeExamTimer startTime={startTime} id={id} answerList={answerList} /> : <div>&nbsp;</div>}
+                                {(startTime) ? <TakeExamTimer startTime={startTime} rowId={rowId} id={id} answerList={answerList} /> : <div>&nbsp;</div>}
                               </Grid.Column>
                             </Grid.Row>
                           </Grid>
@@ -193,15 +193,15 @@ const TakeExam = ({
                 </Grid.Column>
               </Grid>
               <Segment>
-                <Button icon labelPosition="left" primary onClick={() => onClickSave(id, answerList, today)}>
+                <Button icon labelPosition="left" primary onClick={() => onClickSave(rowId, answerList, id)}>
                   <Icon name="save" />
                   Save
                 </Button>
-                <Button icon labelPosition="left" secondary onClick={() => onClickSubmit(id, answerList, today)}>
+                <Button icon labelPosition="left" secondary onClick={() => onClickSubmit(rowId, answerList, id)}>
                   <Icon name="send" />
                   Submit
                 </Button>
-                <Button floated="right" icon labelPosition="left" negative onClick={() => onClickLogout(id, answerList, today)}>
+                <Button floated="right" icon labelPosition="left" negative onClick={() => onClickLogout(rowId, answerList, id)}>
                   <Icon name="sign out" />
                   Log out
                 </Button>
@@ -233,7 +233,7 @@ TakeExam.propTypes = {
   saveStatus: PropTypes.string.isRequired,
   startTime: PropTypes.instanceOf(moment).isRequired,
   onClickLogout: PropTypes.func.isRequired,
-  today: PropTypes.string.isRequired,
+  rowId: PropTypes.string.isRequired,
 };
 
 export default TakeExam;

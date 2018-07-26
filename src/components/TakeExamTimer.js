@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { uploadAnswerListRequest } from '../actions/takeExam';
 import '../styles/TakeExamTimerStyle.css';
 
@@ -18,7 +19,6 @@ class TakeExamTimer extends Component {
   constructor(props) {
     super(props);
     this.state = { timer: 'xx:xx:xx', timerStatus: 'normal' };
-
     this.endTime = this.props.startTime.clone().add({ hours: 2, seconds: 1 });
     this.countDown = this.countDown.bind(this);
     this.intervalVar = setInterval(this.countDown, 1000);
@@ -40,9 +40,8 @@ class TakeExamTimer extends Component {
     else if (this.endTime.diff(current, 'seconds') <= 600) {
       status = 'warning';
     }
-
     if (this.endTime.diff(current, 'seconds') <= -1800) {
-      this.props.submit(this.props.id, this.props.answerList);
+      this.props.submit(this.props.rowId, this.props.answerList, this.props.id);
       clearInterval(this.intervalVar);
     }
 
@@ -56,8 +55,16 @@ class TakeExamTimer extends Component {
   }
 }
 
+TakeExamTimer.propTypes = {
+  rowId: PropTypes.string.isRequired,
+  answerList: PropTypes.array.isRequired,
+  id: PropTypes.string.isRequired,
+  submit: PropTypes.func.isRequired,
+  startTime: PropTypes.instanceOf(moment).isRequired,
+};
+
 const mapDispatchToProps = dispatch => ({
-  submit: (id, answerList) => dispatch(uploadAnswerListRequest(id, answerList, false, true)),
+  submit: (rowId, answerList, id) => dispatch(uploadAnswerListRequest(rowId, answerList, false, true, id)),
 });
 
 export default connect(null, mapDispatchToProps)(TakeExamTimer);

@@ -112,7 +112,7 @@ const mapDispatchToProps = dispatch => ({
   changedStatus: (key, status) => dispatch(changeStatus(key, status)),
   clearedStatus: () => dispatch(clearStatus()),
   // 456 : onClickActivate function
-  onClickGrade: (id, modalWarningExIdList) => dispatch(fetchGradingRequest(id, modalWarningExIdList)),
+  onClickGrade: (rowId, modalWarningExIdList, id) => dispatch(fetchGradingRequest(rowId, modalWarningExIdList, id, false)),
 });
 
 const enhance = compose(

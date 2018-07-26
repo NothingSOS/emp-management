@@ -377,13 +377,41 @@ api.getExamDate = citizenId => (
   callApi(`/api/applicants/getExamDate/?citizenId=${citizenId}`)
 );
 
+api.getRecruitmentRowId = (id, testDate) => (
+  callApi(`/api/applicants/getRowId`, {
+    method: 'POST',
+    body: {
+      id,
+      testDate,
+    }
+  })
+);
+
 // Recruitment : Grading
 
 api.fetchGradingExam = rowId => (
   callApi(`/api/applicants/fetchGradingExam/?rowId=${rowId}`)
 );
 
-// vvvvvvvvvv Exam api (Need to clear unused api) vvvvvvvvvv
+api.uploadRandomExIdList = (rowId, randomExIdList) => (
+  callApi(`/api/applicants/uploadRandomExIdList/`, {
+    method: 'POST',
+    body: {
+      rowId,
+      randomExIdList,
+    }
+  })
+);
+
+
+api.uploadGradeProgress = gradingList => (
+  callApi(`/api/applicants/uploadGradeProgress`, {
+    method: 'POST',
+    body: {
+      gradingList,
+    }
+  })
+);
 
 // Recruitment
 
@@ -415,9 +443,17 @@ api.changeInterviewStatus = body => (
   })
 );
 
+api.fetchEPRList = id => (
+  callApi(`/api/applicants/fetchEPRList/?id=${id}`)
+);
+
+api.fetchExamId = () => (
+  callApi(`/api/applicants/fetchExamId`)
+);
+
 // become row id
-api.changeTestStatus = (id, regisDate, status) => (
-  callApi(`/api/applicants/changeTestStatus/?id=${id}&regisDate=${regisDate}&status=${status}`)
+api.changeTestStatus = (rowId, status) => (
+  callApi(`/api/applicants/changeTestStatus/?rowId=${rowId}&status=${status}`)
 );
 
 // Exam
@@ -495,20 +531,11 @@ api.sendMailFinishExam = (id, currentTime, needCheck) => (
   })
 );
 
-api.fetchEPRList = id => (
-  callApi(`/api/takeExam/fetchEPRList/?id=${id}`)
-);
-
-api.fetchExamId = () => (
-  callApi(`/api/takeExam/fetchExamId`)
-);
-
-api.fetchRandomExIdList = (id, testDate) => (
+api.fetchRandomExIdList = rowId => (
   callApi(`/api/takeExam/fetchRandomExIdList/`, {
     method: 'POST',
     body: {
-      id,
-      testDate,
+      rowId,
     }
   })
 );
@@ -522,10 +549,11 @@ api.fetchExamSpecifyId = idList => (
   })
 );
 
-api.checkProgress = (id, testDate, startTime, answerList) => (
+api.checkProgress = (rowId, id, testDate, startTime, answerList) => (
   callApi(`/api/takeExam/checkProgress/`, {
     method: 'POST',
     body: {
+      rowId,
       id,
       testDate,
       startTime,
@@ -534,41 +562,49 @@ api.checkProgress = (id, testDate, startTime, answerList) => (
   })
 );
 
-api.uploadAnswer = (id, answerList, testDate) => {
-  console.log(testDate);
-  return callApi(`/api/takeExam/uploadAnswer/`, {
+api.uploadAnswer = (rowId, answerList, id, testDate) => (
+  callApi(`/api/takeExam/uploadAnswer/`, {
     method: 'POST',
     body: {
-      id,
+      rowId,
       answerList,
-      testDate,
-    }
-  });
-};
-
-api.updateSubmittedTime = (id, time, testDate) => (
-  callApi(`/api/takeExam/updateSubmittedTime`, {
-    method: 'POST',
-    body: {
       id,
-      time,
       testDate,
     }
   })
 );
 
-api.deActivate = (id, status) => (
+api.updateSubmittedTime = (rowId, time) => (
+  callApi(`/api/takeExam/updateSubmittedTime`, {
+    method: 'POST',
+    body: {
+      rowId,
+      time,
+    }
+  })
+);
+
+api.deActivate = (rowId, status) => (
   callApi(`/api/takeExam/deActivate`, {
     method: 'POST',
     body: {
-      id,
+      rowId,
       status,
     }
   })
 );
 
-api.grading = (id, testDate) => (
-  callApi(`/api/takeExam/grading/`, {
+api.grading = rowId => (
+  callApi(`/api/takeExam/grading`, {
+    method: 'POST',
+    body: {
+      rowId,
+    }
+  })
+);
+
+api.getRowId = (id, testDate) => (
+  callApi(`/api/takeExam/getRowId`, {
     method: 'POST',
     body: {
       id,

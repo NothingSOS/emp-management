@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Modal as SUIModal, Table, Button, Dropdown, Input } from 'semantic-ui-react';
 import moment from 'moment';
+import { compose } from 'recompose';
 import { closeModal } from '../../actions/modal';
-import { activateExamUserRequest } from '../../actions/recruitment';
+import { activateExamUserRequest, randomExam } from '../../actions/recruitment';
 
 const timeOptions = [
   { text: 'Minute(s)', value: 'Minute(s)' },
@@ -30,7 +31,7 @@ class ActiveExamUserModal extends Component {
 
     if (errorList.every(val => val === 'noError')) {
       this.setState({ error: ['noError', 'noError'] }, () => {
-        this.props.activateExamUser(this.props.data.examUser, this.state.timeLength, this.state.unitTime, this.props.data.applicantData.registrationDate);
+        this.props.activateExamUser(this.props.data.examUser, this.state.timeLength, this.state.unitTime, this.props.data.applicantData.registrationDate, this.props.data.examUser.id);
       });
     }
     else {
@@ -142,7 +143,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onClose: () => dispatch(closeModal()),
-  activateExamUser: (user, timeLength, timeUnit, registerDate) => dispatch(activateExamUserRequest(user, timeLength, timeUnit, registerDate)),
+  activateExamUser: (user, timeLength, timeUnit, registerDate, citizenId) => compose(
+    dispatch(activateExamUserRequest(user, timeLength, timeUnit, registerDate, citizenId)),
+    dispatch(randomExam(user.rowId)),
+  ),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActiveExamUserModal);

@@ -208,12 +208,12 @@ Applicant.getPosition = () => (
   db.manyOrNone('SELECT name FROM positions WHERE status = $1', ['Active'])
 );
 
-Applicant.getExamUser = (id, testDate) => (
+Applicant.getExamUser = (rowId, testDate, citizenId) => (
   db.none(
     'INSERT INTO exam_users (id, test_date, latest_activated_time, activation_lifetimes, agreement_status) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (id, test_date) DO NOTHING'
-    , [id, testDate, null, 0, 'NotRead']
+    , [citizenId, testDate, null, 0, 'NotRead']
   )
-    .then(() => db.one('SELECT * FROM exam_users WHERE id = $1 AND test_date = $2', [id, testDate]))
+    .then(() => db.one('SELECT * FROM exam_users WHERE row_id = $1', [rowId]))
 );
 
 // (find required number of each exam).then((get exam id for each required category).then(get random examId and update exam_users table))
@@ -281,12 +281,12 @@ Applicant.changeInterviewDone = rowId => (
     .then(() => db.manyOrNone(`SELECT * FROM applicants`))
 );
 
-Applicant.changeTestStatus = (id, regisDate, status) => (
-  db.none('UPDATE applicants SET test_status = $3 WHERE citizen_id = $1 AND registration_date = $2', [id, regisDate, status])
+Applicant.changeTestStatus = (rowId, status) => (
+  db.none('UPDATE applicants SET test_status = $2 WHERE row_id = $1', [rowId, status])
 );
 
 Applicant.getExamDate = citizenId => (
-  db.oneOrNone('SELECT exam_date FROM applicants WHERE citizen_id = $1', citizenId)
+  db.oneOrNone('SELECT exam_date FROM applicants WHERE citizen_id = $1', [citizenId])
 );
 
 // Recruitment : View Result part
@@ -315,6 +315,64 @@ Applicant.fetchGradingExam = rowId => (
     + ' AND exam_result.row_id = $1',
     [rowId]
   )
+);
+
+Applicant.fetchEPRList = id => (
+  db.manyOrNone('SELECT'
+  + ' epr_ex_category as category'
+  + ', epr_ex_subcategory as subcategory'
+  + ', epr_ex_type as type'
+  + ', epr_requirednumber as required_number'
+  + ' FROM applicants a'
+  + ' JOIN exams_position_required epr'
+  + ' ON epr.epr_position = ANY( a.position )'
+  + ' WHERE a.row_id = $1', [id])
+);
+
+Applicant.fetchExamId = () => (
+  db.manyOrNone('SELECT'
+    + ' ex_category as category'
+    + ', ex_subcategory as subcategory'
+    + ', ex_type as type'
+    + ', ARRAY_AGG( ex_id ) as ex_id_list'
+    + ' FROM exams'
+    + ' GROUP BY ex_category, ex_subcategory, ex_type'
+    + ' ORDER BY ex_category, ex_subcategory, ex_type')
+);
+
+Applicant.uploadRandomExIdList = (randomExIdList, rowId) => (
+  db.none('UPDATE exam_users SET random_ex_id_list = $1 WHERE row_id = $2', [randomExIdList, rowId])
+);
+
+Applicant.uploadGradeProgress = gradingList => (
+  db.tx((t) => {
+    const queryList = [];
+    Object(gradingList).map((eachOne) => {
+      const query = t.oneOrNone(
+        'UPDATE exam_result SET'
+        + ' status = $4,'
+        + ' point = $5,'
+        + ' comment = $6'
+        + ' WHERE cd_id = $1'
+        + ' AND ex_id = $2'
+        + ' AND test_date = $3',
+        [
+          eachOne.cdId,
+          eachOne.exId,
+          eachOne.testDate,
+          eachOne.status,
+          eachOne.point,
+          eachOne.comment,
+        ]
+      );
+      queryList.push(query);
+    });
+    return t.batch(queryList);
+  })
+);
+
+Applicant.getRowId = (id, testDate) => (
+  db.oneOrNone('SELECT row_id FROM applicants WHERE citizen_id = $1 AND exam_date = $2', [id, testDate])
 );
 
 module.exports = Applicant;

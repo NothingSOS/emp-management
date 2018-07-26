@@ -301,6 +301,7 @@ const Recruitment = (state = initialState, action) => {
         modalCategoryList: action.payload.examAmountPerCategory,
         modalSubCategoryList: action.payload.examAmountPerSubCategory,
         modalWarningExIdList: action.payload.modalWarningExIdList,
+        rowId: action.payload.rowId,
       };
     case actionTypes.GRADING_MODAL_PAGINATION_CHANGE:
       return {
@@ -395,12 +396,12 @@ const Recruitment = (state = initialState, action) => {
         ...state,
         isModalFetching: false,
       };
-    case actionTypes.GRADING_MODAL_SCROLL_HANDLE:
+    case actionTypes.GRADING_MODAL_SCORE_HANDLE:
       return {
         ...state,
         // nothing to update to state yet
       };
-    case actionTypes.GRADING_MODAL_SCROLL_PUSHBACK:
+    case actionTypes.GRADING_MODAL_SCORE_PUSHBACK:
       return {
         ...state,
         gradingList: action.payload.gradingList,
@@ -419,6 +420,10 @@ const Recruitment = (state = initialState, action) => {
       return {
         ...state,
         data: action.payload.data,
+      };
+    case actionTypes.RECRUITMENT_RANDOM_EXAM:
+      return {
+        ...state,
       };
     default:
       return state;

@@ -23,7 +23,7 @@ const row = (item, { checkStatus, changeStatus }) => {
       <Table.Cell collapsing>{`${item.firstNameTh}
     ${item.lastNameTh}`}
       </Table.Cell>
-      <Table.Cell>{`${item.position.join('/\n')}`}</Table.Cell>
+      <Table.Cell>{item.position && `${item.position.join('/\n')}`}</Table.Cell>
       <Table.Cell>{`${item.email}`}</Table.Cell>
       <Table.Cell collapsing>{`${item.mobileNumber}`}</Table.Cell>
       <Table.Cell>{`${item.citizenId}`}</Table.Cell>

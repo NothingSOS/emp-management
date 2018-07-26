@@ -24,9 +24,9 @@ const ExamUser = {};
 //   })
 // );
 
-ExamUser.findById = id => {
-  return db.oneOrNone('SELECT * FROM exam_users WHERE id = $1 AND test_date = $2', [id, moment().format('YYYY-MM-DD')]);
-};
+ExamUser.findById = id => (
+  db.oneOrNone('SELECT * FROM exam_users WHERE id = $1 AND test_date = $2', [id, moment().format('YYYY-MM-DD')])
+);
 
 // User.findAll = () => (
 // db.manyOrNone('SELECT users.id, employee_info.first_name, employee_info.last_name, employee_info.nick_name,

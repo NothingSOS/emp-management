@@ -354,6 +354,13 @@ export const preActivateTakeExamRequest = person => ({
   }
 });
 
+export const randomExam = rowId => ({
+  type: actionTypes.RECRUITMENT_RANDOM_EXAM,
+  payload: {
+    rowId,
+  }
+});
+
 export const setUpModal = () => ({
   type: actionTypes.RECRUITMENT_SET_UP_MODAL
 });
@@ -382,17 +389,18 @@ export const activateExamUserSuccess = data => ({
   }
 });
 
-<<<<<<< HEAD
-export const fetchGradingRequest = (rowId, modalWarningExIdList) => ({
+export const fetchGradingRequest = (rowId, modalWarningExIdList, id, isSend) => ({
   type: actionTypes.RECRUITMENT_GRADING_FETCH_REQUEST,
   payload: {
     rowId,
     modalWarningExIdList,
+    id,
+    isSend,
   }
 }
 );
 
-export const fetchGradingSuccess = (gradingList, gradingId, examAmountPerCategory, examAmountPerSubCategory, modalWarningExIdList) => ({
+export const fetchGradingSuccess = (gradingList, gradingId, examAmountPerCategory, examAmountPerSubCategory, modalWarningExIdList, rowId) => ({
   type: actionTypes.RECRUITMENT_GRADING_FETCH_SUCCESS,
   payload: {
     gradingList,
@@ -400,6 +408,7 @@ export const fetchGradingSuccess = (gradingList, gradingId, examAmountPerCategor
     examAmountPerCategory,
     examAmountPerSubCategory,
     modalWarningExIdList,
+    rowId,
   }
 });
 
@@ -462,11 +471,14 @@ export const onFullScoreModalChange = (value, exId) => ({
   }
 });
 
-export const saveGradingListRequest = (gradingList, modalWarningExIdList) => ({
+export const saveGradingListRequest = (gradingList, rowId, modalWarningExIdList, id, isSend) => ({
   type: actionTypes.GRADING_MODAL_SAVE_REQUEST,
   payload: {
     gradingList,
+    rowId,
     modalWarningExIdList,
+    id,
+    isSend,
   }
 });
 
@@ -483,10 +495,13 @@ export const saveGradingListSuccess = () => ({
   }
 });
 
-export const sendGradingListRequest = gradingList => ({
+export const sendGradingListRequest = (gradingList, rowId, modalWarningExIdList, id) => ({
   type: actionTypes.GRADING_MODAL_SEND_REQUEST,
   payload: {
     gradingList,
+    rowId,
+    modalWarningExIdList,
+    id,
   }
 });
 
@@ -504,7 +519,7 @@ export const sendGradingListSuccess = () => ({
 });
 
 export const scoreStatusHandle = (scoreStatus, exId, gradingList, modalWarningExIdList) => ({
-  type: actionTypes.GRADING_MODAL_SCROLL_HANDLE,
+  type: actionTypes.GRADING_MODAL_SCORE_HANDLE,
   payload: {
     scoreStatus,
     exId,
@@ -514,13 +529,12 @@ export const scoreStatusHandle = (scoreStatus, exId, gradingList, modalWarningEx
 });
 
 export const scoreStatusPushBack = (gradingList, modalWarningExIdList) => ({
-  type: actionTypes.GRADING_MODAL_SCROLL_PUSHBACK,
+  type: actionTypes.GRADING_MODAL_SCORE_PUSHBACK,
   payload: {
     gradingList,
     modalWarningExIdList,
   }
 });
-=======
 export const fetchTestStatusResponse = testStatus => ({
   type: actionTypes.RECRUITMENT_FETCH_TEST_STATUS_RESPONSE,
   payload: {
@@ -548,5 +562,3 @@ export const changeInterviewStatusResponse = data => ({
     data,
   }
 });
-
->>>>>>> 2c38d6d26cb1523fe2b486238a8deca13ff93af9

@@ -330,7 +330,7 @@ exports.getPosition = (req, res, next) => {
 };
 
 exports.getExamUser = (req, res, next) => {
-  Applicant.getExamUser(req.body.rowId, req.body.testDate)
+  Applicant.getExamUser(req.body.rowId.toString(), req.body.testDate, req.body.citizenId)
     .then((user) => {
       res.json(user);
     })
@@ -338,7 +338,7 @@ exports.getExamUser = (req, res, next) => {
 };
 
 exports.activateExamUser = (req, res, next) => {
-  let lifetime = parseInt(req.body.timeLength);
+  let lifetime = parseInt(req.body.timeLength, 10);
   if (req.body.timeUnit === 'Hour(s)') {
     lifetime *= 60;
   }
@@ -360,8 +360,10 @@ exports.updateTestStatus = (req, res, next) => {
 };
 
 exports.changeTestStatus = (req, res, next) => {
-  Applicant.changeTestStatus(req.query.id, req.query.regisDate, req.query.status)
-    .then()
+  Applicant.changeTestStatus(req.query.rowId, req.query.status)
+    .then(() => {
+      res.json('complete123');
+    })
     .catch(next);
 };
 
@@ -380,6 +382,7 @@ exports.changeInterviewDone = (req, res, next) => {
     })
     .catch(next);
 };
+
 exports.changeStatus = (req, res, next) => {
   Applicant.changeStatus(req.query.id, req.query.regisDate, req.query.status)
     .then()
@@ -399,6 +402,52 @@ exports.fetchGradingExam = (req, res, next) => {
     .then((exam) => {
       console.log(exam);
       res.json(exam);
+    })
+    .catch(next);
+};
+
+exports.fetchEPRList = (req, res, next) => {
+  console.log(req.query.id);
+  Applicant.fetchEPRList(req.query.id)
+    .then((EPRList) => {
+      console.log(EPRList);
+      res.json(EPRList);
+    })
+    .catch(next);
+};
+
+exports.fetchExamId = (req, res, next) => {
+  Applicant.fetchExamId()
+    .then((ExamIdObject) => {
+      res.json(ExamIdObject);
+    })
+    .catch(next);
+};
+
+exports.uploadRandomExIdList = (req, res, next) => {
+  const randomExIdList = [];
+  Object(req.body.randomExIdList).map(item => (
+    item.exIdList.map(sublist => (randomExIdList.push(sublist)))
+  ));
+  Applicant.uploadRandomExIdList(randomExIdList, req.body.rowId)
+    .then()
+    .catch(next);
+};
+
+exports.uploadGradeProgress = (req, res, next) => {
+  console.log(req.body.gradingList);
+  Applicant.uploadGradeProgress(req.body.gradingList)
+    .then((message) => {
+      res.json(message);
+    })
+    .catch(next);
+};
+
+exports.getRowId = (req, res, next) => {
+  Applicant.getRowId(req.body.id, req.body.testDate)
+    .then((rowId) => {
+      console.log(req.body, rowId);
+      res.json(rowId);
     })
     .catch(next);
 };

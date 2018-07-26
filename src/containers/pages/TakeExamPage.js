@@ -36,7 +36,7 @@ const TakeExamPage = ({
   startTime,
   onClickLogout,
   agreementStatus,
-  today, }) =>
+  rowId, }) =>
   ((agreementStatus === 'NotRead')
     ? <Redirect
       to={{
@@ -58,13 +58,13 @@ const TakeExamPage = ({
           onInputTextArea={onInputTextArea}
           onClickSave={onClickSave}
           onClickSubmit={onClickSubmit}
+          rowId={rowId}
           id={id}
           onClickCategory={onClickCategory}
           categoryList={categoryList}
           saveStatus={saveStatus}
           startTime={startTime}
           onClickLogout={onClickLogout}
-          today={today}
         />
       </div>)
   );
@@ -89,7 +89,7 @@ TakeExamPage.propTypes = {
   startTime: PropTypes.instanceOf(moment).isRequired,
   onClickLogout: PropTypes.func.isRequired,
   agreementStatus: PropTypes.string.isRequired,
-  today: PropTypes.string.isRequired,
+  rowId: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -105,7 +105,7 @@ const mapStateToProps = state => ({
   saveStatus: state.takeExam.saveStatus,
   startTime: state.takeExam.startTime,
   agreementStatus: state.examAuth.agreementStatus,
-  today: state.takeExam.today,
+  rowId: state.takeExam.rowId,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -115,9 +115,9 @@ const mapDispatchToProps = dispatch => ({
   onClickCheckbox: (choice, currentActivePage, pickedAnswer, exId) => dispatch(onPickCheckboxAnswer(choice, currentActivePage, pickedAnswer, exId)),
   onInputTextArea: (text, currentActivePage, exId) => dispatch(onInputTextAreaAnswer(text, currentActivePage, exId)),
   onClickCategory: category => dispatch(categoryChange(category)),
-  onClickSave: (id, answerList, today) => { console.log('>>>', today); dispatch(uploadAnswerListRequest(id, answerList, false, false, today)); },
-  onClickSubmit: (id, answerList, today) => dispatch(uploadAnswerListRequest(id, answerList, false, true, today)),
-  onClickLogout: (id, answerList, today) => dispatch(uploadAnswerListRequest(id, answerList, true, false, today)),
+  onClickSave: (rowId, answerList, id) => dispatch(uploadAnswerListRequest(rowId, answerList, false, false, id)),
+  onClickSubmit: (rowId, answerList, id) => dispatch(uploadAnswerListRequest(rowId, answerList, false, true, id)),
+  onClickLogout: (rowId, answerList, id) => dispatch(uploadAnswerListRequest(rowId, answerList, true, false, id)),
 });
 
 const enhance = compose(

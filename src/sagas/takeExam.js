@@ -56,10 +56,13 @@ const countTheCategory = (examList) => {
 export function* fetchTestExamTask(action) {
   try {
     const startTime = moment();
-
-    const randomExIdList = yield call(api.fetchRandomExIdList, action.payload.id, startTime.format('YYYY-MM-DD'));
+    console.log(action.payload);
+    const returnObject = yield call(api.getRowId, action.payload.id, startTime.format('YYYY-MM-DD'));
+    console.log('is this row id:', returnObject.rowId);
+    const randomExIdList = yield call(api.fetchRandomExIdList, returnObject.rowId);
+    console.log(randomExIdList);
     const examList = yield call(api.fetchExamSpecifyId, randomExIdList);
-
+    console.log(examList);
     const object = countTheCategory(examList);
     yield put(fetchCategory(object.examAmountPerCategory));
     yield put(fetchSubCategory(object.examAmountPerSubCategory));
@@ -69,7 +72,7 @@ export function* fetchTestExamTask(action) {
     for (let i = 0; i < randomExIdList.randomExIdList.length; i += 1) {
       initialAnswerList.push(JSON.stringify({ answer: [], question: randomExIdList.randomExIdList[i] }));
     }
-    const tempProgressResult = yield call(api.checkProgress, action.payload.id, startTime.format('YYYY-MM-DD'), startTime, initialAnswerList);
+    const tempProgressResult = yield call(api.checkProgress, returnObject.rowId, action.payload.id, startTime.format('YYYY-MM-DD'), startTime, initialAnswerList);
     const progressResult = [];
     if (tempProgressResult !== null) {
       for (let i = 0; i < tempProgressResult.answerList.length; i += 1) {
@@ -79,6 +82,7 @@ export function* fetchTestExamTask(action) {
     yield put(fetchProgress(progressResult));
     yield put(fetchTakeExamSuccess(
       examList,
+      returnObject.rowId,
       tempProgressResult !== null && tempProgressResult.startTime !== null ?
         moment(tempProgressResult.startTime) :
         startTime
@@ -92,10 +96,11 @@ export function* fetchTestExamTask(action) {
 export function* uploadAnswerListTask(action) {
   try {
     // 123
-    const progress = yield call(api.uploadAnswer, action.payload.id, action.payload.answerList, action.payload.testDate);
+    console.log('1212312121', action.payload);
+    const progress = yield call(api.uploadAnswer, action.payload.rowId, action.payload.answerList, action.payload.id, moment().format('YYYY-MM-DD'));
     yield put(uploadAnswerListSuccess(progress));
     if (action.payload.isEndExam) {
-      yield put(finishExamRequest(action.payload.id, action.payload.testDate));
+      yield put(finishExamRequest(action.payload.id, moment().format('YYYY-MM-DD')));
     }
     if (action.payload.isLogoutRequest) {
       yield put(logout());
@@ -109,18 +114,22 @@ export function* uploadAnswerListTask(action) {
 export function* finishExamTask(action) {
   try {
     const currentTime = moment();
-    yield call(api.updateSubmittedTime, action.payload.id, currentTime, currentTime.format('YYYY-MM-DD'));
-
-    const needCheck = yield call(api.grading, action.payload.id, action.payload.testDate);
-    yield call(api.sendMailFinishExam, action.payload.id, currentTime.format('YYYY-MM-DD'), needCheck);
-
-    yield call(api.deActivate, action.payload.id, 'deactive');
+    console.log('update result:', yield call(api.updateSubmittedTime, action.payload.rowId, currentTime));
+    const object = yield call(api.getRowId, action.payload.id, currentTime.format('YYYY-MM-DD'));
+    const needCheck = yield call(api.grading, object.rowId.toString());
+    // yield call(api.sendMailFinishExam, action.payload.id, currentTime.format('YYYY-MM-DD'), needCheck);
+    console.log('after send mail?', needCheck);
     if (needCheck) {
-      yield call(api.changeTestStatus, action.payload.id, 'regisdate', 'Grading');
+      console.log('change to grading 1');
+      const x = yield call(api.changeTestStatus, object.rowId.toString(), 'Grading');
+      console.log('change to grading 2', x);
     }
     else {
-      yield call(api.changeTestStatus, action.payload.id, 'regisdate', 'Finish');
+      console.log('change to finish 1');
+      const x = yield call(api.changeTestStatus, object.rowId.toString(), 'Finish');
+      console.log('change to finish 2', x);
     }
+    console.log('Change status finish!');
     yield put(finishExamSuccess());
     yield put(logout());
   }

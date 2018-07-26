@@ -33,7 +33,7 @@ const row = (item, { checkStatus, changeStatus, load, preActivateTakeExam, butto
     {item.testStatus === 'Grading' &&
       <Table.Cell>
         <Button
-          onClick={() => (onClickGrade(item.rowId, modalWarningExIdList))}
+          onClick={() => (onClickGrade(item.rowId, modalWarningExIdList, item.citizenId))}
           disabled={buttonLoad}
           loading={buttonLoad}
           fluid
