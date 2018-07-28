@@ -4,6 +4,7 @@ import { openModal } from '../actions/modal';
 import * as modalNames from '../constants/modalNames';
 import * as actionTypes from '../constants/actionTypes';
 import {
+  fetchRecruitmentRequest,
   fetchRecruitmentSuccess,
   fetchRecruitmentFailure,
   fetchPositionRecruitmentSuccess,
@@ -42,6 +43,8 @@ import {
   sendGradingListSuccess,
   sendGradingListFailure,
   fetchGradingRequest,
+  changeInterviewStatusResponse,
+  // fetchTestStatusResponse,
 } from '../actions/recruitment';
 import api from '../services/api';
 
@@ -351,7 +354,6 @@ export function* activateExamUserTask(action) {
 
     yield call(api.updateRecruitmentTestStatus, {
       rowId: action.payload.user.rowId,
-      registerDate: action.payload.registerDate,
       testStatus: 'Testing'
     });
     const recruitments = yield call(api.fetchRecruitment);
@@ -474,7 +476,6 @@ export function* saveGradingTask(action) {
         tempModalWarningExIdList = addWarningExIdMemo(tempModalWarningExIdList, tempGradingList[i].exId);
       }
     }
-    console.log('eiei', tempGradingList);
     const uploadTemp = [];
     for (let i = 0; i < tempGradingList.length; i += 1) {
       if (tempGradingList[i].status === 'Graded') {
@@ -485,7 +486,6 @@ export function* saveGradingTask(action) {
       }
     }
     yield call(api.uploadGradeProgress, uploadTemp);
-    console.log('????', action.payload.rowId, tempModalWarningExIdList, action.payload.id);
     yield put(fetchGradingRequest(action.payload.rowId, tempModalWarningExIdList, action.payload.id, true));
     yield put(saveGradingListSuccess());
   }
@@ -499,7 +499,10 @@ export function* sendGradingTask(action) {
     console.log('send grading payload', action.payload);
     yield put(saveGradingListRequest(action.payload.gradingList, action.payload.rowId, action.payload.modalWarningExIdList, action.payload.id, true));
     if (action.payload.modalWarningExIdList.size < 1) {
-      yield call(api.changeTestStatus, action.payload.rowId.toString(), 'Finish');
+      console.log('SUCCESS?');
+      console.log('???', yield call(api.changeTestStatus, action.payload.rowId.toString(), 'Finish'));
+      yield put(fetchRecruitmentRequest());
+      console.log('SUCCESS!');
       yield put(sendGradingListSuccess());
     }
     else {
@@ -509,6 +512,19 @@ export function* sendGradingTask(action) {
   }
   catch (error) {
     yield put(sendGradingListFailure(error));
+  }
+}
+
+export function* changeInterviewStatus(action) {
+  try {
+    const recruitments = yield call(api.changeInterviewStatus, {
+      applicant: action.payload.rowId
+    });
+    console.log('===============', recruitments);
+    yield put(changeInterviewStatusResponse(recruitments));
+  }
+  catch (error) {
+    console.log(error);
   }
 }
 
@@ -592,6 +608,10 @@ export function* watchGradingModalScoreHanldeRequest() {
   yield takeEvery(actionTypes.GRADING_MODAL_SCORE_HANDLE, gradingModalScoreHandleTask);
 }
 
+export function* watchChangeStatus() {
+  yield takeEvery(actionTypes.CHANGE_INTERVIEW_STATUS_REQUEST, changeInterviewStatus);
+}
+
 export default function* recruitmentSaga() {
   yield all([
     watchFetchRecruitmentRequest(),
@@ -614,5 +634,7 @@ export default function* recruitmentSaga() {
     watchGradingModalScoreHanldeRequest(),
     watchSaveGradingRequest(),
     watchSendGradingRequest(),
+    // watchFetchTestStatusRequest(),
+    watchChangeStatus(),
   ]);
 }

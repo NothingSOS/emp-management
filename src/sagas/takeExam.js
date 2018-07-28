@@ -115,18 +115,19 @@ export function* finishExamTask(action) {
   try {
     const currentTime = moment();
     console.log('update result:', yield call(api.updateSubmittedTime, action.payload.rowId, currentTime));
+    console.log('', yield call(api.deActivate, action.payload.rowId, ''));
     const object = yield call(api.getRowId, action.payload.id, currentTime.format('YYYY-MM-DD'));
     const needCheck = yield call(api.grading, object.rowId.toString());
     // yield call(api.sendMailFinishExam, action.payload.id, currentTime.format('YYYY-MM-DD'), needCheck);
     console.log('after send mail?', needCheck);
     if (needCheck) {
       console.log('change to grading 1');
-      const x = yield call(api.changeTestStatus, object.rowId.toString(), 'Grading');
+      const x = yield call(api.deActivate, object.rowId.toString(), 'Grading');
       console.log('change to grading 2', x);
     }
     else {
       console.log('change to finish 1');
-      const x = yield call(api.changeTestStatus, object.rowId.toString(), 'Finish');
+      const x = yield call(api.deActivate, object.rowId.toString(), 'Finish');
       console.log('change to finish 2', x);
     }
     console.log('Change status finish!');

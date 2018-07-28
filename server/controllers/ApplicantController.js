@@ -15,8 +15,8 @@ const transporter = nodemailer.createTransport(smtpTransport({
 exports.create = (req, res, next) => {
   const newApplicant = req.body;
   Applicant.create(newApplicant, req.user.rowId)
-    .then((createdApplicant) => {
-      res.json(createdApplicant);
+    .then((result) => {
+      res.json(result.rowId);
     })
     .catch(next);
 };
@@ -297,7 +297,7 @@ exports.updateInterviewResult = (req, res, next) => {
 };
 
 exports.findInfoById = (req, res, next) => {
-  Applicant.findInfoById(req.query.rowId)
+  Applicant.findInfoById(req.query.id)
     .then((applicantInfo) => {
       res.json(applicantInfo);
     })
@@ -305,7 +305,7 @@ exports.findInfoById = (req, res, next) => {
 };
 
 exports.findFileById = (req, res, next) => {
-  Applicant.findFileById(req.query.rowId)
+  Applicant.findFileById(req.query.id)
     .then((applicantInfo) => {
       res.json(applicantInfo);
     })
@@ -314,7 +314,7 @@ exports.findFileById = (req, res, next) => {
 
 exports.upload = (req, res, next) => {
   // console.log(req);
-  Applicant.upload(`/applicants-files/`, `${req.body.rowId}_${req.body.type}.pdf`, req.body.rowId)
+  Applicant.upload(`/applicants-files/`, `${req.body.rowId}_${req.body.type}.pdf`, req.body.citizenId, req.body.type, req.body.rowId)
     .then(() => {
       res.json('complete');
     })
@@ -332,6 +332,7 @@ exports.getPosition = (req, res, next) => {
 exports.getExamUser = (req, res, next) => {
   Applicant.getExamUser(req.body.rowId.toString(), req.body.testDate, req.body.citizenId)
     .then((user) => {
+      console.log('* from user:', user);
       res.json(user);
     })
     .catch(next);
@@ -354,16 +355,8 @@ exports.activateExamUser = (req, res, next) => {
 };
 
 exports.updateTestStatus = (req, res, next) => {
-  Applicant.updateTestStatus(req.body.rowId, req.body.registerDate, req.body.testStatus)
+  Applicant.updateTestStatus(req.body.rowId, req.body.testStatus)
     .then(() => res.json('Update test status complete'))
-    .catch(next);
-};
-
-exports.changeTestStatus = (req, res, next) => {
-  Applicant.changeTestStatus(req.query.rowId, req.query.status)
-    .then(() => {
-      res.json('complete123');
-    })
     .catch(next);
 };
 
@@ -376,7 +369,8 @@ exports.getTestStatus = (req, res, next) => {
 };
 
 exports.changeInterviewDone = (req, res, next) => {
-  Applicant.changeInterviewDone(req.body.rowId)
+  console.log(req.body.applicant, typeof req.body.applicant);
+  Applicant.changeInterviewDone(req.body.applicant)
     .then((data) => {
       res.json(data);
     })
@@ -384,7 +378,7 @@ exports.changeInterviewDone = (req, res, next) => {
 };
 
 exports.changeStatus = (req, res, next) => {
-  Applicant.changeStatus(req.query.id, req.query.regisDate, req.query.status)
+  Applicant.changeStatus(req.body.rowId, req.body.status)
     .then()
     .catch(next);
 };
@@ -435,9 +429,9 @@ exports.uploadRandomExIdList = (req, res, next) => {
 };
 
 exports.uploadGradeProgress = (req, res, next) => {
-  console.log(req.body.gradingList);
   Applicant.uploadGradeProgress(req.body.gradingList)
     .then((message) => {
+      console.log('>>>>', message);
       res.json(message);
     })
     .catch(next);

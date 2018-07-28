@@ -35,8 +35,6 @@ router.get('/applicant-file', ApplicantController.findFileById);
 
 router.get('/get-position', ApplicantController.getPosition);
 
-router.get('/changeTestStatus', ApplicantController.changeTestStatus);
-
 router.post('/uploadGradeProgress', ApplicantController.uploadGradeProgress);
 
 const storage = multer.diskStorage({
@@ -44,10 +42,11 @@ const storage = multer.diskStorage({
     cb(null, 'server/storage/public/applicants-files');
   },
   filename: (req, res, cb) => {
-    cb(null, `${req.body.citizenId}_${req.body.type}.pdf`);
+    cb(null, `${req.body.rowId}_${req.body.type}.pdf`);
   }
 });
 const upload = multer({ storage });
+
 router.post('/upload-file', upload.single('file'), ApplicantController.upload);
 
 router.post('/get-exam-user', ApplicantController.getExamUser);
@@ -71,5 +70,7 @@ router.get('/fetchExamId', ApplicantController.fetchExamId);
 router.post('/uploadRandomExIdList', ApplicantController.uploadRandomExIdList);
 
 router.post('/getRowId', ApplicantController.getRowId);
+
+router.post('/changeTestStatus', ApplicantController.changeStatus);
 
 module.exports = router;

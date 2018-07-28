@@ -15,7 +15,7 @@ const Applicant = {};
 
 Applicant.create = applicant => (
   db.one(
-    'INSERT INTO applicants (first_name, last_name, position, mobile_number, email, first_name_th, last_name_th, citizen_id, status, registration_date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING 1',
+    'INSERT INTO applicants (first_name, last_name, position, mobile_number, email, first_name_th, last_name_th, citizen_id, status, registration_date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING row_id',
     [
       applicant.firstName,
       applicant.lastName,
@@ -29,6 +29,7 @@ Applicant.create = applicant => (
       applicant.registrationDate,
     ]
   )
+  // edit here
 );
 
 Applicant.findAll = () => (
@@ -200,8 +201,8 @@ Applicant.findFileById = rowId => (
   db.manyOrNone('SELECT * FROM applicants_files WHERE row_id = $1', [rowId])
 );
 
-Applicant.upload = (path, name, rowId, type) => (
-  db.none('INSERT INTO applicants_files (row_id, file_path, file_name, type) VALUES ($1, $2, $3, $4);', [rowId, path, name, type])
+Applicant.upload = (path, name, citizenId, type, rowId) => (
+  db.none('INSERT INTO applicants_files (citizen_id, file_path, file_name, type, row_id) VALUES ($1, $2, $3, $4,$5);', [citizenId, path, name, type, rowId])
 );
 
 Applicant.getPosition = () => (
@@ -210,8 +211,8 @@ Applicant.getPosition = () => (
 
 Applicant.getExamUser = (rowId, testDate, citizenId) => (
   db.none(
-    'INSERT INTO exam_users (id, test_date, latest_activated_time, activation_lifetimes, agreement_status) VALUES ($1, $2, $3, $4, $5) ON CONFLICT (id, test_date) DO NOTHING'
-    , [citizenId, testDate, null, 0, 'NotRead']
+    'INSERT INTO exam_users (id, test_date, latest_activated_time, activation_lifetimes, agreement_status, row_id) VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT (id, test_date) DO NOTHING'
+    , [citizenId, testDate, null, 0, 'NotRead', rowId]
   )
     .then(() => db.one('SELECT * FROM exam_users WHERE row_id = $1', [rowId]))
 );
@@ -257,7 +258,7 @@ Applicant.getAndUpdateRequiredExam = (rowId, testDate, lifetime) => (
     })
 );
 
-Applicant.updateTestStatus = (rowId, registerDate, testStatus) => (
+Applicant.updateTestStatus = (rowId, testStatus) => (
   db.none(
     'UPDATE applicants SET test_status = $1 WHERE row_id = $2'
     , [testStatus, rowId]
@@ -281,7 +282,7 @@ Applicant.changeInterviewDone = rowId => (
     .then(() => db.manyOrNone(`SELECT * FROM applicants`))
 );
 
-Applicant.changeTestStatus = (rowId, status) => (
+Applicant.changeStatus = (rowId, status) => (
   db.none('UPDATE applicants SET test_status = $2 WHERE row_id = $1', [rowId, status])
 );
 
@@ -348,7 +349,7 @@ Applicant.uploadGradeProgress = gradingList => (
   db.tx((t) => {
     const queryList = [];
     Object(gradingList).map((eachOne) => {
-      const query = t.oneOrNone(
+      const query = t.none(
         'UPDATE exam_result SET'
         + ' status = $4,'
         + ' point = $5,'

@@ -19,7 +19,7 @@ const row = (item, { checkStatus, changeStatus, load }) => (
     <Table.Cell>{`${item.email}`}</Table.Cell>
     <Table.Cell collapsing>{`${item.mobileNumber}`}</Table.Cell>
     <Table.Cell>{`${item.firstDate}`}</Table.Cell>
-    <Table.Cell><Button icon="list" size="mini" onClick={() => history.push(`/recruitment/${item.citizenId}`)} /></Table.Cell>
+    <Table.Cell><Button icon="list" size="mini" onClick={() => history.push(`/recruitment/${item.rowId}`)} /></Table.Cell>
     <Table.Cell><Checkbox name="edit" checked={checkStatus[item.rowId] === 'Complete'} onChange={() => { changeStatus(item.rowId, 'Complete'); load(item.firstDate); }} /></Table.Cell>
     {/* <Table.Cell>{`${item.status}`}</Table.Cell> */}
     <Table.Cell><Checkbox name="blacklist" checked={checkStatus[item.rowId] === 'Blacklist'} onChange={() => changeStatus(item.rowId, 'Blacklist')} /></Table.Cell>

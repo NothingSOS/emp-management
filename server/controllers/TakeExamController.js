@@ -62,20 +62,15 @@ exports.updateSubmittedTime = (req, res, next) => {
 };
 
 exports.deActivate = (req, res, next) => {
-  if (req.body.status !== 'deactive') {
-    res.json('deactive status: not deactive type!');
-  }
-  else {
-    TakeExam.changeStatus(req.body.rowId, 'Wait for Grading')
-      .then(() => {
-        TakeExam.expiredActivationLifetime(req.body.rowId)
-          .then((retval) => {
-            res.json('deactive status: '.concat(retval === null ? 'OK' : 'Something wrong'));
-          })
-          .catch(next);
-      })
-      .catch(next);
-  }
+  TakeExam.changeStatus(req.body.rowId, req.body.status)
+    .then(() => {
+      TakeExam.expiredActivationLifetime(req.body.rowId)
+        .then((retval) => {
+          res.json('deactive status: '.concat(retval === null ? 'OK' : 'Something wrong'));
+        })
+        .catch(next);
+    })
+    .catch(next);
 };
 
 exports.grading = (req, res, next) => {

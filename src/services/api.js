@@ -451,9 +451,17 @@ api.fetchExamId = () => (
   callApi(`/api/applicants/fetchExamId`)
 );
 
-// become row id
+// this is a same method as changeStatus
+// but this stand for recruitment page
+// cause recruitment and take-exam pages use dif. token
 api.changeTestStatus = (rowId, status) => (
-  callApi(`/api/applicants/changeTestStatus/?rowId=${rowId}&status=${status}`)
+  callApi(`/api/applicants/changeTestStatus/`, {
+    method: 'POST',
+    body: {
+      rowId,
+      status,
+    }
+  })
 );
 
 // Exam
