@@ -376,4 +376,8 @@ Applicant.getRowId = (id, testDate) => (
   db.oneOrNone('SELECT row_id FROM applicants WHERE citizen_id = $1 AND exam_date = $2', [id, testDate])
 );
 
+Applicant.checkApproveStatus = rowId => (
+  db.oneOrNone('SELECT 1 as is_exist FROM applicants WHERE row_id = $1 AND interview_done = true AND test_status = \'Finish\'', [rowId])
+);
+
 module.exports = Applicant;

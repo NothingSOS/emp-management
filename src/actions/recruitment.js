@@ -562,3 +562,10 @@ export const changeInterviewStatusResponse = data => ({
     data,
   }
 });
+
+export const checkApproveStatus = form => ({
+  type: actionTypes.RECRUITMENT_CHECK_APPROVE_STATUS,
+  payload: {
+    form,
+  }
+});

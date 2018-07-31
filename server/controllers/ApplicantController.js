@@ -378,8 +378,11 @@ exports.changeInterviewDone = (req, res, next) => {
 };
 
 exports.changeStatus = (req, res, next) => {
+  console.log('aaa:', req.body);
   Applicant.changeStatus(req.body.rowId, req.body.status)
-    .then()
+    .then(() => {
+      res.json('');
+    })
     .catch(next);
 };
 
@@ -394,7 +397,6 @@ exports.getExamDate = (req, res, next) => {
 exports.fetchGradingExam = (req, res, next) => {
   Applicant.fetchGradingExam(req.query.rowId)
     .then((exam) => {
-      console.log(exam);
       res.json(exam);
     })
     .catch(next);
@@ -442,6 +444,16 @@ exports.getRowId = (req, res, next) => {
     .then((rowId) => {
       console.log(req.body, rowId);
       res.json(rowId);
+    })
+    .catch(next);
+};
+
+exports.checkApproveStatus = (req, res, next) => {
+  Applicant.checkApproveStatus(req.query.rowId)
+    .then((retval) => {
+      console.log('retval:', retval);
+      console.log('retval.isExist === 1? :', retval.isExist === 1);
+      res.json(retval.isExist === 1);
     })
     .catch(next);
 };

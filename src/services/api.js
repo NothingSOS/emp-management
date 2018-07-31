@@ -464,6 +464,10 @@ api.changeTestStatus = (rowId, status) => (
   })
 );
 
+api.checkApproveStatus = rowId => (
+  callApi(`/api/applicants/checkApproveStatus/?rowId=${rowId}`)
+);
+
 // Exam
 
 api.uploadImageExam = body => (

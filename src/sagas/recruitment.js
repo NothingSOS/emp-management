@@ -4,7 +4,6 @@ import { openModal } from '../actions/modal';
 import * as modalNames from '../constants/modalNames';
 import * as actionTypes from '../constants/actionTypes';
 import {
-  fetchRecruitmentRequest,
   fetchRecruitmentSuccess,
   fetchRecruitmentFailure,
   fetchPositionRecruitmentSuccess,
@@ -44,6 +43,7 @@ import {
   sendGradingListFailure,
   fetchGradingRequest,
   changeInterviewStatusResponse,
+  createRecruitmentRequest,
   // fetchTestStatusResponse,
 } from '../actions/recruitment';
 import api from '../services/api';
@@ -369,7 +369,6 @@ export function* activateExamUserTask(action) {
 export function* fetchGradingTask(action) {
   try {
     const gradingExamList = yield call(api.fetchGradingExam, action.payload.rowId);
-    console.log('after call api:', gradingExamList);
     let tempModalWarningExIdList = action.payload.modalWarningExIdList;
     for (let i = 0; i < gradingExamList.length; i += 1) {
       const scoreWarning = gradingExamList[i].point[0] === 'UNKNOWN' ? '*requried' : ' ';
@@ -383,7 +382,6 @@ export function* fetchGradingTask(action) {
         addWarningExIdMemo(tempModalWarningExIdList, gradingExamList[i].exId) :
         removeWarningExIdMemo(tempModalWarningExIdList, gradingExamList[i].exId);
     }
-    console.log('before send:', gradingExamList);
     const object = countTheCategory(gradingExamList);
     yield put(fetchGradingSuccess(
       gradingExamList,
@@ -393,6 +391,7 @@ export function* fetchGradingTask(action) {
       tempModalWarningExIdList,
       action.payload.rowId,
     ));
+    console.log('ssssssssssss', action.payload.isSend);
     if (!action.payload.isSend) {
       yield put(openModal(modalNames.GRADING_EXAM));
     }
@@ -500,9 +499,22 @@ export function* sendGradingTask(action) {
     yield put(saveGradingListRequest(action.payload.gradingList, action.payload.rowId, action.payload.modalWarningExIdList, action.payload.id, true));
     if (action.payload.modalWarningExIdList.size < 1) {
       console.log('SUCCESS?');
-      console.log('???', yield call(api.changeTestStatus, action.payload.rowId.toString(), 'Finish'));
-      yield put(fetchRecruitmentRequest());
+      yield call(api.changeTestStatus, action.payload.rowId, 'Finish');
+
+      if (yield call(api.checkApproveStatus, action.payload.rowId)) {
+        console.log('changing approve to in progress');
+        const form = {
+          rowId: action.payload.rowId,
+          status: 'In Progress',
+        };
+        yield put(createRecruitmentRequest(form));
+      }
+
+      const updateRecruitment = yield call(api.fetchRecruitment);
+      console.log('updateRecruitment:', updateRecruitment);
+      yield put(fetchRecruitmentSuccess(updateRecruitment, moment().format('YYYY-MM-DD')));
       console.log('SUCCESS!');
+
       yield put(sendGradingListSuccess());
     }
     else {

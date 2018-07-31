@@ -20,8 +20,7 @@ import {
 
 const EditRecruitmentModal = ({
   onClick, onClose, submitting, data, checkStatus, date, time, buttons, confirm, note,
-  signedPosition, updateSignedPosition, resetOnClose, validateSign, updateStatus,
-}) => (
+  signedPosition, updateSignedPosition, resetOnClose, validateSign, updateStatus, }) => (
     <SUIModal
       dimmer="blurring"
       size="small"
@@ -159,7 +158,7 @@ const mapDispatchToProps = dispatch => ({
             break;
           // case 'In Progress':
           //   break;
-          case 'CompleteInterview':
+          case 'CompleteInterview': {
             console.log(key, typeof key);
             const status = data.filter(row => row.rowId.toString() === key);
             console.log('=======', status[0].testStatus);
@@ -178,6 +177,7 @@ const mapDispatchToProps = dispatch => ({
             // =================>> change interview done = true
             dispatch(changeInterviewStatusRequest(Number(key)));
             return '';
+          }
           case 'Pass':
             addNote.interviewResult = addNote.note;
             delete addNote.note;

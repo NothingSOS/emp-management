@@ -73,4 +73,6 @@ router.post('/getRowId', ApplicantController.getRowId);
 
 router.post('/changeTestStatus', ApplicantController.changeStatus);
 
+router.get('/checkApproveStatus', ApplicantController.checkApproveStatus);
+
 module.exports = router;
