@@ -16,7 +16,7 @@
         "react/no-did-mount-set-state": "off",
         "brace-style": ["error", "stroustrup", { "allowSingleLine": true }],
         "no-unused-vars": ["warn", { "argsIgnorePattern": "next|store" }],
-        "max-len": ["error", 200, { "ignoreStrings": true }],
+        "max-len": ["error", 500, { "ignoreStrings": true }],
         "react/forbid-prop-types": "off",
         "jsx-a11y/label-has-for": "off",
         "object-curly-newline": "off",
@@ -25,7 +25,13 @@
         "no-mixed-operators": "off",
         "no-continue": "off",
         "class-methods-use-this": "off",
-        "no-await-in-loop": "off"
+        "no-await-in-loop": "off",
+        "no-nested-ternary": "off",
+        "no-restricted-globals": "off",
+        "no-case-declarations": "off",
+        "no-underscore-dangle": "off",
+        "function-paren-newline": "off",
+        "react/prop-types": "off"
     },
     "plugins": [
         "import",

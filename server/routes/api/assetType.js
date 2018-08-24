@@ -7,4 +7,6 @@ router.put('/', AssetTypeController.update);
 
 router.get('/', AssetTypeController.findAll);
 
+router.delete('/', AssetTypeController.delete);
+
 module.exports = router;

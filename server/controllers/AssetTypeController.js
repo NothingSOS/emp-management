@@ -3,8 +3,12 @@ const AssetType = require('../models/AssetType');
 exports.create = (req, res, next) => {
   const newAssetType = req.body.assetType;
   AssetType.create(newAssetType, req.user.id)
-    .then((createdAssetType) => {
-      res.json(createdAssetType);
+    .then((result) => {
+      AssetType.findById(result.id)
+        .then((assetType) => {
+          res.json(assetType);
+        })
+        .catch(next);
     })
     .catch(next);
 };
@@ -22,6 +26,18 @@ exports.findAll = (req, res, next) => {
   AssetType.findAll()
     .then((assetTypes) => {
       res.json(assetTypes);
+    })
+    .catch(next);
+};
+
+exports.delete = (req, res, next) => {
+  AssetType.delete(req.body.id)
+    .then(() => {
+      AssetType.findAll()
+        .then((assetTypes) => {
+          res.json(assetTypes);
+        })
+        .catch(next);
     })
     .catch(next);
 };

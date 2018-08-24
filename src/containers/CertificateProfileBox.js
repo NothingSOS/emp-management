@@ -55,8 +55,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onAddClick: () => dispatch(openModal(modalNames.ADD_CERTIFICATE_PROFILE)),
   onDeleteClick: profileId => dispatch(openModal(modalNames.CONFIRM, {
-    header: 'Delete confirmation',
-    description: 'Are you sure to delete certification profile?',
+    header: 'Delete Confirmation',
+    description: 'Are you sure to delete certification profile ?',
     onConfirm: () => dispatch(deleteProfileRequest('certificates', profileId))
   }))
 });

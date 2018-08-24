@@ -10,4 +10,6 @@ router.get('/', can(['timesheetViewOwn']), TimesheetController.findByMonthAndYea
 
 router.delete('/', can(['timesheetDeleteOwn']), TimesheetController.delete);
 
+router.delete('/', TimesheetController.delete);
+
 module.exports = router;

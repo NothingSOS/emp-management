@@ -3,8 +3,12 @@ const Degree = require('../models/Degree');
 exports.create = (req, res, next) => {
   const newDegree = req.body.degree;
   Degree.create(newDegree, req.user.id)
-    .then((createdDegree) => {
-      res.json(createdDegree);
+    .then((result) => {
+      Degree.findById(result.id)
+        .then((degree) => {
+          res.json(degree);
+        })
+        .catch(next);
     })
     .catch(next);
 };

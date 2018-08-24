@@ -3,14 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 import App from '../components/App';
+import Can from './Can';
 
-const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => (
+const PrivateRoute = ({ component: Component, isAuthenticated, can, ...rest }) => (
   <Route
     {...rest}
     render={props =>
       (isAuthenticated ? (
         <App>
-          <Component {...props} />
+          <Can activity={can} page>
+            <Component {...props} />
+          </Can>
         </App>
       ) : (
         <Redirect
@@ -25,13 +28,15 @@ const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => (
 );
 
 PrivateRoute.defaultProps = {
-  location: null
+  location: null,
+  can: 'view'
 };
 
 PrivateRoute.propTypes = {
   component: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
-  location: PropTypes.object
+  location: PropTypes.object,
+  can: PropTypes.string
 };
 
 const mapStateToProps = state => ({

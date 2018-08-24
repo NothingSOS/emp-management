@@ -104,30 +104,30 @@ const GradingForm = ({
   updateScoreStatus,
   modalWarningExIdList,
   rowId, }) => (
-    isFetching ?
-      <Loader /> :
-      <Segment.Group>
-        <Segment raised style={{ width: '95%', margin: 'auto' }}>
-          <Grid>
-            <Grid.Row>
-              <Grid.Column width={3}>
-                <Menu fluid vertical tabular>
-                  <Menu.Item header name="Category menu" />
-                  {modalCategoryList && modalCategoryList.map(item => (
-                    <Menu.Item
-                      name={item[0]}
-                      active={activeModalCategory === item[0]}
-                      onClick={() => { onClickModalCategory(item[0]); pageChange(1); }}
-                    />
+  isFetching ?
+    <Loader /> :
+    <Segment.Group>
+      <Segment raised style={{ width: '95%', margin: 'auto' }}>
+        <Grid>
+          <Grid.Row>
+            <Grid.Column width={3}>
+              <Menu fluid vertical tabular>
+                <Menu.Item header name="Category menu" />
+                {modalCategoryList && modalCategoryList.map(item => (
+                  <Menu.Item
+                    name={item[0]}
+                    active={activeModalCategory === item[0]}
+                    onClick={() => { onClickModalCategory(item[0]); pageChange(1); }}
+                  />
                   ))}
-                </Menu>
-              </Grid.Column>
-              <Grid.Column width={12}>
-                <h1>
+              </Menu>
+            </Grid.Column>
+            <Grid.Column width={12}>
+              <h1>
                   Applicant ID: {gradingId}
                   Question {currentActiveModalPage} from {filterExam(gradingList, activeModalCategory).length}
-                </h1>
-                {gradingList && filterExam(gradingList, activeModalCategory).length > 0
+              </h1>
+              {gradingList && filterExam(gradingList, activeModalCategory).length > 0
                   && filterExam(gradingList, activeModalCategory).map((row, i) => (
                     i === currentActiveModalPage - 1 ?
                       <Form>
@@ -175,9 +175,9 @@ const GradingForm = ({
                         }
                       </Form> : ''
                   ))}
-                {!gradingList && <h1>Fetch fail somewhere!</h1>}
-                <br />
-                {gradingList && filterExam(gradingList, activeModalCategory).length > 0
+              {!gradingList && <h1>Fetch fail somewhere!</h1>}
+              <br />
+              {gradingList && filterExam(gradingList, activeModalCategory).length > 0
                   && filterExam(gradingList, activeModalCategory).map((row, i) => (
                     i === currentActiveModalPage - 1 ?
                       row.exType === 'Choices' ?
@@ -224,50 +224,50 @@ const GradingForm = ({
                         </Grid>
                       : <div />
                   ))}
-                <Pagination
-                  floated="right"
-                  onPageChange={(e, object) => onPageChange(object.activePage)}
-                  activePage={currentActiveModalPage}
-                  boundaryRange={1}
-                  siblingRange={1}
-                  ellipsisItem={{ content: <Icon name="ellipsis horizontal" />, icon: true }}
-                  firstItem={{ content: <Icon name="angle double left" />, icon: true }}
-                  lastItem={{ content: <Icon name="angle double right" />, icon: true }}
-                  prevItem={{ content: <Icon name="angle left" />, icon: true }}
-                  nextItem={{ content: <Icon name="angle right" />, icon: true }}
-                  totalPages={(gradingList && categoryLengthCalculate(gradingList, activeModalCategory)) || (!gradingList && 5)}
-                />
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        </Segment>
-        <Segment>
-          {/* add onClick of these buttons */}
-          <Button
-            icon
-            labelPosition="left"
-            positive
-            onClick={() => onClickSave(gradingList, rowId, modalWarningExIdList, gradingId)}
-          >
-            <Icon name="save" />
+              <Pagination
+                floated="right"
+                onPageChange={(e, object) => onPageChange(object.activePage)}
+                activePage={currentActiveModalPage}
+                boundaryRange={1}
+                siblingRange={1}
+                ellipsisItem={{ content: <Icon name="ellipsis horizontal" />, icon: true }}
+                firstItem={{ content: <Icon name="angle double left" />, icon: true }}
+                lastItem={{ content: <Icon name="angle double right" />, icon: true }}
+                prevItem={{ content: <Icon name="angle left" />, icon: true }}
+                nextItem={{ content: <Icon name="angle right" />, icon: true }}
+                totalPages={(gradingList && categoryLengthCalculate(gradingList, activeModalCategory)) || (!gradingList && 5)}
+              />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Segment>
+      <Segment>
+        {/* add onClick of these buttons */}
+        <Button
+          icon
+          labelPosition="left"
+          positive
+          onClick={() => onClickSave(gradingList, rowId, modalWarningExIdList, gradingId)}
+        >
+          <Icon name="save" />
             Save
-          </Button>
-          {/*
+        </Button>
+        {/*
             add function that disable submit button
             until grader will input all pair of score!
            */}
-          <Button
-            icon
-            labelPosition="left"
-            secondary
-            onClick={() => onClickSend(gradingList, rowId, modalWarningExIdList, gradingId)}
-          >
-            <Icon name="send" />
+        <Button
+          icon
+          labelPosition="left"
+          secondary
+          onClick={() => onClickSend(gradingList, rowId, modalWarningExIdList, gradingId)}
+        >
+          <Icon name="send" />
             Send
-          </Button>
-        </Segment>
-      </Segment.Group>
-  );
+        </Button>
+      </Segment>
+    </Segment.Group>
+);
 
 GradingForm.propTypes = {
   isFetching: PropTypes.bool.isRequired,
@@ -285,6 +285,7 @@ GradingForm.propTypes = {
   onClickSend: PropTypes.func.isRequired,
   updateScoreStatus: PropTypes.func.isRequired,
   modalWarningExIdList: PropTypes.array.isRequired,
+  rowId: PropTypes.string.isRequired
 };
 
 const mapStateToProps = state => ({

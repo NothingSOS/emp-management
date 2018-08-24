@@ -1,0 +1,1 @@
+cloud_sql_proxy -instances=minihrm-205709:asia-southeast1:minihrm=tcp:5433

@@ -1,0 +1,110 @@
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.Load{
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left:0;
+  background-color: black;
+  opacity: 0.6;
+}
+
+.back{
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+.o{
+  transform: translate(-50%,-50%);
+  width: 400px;
+  height: 300px;
+  position: relative;
+  left: 50%;
+  top:50%;
+  background-color: #efefef;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.o:after{
+  content:"sdsd";
+  position: absolute;
+  left: 0;
+  width: 40%;
+  top: -9%;
+  height: 10%;
+  border-radius: 5px;
+  background-color: #efefef;
+}
+
+.j{
+  width: 100%;
+  height: 100%;
+}
+.b{
+  outline: inherit;
+  position: relative;
+  transform: translate(-50%,-50%);
+  overflow: hidden;
+  display: flex;
+  left: 50%;
+  top:50%;
+  padding: 0;
+  transition: 0.2s;
+  width: 5em;
+  height: 5em;
+  border: none;
+  border-radius: 5px
+}
+
+.b .icon{
+  position: relative;
+  width: 5em;
+  height: 5em;
+  overflow: hidden;
+  //border-radius: 5px;
+
+  display: block;
+  transition: 0.2s;
+  background-color: #ffffff;
+}
+.ic{
+  width: 100%;
+}
+
+.b .text{
+  width: 0%;
+  height: 5em;
+  //border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+  transition:0.2s;
+  display: block;
+  background-color: #60a955;
+  ;
+}
+.b .text span{
+  color: white;
+  font-size: 2em;
+  position: absolute;
+  transform: translate(-50%,-50%);
+  top: 50%;
+  left: 50%;
+}
+.b:hover{
+  width: 15em;
+}
+.b:hover .icon{
+
+}
+.b:hover .text{
+  width:10em;
+}

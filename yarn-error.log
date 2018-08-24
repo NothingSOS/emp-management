@@ -1,20 +1,17 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\Kie\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js install
+  /usr/local/bin/node /usr/local/bin/yarn build
 
 PATH: 
-  C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\PuTTY\;C:\Program Files (x86)\Gpg4win\..\GnuPG\bin;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files\MATLAB\R2018a\bin;C:\xampp\php;C:\ProgramData\ComposerSetup\bin;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Users\Kie\AppData\Local\Microsoft\WindowsApps;;C:\Program Files\Microsoft VS Code\bin;C:\Users\Kie\AppData\Roaming\Composer\vendor\bin;C:\Users\Kie\AppData\Roaming\npm
+  /Users/tmark_s/Downloads/google-cloud-sdk/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/Library/Frameworks/Python.framework/Versions/2.7/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/tmark_s/Downloads/google-cloud-sdk/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/Library/Frameworks/Python.framework/Versions/2.7/bin
 
 Yarn version: 
-  1.6.0
+  1.5.1
 
 Node version: 
-  8.11.3
+  8.9.4
 
 Platform: 
-  win32 x64
-
-Trace: 
-  Error: EPERM: operation not permitted, unlink 'C:\.jeab\3-3\emp-management\node_modules\crc32-stream\node_modules\crc\lib\es6\crc1.js'
+  darwin x64
 
 npm manifest: 
   {
@@ -25,7 +22,7 @@ npm manifest:
     "scripts": {
       "start:server": "npx nodemon server",
       "start:client": "webpack-dev-server --mode development --open",
-      "start": "npx concurrently \"yarn start:server\" \"yarn start:client\"",
+      "start": "npx concurrently \"yarn start:server\" \"yarn start:client\" ",
       "dev": "webpack --mode development",
       "build": "webpack --mode production"
     },
@@ -81,7 +78,7 @@ npm manifest:
       "jsonwebtoken": "^8.2.0",
       "lodash": "^4.17.10",
       "mime": "^2.3.1",
-      "moment": "^2.21.0",
+      "moment": "^2.22.2",
       "moment-timezone": "0.4.0",
       "morgan": "^1.9.0",
       "multer": "^1.3.0",
@@ -98,16 +95,21 @@ npm manifest:
       "react": "^16.2.0",
       "react-avatar-editor": "^11.0.4",
       "react-big-calendar": "^0.19.1",
-      "react-countdown-now": "^1.3.0",
+      "react-bootstrap-date-picker": "^5.1.0",
+      "react-calendar": "^2.15.2",
       "react-datepicker": "^1.5.0",
+      "react-dom": "^16.2.0",
+      "react-moment": "^0.7.9",
+      "react-number-format": "^3.4.3",
+      "react-countdown-now": "^1.3.0",
       "react-dates": "^16.7.0",
       "react-day-picker": "^7.1.9",
-      "react-dom": "^16.2.0",
       "react-drafts": "^1.0.3",
       "react-redux": "^5.0.7",
       "react-router-dom": "^4.2.2",
       "react-with-direction": "1.1.0",
       "react-with-styles": "3.2.0",
+      "react-scroll": "^1.7.9",
       "recompose": "^0.27.0",
       "redux": "^3.7.2",
       "redux-form": "^7.3.0",
@@ -116,11 +118,10 @@ npm manifest:
       "redux-thunk": "^2.2.0",
       "save": "^2.3.2",
       "semantic-ui-react": "0.79.0",
+      "thai-baht-text": "^1.0.7",
       "xlsx": "^0.13.0",
       "vaadin-date-picker": "^2.0.4"
-    },
-    "repository": "https://github.com/NothingSOS/emp-management.git",
-    "author": "nihcet <techinkid@gmail.com>"
+    }
   }
 
 yarn manifest: 
@@ -563,6 +564,26 @@ Lockfile:
     dependencies:
       exit-on-epipe "~1.0.1"
       printj "~1.1.0"
+  
+  air-datepicker@^2.2.3:
+    version "2.2.3"
+    resolved "https://registry.yarnpkg.com/air-datepicker/-/air-datepicker-2.2.3.tgz#9dbb6bc6bc8c9d9db380475091370dad82c2f787"
+    dependencies:
+      jquery ">=2.0.0 <4.0.0"
+  
+  airbnb-prop-types@^2.8.1:
+    version "2.10.0"
+    resolved "https://registry.yarnpkg.com/airbnb-prop-types/-/airbnb-prop-types-2.10.0.tgz#c2da66a1d31c3dbe21c2fe8e758f774c718dd30d"
+    dependencies:
+      array.prototype.find "^2.0.4"
+      function.prototype.name "^1.1.0"
+      has "^1.0.1"
+      is-regex "^1.0.4"
+      object-is "^1.0.1"
+      object.assign "^4.1.0"
+      object.entries "^1.0.4"
+      prop-types "^15.6.1"
+      prop-types-exact "^1.1.2"
   
   ajv-keywords@^2.1.0:
     version "2.1.1"
@@ -3433,7 +3454,7 @@ Lockfile:
       md5.js "^1.3.4"
       safe-buffer "^5.1.1"
   
-  exceljs@1.5.1:
+  exceljs@^1.5.1:
     version "1.5.1"
     resolved "https://registry.yarnpkg.com/exceljs/-/exceljs-1.5.1.tgz#a8d2c9df46d974bcf39d650b102e4d9c98536603"
     dependencies:
@@ -4527,6 +4548,14 @@ Lockfile:
     version "3.0.6"
     resolved "https://registry.yarnpkg.com/immediate/-/immediate-3.0.6.tgz#9db1dbd0faf8de6fbe0f5dd5e56bb606280de69b"
   
+  immutable@^3.8.1:
+    version "3.8.2"
+    resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.2.tgz#c2439951455bb39913daf281376f1530e104adf3"
+  
+  immutable@~3.7.4:
+    version "3.7.6"
+    resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.7.6.tgz#13b4d3cb12befa15482a26fe1b2ebae640071e4b"
+  
   import-lazy@^2.1.0:
     version "2.1.0"
     resolved "https://registry.yarnpkg.com/import-lazy/-/import-lazy-2.1.0.tgz#05698e3d45c88e8d7e9d92cb0584e77f096f3e43"
@@ -5419,7 +5448,7 @@ Lockfile:
     version "4.6.1"
     resolved "https://registry.yarnpkg.com/lodash.mergewith/-/lodash.mergewith-4.6.1.tgz#639057e726c3afbdb3e7d42741caa8d6e4335927"
   
-  lodash.once@^4.0.0:
+  lodash.once@^4.0.0, lodash.once@^4.1.1:
     version "4.1.1"
     resolved "https://registry.yarnpkg.com/lodash.once/-/lodash.once-4.1.1.tgz#0dd3971213c7c56df880977d504c88fb471a97ac"
   
@@ -5427,11 +5456,19 @@ Lockfile:
     version "4.1.1"
     resolved "https://registry.yarnpkg.com/lodash.tail/-/lodash.tail-4.1.1.tgz#d2333a36d9e7717c8ad2f7cacafec7c32b444664"
   
+  lodash.throttle@^4.1.1:
+    version "4.1.1"
+    resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+  
   lodash.uniq@^4.5.0:
     version "4.5.0"
     resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   
-  lodash@^4.0.0, lodash@^4.13.1, lodash@^4.17.10, lodash@^4.17.2, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.5.1, lodash@^4.8.0, lodash@~4.17.10:
+  lodash.values@^4.3.0:
+    version "4.3.0"
+    resolved "https://registry.yarnpkg.com/lodash.values/-/lodash.values-4.3.0.tgz#a3a6c2b0ebecc5c2cba1c17e6e620fe81b53d347"
+  
+  lodash@^4.0.0, lodash@^4.1.1, lodash@^4.13.1, lodash@^4.17.10, lodash@^4.17.2, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.5.1, lodash@^4.8.0, lodash@~4.17.10:
     version "4.17.10"
     resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.10.tgz#1b7793cf7259ea38fb3661d4d38b3260af8ae4e7"
   
@@ -5607,6 +5644,10 @@ Lockfile:
       redent "^1.0.0"
       trim-newlines "^1.0.0"
   
+  merge-class-names@^1.1.1:
+    version "1.1.1"
+    resolved "https://registry.yarnpkg.com/merge-class-names/-/merge-class-names-1.1.1.tgz#3bd2f38eb5418c464a0fef615484fdf6c8932256"
+  
   merge-descriptors@1.0.1:
     version "1.0.1"
     resolved "https://registry.yarnpkg.com/merge-descriptors/-/merge-descriptors-1.0.1.tgz#b00aaa556dd8b44568150ec9d1b953f3f90cbb61"
@@ -5776,7 +5817,19 @@ Lockfile:
     dependencies:
       minimist "0.0.8"
   
-  moment@>=2.19.3, moment@^2.21.0:
+  moment-timezone@0.4.0:
+    version "0.4.0"
+    resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.4.0.tgz#571ec43f5d2fb70ddb601c7d23b284e2f63ddab4"
+    dependencies:
+      moment ">= 2.6.0"
+  
+  moment-timezone@^0.4.0:
+    version "0.4.1"
+    resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.4.1.tgz#81f598c3ad5e22cdad796b67ecd8d88d0f5baa06"
+    dependencies:
+      moment ">= 2.6.0"
+  
+  "moment@>= 2.6.0", moment@>=1.6.0, moment@>=2.19.3, moment@>=2.8.1, moment@^2.10, moment@^2.22.2, moment@^2.9.0:
     version "2.22.2"
     resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
   
@@ -7000,6 +7053,14 @@ Lockfile:
     dependencies:
       es6-promise "^3.0.2"
   
+  prop-types-exact@^1.1.2:
+    version "1.2.0"
+    resolved "https://registry.yarnpkg.com/prop-types-exact/-/prop-types-exact-1.2.0.tgz#825d6be46094663848237e3925a98c6e944e9869"
+    dependencies:
+      has "^1.0.3"
+      object.assign "^4.1.0"
+      reflect.ownkeys "^0.2.0"
+  
   prop-types-extra@^1.0.1:
     version "1.1.0"
     resolved "https://registry.yarnpkg.com/prop-types-extra/-/prop-types-extra-1.1.0.tgz#32609910ea2dcf190366bacd3490d5a6412a605f"
@@ -7201,6 +7262,13 @@ Lockfile:
       minimist "^1.2.0"
       strip-json-comments "~2.0.1"
   
+  react-addons-shallow-compare@^15.6.2:
+    version "15.6.2"
+    resolved "https://registry.yarnpkg.com/react-addons-shallow-compare/-/react-addons-shallow-compare-15.6.2.tgz#198a00b91fc37623db64a28fd17b596ba362702f"
+    dependencies:
+      fbjs "^0.8.4"
+      object-assign "^4.1.0"
+  
   react-avatar-editor@^11.0.4:
     version "11.0.4"
     resolved "https://registry.yarnpkg.com/react-avatar-editor/-/react-avatar-editor-11.0.4.tgz#a32e2e10f1edc8480b1b852f3ab287c7b56c7ced"
@@ -7225,6 +7293,18 @@ Lockfile:
   react-countdown-now@^1.3.0:
     version "1.3.0"
     resolved "https://registry.yarnpkg.com/react-countdown-now/-/react-countdown-now-1.3.0.tgz#13c262a530614c69e68a0d277bd33b45d925cd56"
+  react-bootstrap-date-picker@^5.1.0:
+    version "5.1.0"
+    resolved "https://registry.yarnpkg.com/react-bootstrap-date-picker/-/react-bootstrap-date-picker-5.1.0.tgz#5f87c6a875e411dbf46d2be74960756f113ebf23"
+  
+  react-calendar@^2.15.2:
+    version "2.15.2"
+    resolved "https://registry.yarnpkg.com/react-calendar/-/react-calendar-2.15.2.tgz#b06320dde797b466786d4e7f6be0d20ec00f8696"
+    dependencies:
+      lodash.once "^4.1.1"
+      merge-class-names "^1.1.1"
+      prop-types "^15.6.0"
+      react-lifecycles-compat "^3.0.4"
   
   react-datepicker@^1.5.0:
     version "1.5.0"
@@ -7308,6 +7388,17 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/react-moment-proptypes/-/react-moment-proptypes-1.6.0.tgz#8ec266ee392a08ba3412d2df2eebf833ab1046df"
     dependencies:
       moment ">=1.6.0"
+  
+  react-moment@^0.7.9:
+    version "0.7.9"
+    resolved "https://registry.yarnpkg.com/react-moment/-/react-moment-0.7.9.tgz#fc6b5bf8952d27f134a42abfd7f42df2c839c1d7"
+  
+  react-number-format@^3.4.3:
+    version "3.4.3"
+    resolved "https://registry.yarnpkg.com/react-number-format/-/react-number-format-3.4.3.tgz#8bccc08e4ecfb9553548574589af457541a706fd"
+    dependencies:
+      babel-runtime "^6.26.0"
+      prop-types "^15.6.0"
   
   react-onclickoutside@^6.7.1:
     version "6.7.1"
@@ -7417,6 +7508,12 @@ Lockfile:
       hoist-non-react-statics "^2.3.1"
       prop-types "^15.6.0"
       react-with-direction "^1.1.0"
+  react-scroll@^1.7.9:
+    version "1.7.9"
+    resolved "https://registry.yarnpkg.com/react-scroll/-/react-scroll-1.7.9.tgz#83e6bfc1e10a7b7ff7dbc34008b76737501aba6b"
+    dependencies:
+      lodash.throttle "^4.1.1"
+      prop-types "^15.5.8"
   
   react@^16.2.0:
     version "16.4.0"
@@ -8445,6 +8542,10 @@ Lockfile:
       extended "~0.0.3"
       is-extended "~0.0.3"
   
+  string-hash@^1.1.3:
+    version "1.1.3"
+    resolved "https://registry.yarnpkg.com/string-hash/-/string-hash-1.1.3.tgz#e8aafc0ac1855b4666929ed7dd1275df5d6c811b"
+  
   string-template@~0.2.1:
     version "0.2.1"
     resolved "https://registry.yarnpkg.com/string-template/-/string-template-0.2.1.tgz#42932e598a352d01fc22ec3367d9d84eec6c9add"
@@ -8645,6 +8746,10 @@ Lockfile:
   textextensions@2:
     version "2.2.0"
     resolved "https://registry.yarnpkg.com/textextensions/-/textextensions-2.2.0.tgz#38ac676151285b658654581987a0ce1a4490d286"
+  
+  thai-baht-text@^1.0.7:
+    version "1.0.7"
+    resolved "https://registry.yarnpkg.com/thai-baht-text/-/thai-baht-text-1.0.7.tgz#bc99f31428794a133032e1918c417d0dc6487277"
   
   through2@^2.0.0:
     version "2.0.3"
@@ -9480,3 +9585,19 @@ Lockfile:
       compress-commons "^1.2.0"
       lodash "^4.8.0"
       readable-stream "^2.0.0"
+
+Trace: 
+  Error: Command failed.
+  Exit code: 2
+  Command: sh
+  Arguments: -c webpack --mode production
+  Directory: /Users/tmark_s/Documents/playtorium/emp-management
+  Output:
+  
+      at ProcessTermError.MessageError (/usr/local/lib/node_modules/yarn/lib/cli.js:186:110)
+      at new ProcessTermError (/usr/local/lib/node_modules/yarn/lib/cli.js:226:113)
+      at ChildProcess.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:30281:17)
+      at emitTwo (events.js:126:13)
+      at ChildProcess.emit (events.js:214:7)
+      at maybeClose (internal/child_process.js:925:16)
+      at Process.ChildProcess._handle.onexit (internal/child_process.js:209:5)

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Modal as SUIModal, Table, Button, Dropdown, Input } from 'semantic-ui-react';
 import moment from 'moment';
 import { compose } from 'recompose';
+import PropTypes from 'prop-types';
 import { closeModal } from '../../actions/modal';
 import { activateExamUserRequest, randomExam } from '../../actions/recruitment';
 
@@ -135,6 +136,14 @@ class ActiveExamUserModal extends Component {
       </SUIModal>);
   }
 }
+
+ActiveExamUserModal.propTypes = {
+  activateExamUser: PropTypes.func.isRequired,
+  userStatus: PropTypes.string.isRequired,
+  data: PropTypes.array.isRequired,
+  onClose: PropTypes.func.isRequired,
+  submitStatus: PropTypes.string.isRequired
+};
 
 const mapStateToProps = state => ({
   data: state.recruitment.dataModal,

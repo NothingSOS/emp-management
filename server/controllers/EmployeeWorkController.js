@@ -44,11 +44,15 @@ exports.findByUserId = (req, res, next) => {
         const level = Level.findById(employeeWork.levelId);
         const department = Department.findById(employeeWork.departmentId);
         const position = Position.findById(employeeWork.positionId);
-        Promise.all([level, department, position])
+        const boss = EmployeeInfo.findOwnByUserId(employeeWork.bossId);
+        Promise.all([level, department, position, boss])
           .then((values) => {
             employeeWork.levelName = values[0].name;
             employeeWork.departmentName = values[1].name;
             employeeWork.positionName = values[2].name;
+            if (values[3]) {
+              employeeWork.bossName = `${values[3].firstName} ${values[3].lastName}`;
+            }
             res.json(employeeWork);
           })
           .catch(next);

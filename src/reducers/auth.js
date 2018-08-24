@@ -5,12 +5,14 @@ import { isExpired } from '../utils/helper';
 let initialState;
 const accessToken = localStorage.getItem('accessToken');
 if (accessToken) {
-  const { id, username } = jwt.decode(accessToken);
+  const { id, username, type, name } = jwt.decode(accessToken);
   initialState = {
     isFetching: false,
     isAuthenticated: !isExpired(accessToken),
     id,
-    username
+    username,
+    type,
+    name
   };
 }
 else {
@@ -34,7 +36,9 @@ const auth = (state = initialState, action) => {
         isFetching: false,
         isAuthenticated: true,
         id: action.payload.user.id,
-        username: action.payload.user.username
+        username: action.payload.user.username,
+        type: action.payload.user.type,
+        name: action.payload.user.name
       };
     case actionTypes.LOGIN_FAILURE:
       return {

@@ -5,7 +5,7 @@ const University = {};
 
 University.create = (university, id) => (
   db.one(
-    'INSERT INTO universities (name, description, created_user, updated_user) VALUES ($1, $2, $3, $4) RETURNING 1',
+    'INSERT INTO universities (name, description, created_user, updated_user) VALUES ($1, $2, $3, $4) RETURNING id',
     [
       university.name,
       university.description,
@@ -26,6 +26,10 @@ University.update = (university, id) => (
       university.id
     ]
   )
+);
+
+University.findById = id => (
+  db.oneOrNone('SELECT * FROM universities WHERE id = $1', [id])
 );
 
 University.findAll = () => (

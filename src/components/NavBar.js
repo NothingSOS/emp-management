@@ -25,16 +25,26 @@ const Navbar = ({ userId, username, onLogout }) => (
         <Menu.Item as={NavLink} to="/employee" name="employee">
           Employee
         </Menu.Item>
-        <Menu.Item as={NavLink} to="/exam/" name="exam">
-          Exam
+        <Menu.Item as={NavLink} to="/erp" name="erp">
+          ERP
         </Menu.Item>
-        <Menu.Item as={NavLink} to="/recruitment" name="recruitment">
-          Recruitment
-        </Menu.Item>
+        <Can activity="examManage">
+          <Menu.Item as={NavLink} to="/exam" name="exam">
+            Exam
+          </Menu.Item>
+        </Can>
+        <Can activity="recruitmentManage">
+          <Menu.Item as={NavLink} to="/recruitment" name="recruitment">
+            Recruitment
+          </Menu.Item>
+        </Can>
         <Menu.Menu position="right">
           <Dropdown item pointing text={username}>
             <Dropdown.Menu>
               <Dropdown.Item text="Profile" as={Link} to={`/profile/${userId}`} />
+              <Can activity="masterTableManage">
+                <Dropdown.Item text="Master Table" as={Link} to="/master-table" />
+              </Can>
               <Can activity="leaveRequestApprove">
                 <Dropdown.Item text="Leave Approval" as={Link} to="/leave-approval" />
               </Can>

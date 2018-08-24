@@ -5,9 +5,8 @@ import { compose, lifecycle } from 'recompose';
 import { Field, reduxForm } from 'redux-form';
 import { Form } from 'semantic-ui-react';
 import Input from '../../components/Input';
-import { fetchProjectRequest } from '../../actions/project';
-import { getTimesheetById } from '../../selectors/timesheet';
-import { projectsToOptions } from '../../selectors/project';
+import { fetchTimesheetProjectRequest } from '../../actions/timesheet';
+import { getTimesheetById, timesheetProjectsToOptions } from '../../selectors/timesheet';
 import * as validator from '../../utils/validator';
 import { taskOptions } from '../../utils/options';
 
@@ -97,19 +96,20 @@ const mapStateToProps = (state, { id }) => ({
     task: getTimesheetById(state, id).task,
     description: getTimesheetById(state, id).description
   },
-  projects: projectsToOptions(state)
+  userId: state.auth.id,
+  projects: timesheetProjectsToOptions(state)
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchProject: () => dispatch(fetchProjectRequest())
+  fetchProject: userId => dispatch(fetchTimesheetProjectRequest(userId))
 });
 
 const enhance = compose(
   connect(mapStateToProps, mapDispatchToProps),
   lifecycle({
     componentDidMount() {
-      const { fetchProject } = this.props;
-      fetchProject();
+      const { fetchProject, userId } = this.props;
+      fetchProject(userId);
     }
   }),
   reduxForm({

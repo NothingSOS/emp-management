@@ -5,11 +5,10 @@ const Level = {};
 
 Level.create = (level, id) => (
   db.one(
-    'INSERT INTO levels (name, description, status, annual_leave, created_user, updated_user) VALUES ($1, $2, $3, $4, $5, $6) RETURNING 1',
+    'INSERT INTO levels (name, description, annual_leave, created_user, updated_user) VALUES ($1, $2, $3, $4, $5) RETURNING id',
     [
       level.name,
       level.description,
-      level.status,
       level.annualLeave,
       id,
       id

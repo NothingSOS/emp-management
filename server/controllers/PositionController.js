@@ -3,8 +3,12 @@ const Position = require('../models/Position');
 exports.create = (req, res, next) => {
   const newPosition = req.body.position;
   Position.create(newPosition, req.user.id)
-    .then((createdPosition) => {
-      res.json(createdPosition);
+    .then((result) => {
+      Position.findById(result.id)
+        .then((position) => {
+          res.json(position);
+        })
+        .catch(next);
     })
     .catch(next);
 };

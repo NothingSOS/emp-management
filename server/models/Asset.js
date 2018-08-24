@@ -5,7 +5,7 @@ const Asset = {};
 
 Asset.create = (asset, id) => (
   db.one(
-    'INSERT INTO assets (asset_type_id, name, description, own_flag, serial_number, created_user, updated_user, status, picture) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id',
+    'INSERT INTO assets (asset_type_id, name, description, own_flag, serial_number, created_user, updated_user, picture) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id',
     [
       asset.assetTypeId,
       asset.name,
@@ -14,7 +14,6 @@ Asset.create = (asset, id) => (
       asset.serialNumber,
       id,
       id,
-      'Active',
       asset.picture
     ]
   )
@@ -37,8 +36,18 @@ Asset.update = (asset, id) => (
   )
 );
 
+Asset.findById = id => (
+  db.oneOrNone(`SELECT asset_types.name AS asset_type_name, assets.* FROM assets INNER JOIN asset_types ON
+  assets.asset_type_id = asset_types.id WHERE assets.id = $1`, [id])
+);
+
 Asset.findAll = () => (
-  db.manyOrNone('SELECT * FROM assets WHERE own_flag = $1', ['Company'])
+  db.manyOrNone(`SELECT asset_types.name AS asset_type_name, assets.* FROM assets INNER JOIN asset_types 
+  ON assets.asset_type_id = asset_types.id WHERE assets.own_flag = $1 AND assets.status = $2`, ['Company', 'Active'])
+);
+
+Asset.delete = id => (
+  db.none('DELETE FROM assets WHERE id = $1', [id])
 );
 
 module.exports = Asset;

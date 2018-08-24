@@ -66,6 +66,10 @@ TimesheetPage.defaultProps = {
   isFetching: true
 };
 
+TimesheetPage.defaultProps = {
+  isFetching: true
+};
+
 TimesheetPage.propTypes = {
   isFetching: PropTypes.bool,
   timesheets: PropTypes.array.isRequired,

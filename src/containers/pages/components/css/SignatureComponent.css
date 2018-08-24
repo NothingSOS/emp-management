@@ -1,0 +1,89 @@
+.sign-container {
+    position: relative;
+    width: 100%;
+    margin: auto;
+}
+
+.sign-container .header {
+    text-align: left;
+    margin-bottom: 3%;
+}
+
+.sign-container table {
+    table-layout: fixed;
+    margin-bottom: 0.5%;
+    width: 100%;
+    text-align: center;
+}
+.sign-container td,th {
+    text-align: center;
+}
+/* Mark */
+
+.mark {
+    position: relative;
+    height: 2em;
+    width: 2em;
+    transition: 0.2s;
+}
+
+.div_mark {
+    position: relative;
+    display: inline-block;
+    overflow: visible;
+}
+
+.div_mark1 {
+    position: absolute;
+    display: inline-block;
+    overflow: hidden;
+    width: 0rem;
+    top: 50%;
+    left: 75%;
+    transition: 0.5s;
+}
+
+.div_mark2 {
+    position: absolute;
+    display: inline-block;
+    overflow: hidden;
+    width: 0rem;
+    top: 50%;
+    left: 75%;
+    transition: 0.5s;
+}
+
+.div_mark3 {
+    position: absolute;
+    display: inline-block;
+    overflow: hidden;
+    width: 0rem;
+    top: 50%;
+    left: 75%;
+    transition: 0.5s;
+}
+
+/* date */
+
+.date {
+    font-weight: lighter;
+}
+
+.accept-button{
+  position: relative;
+  padding: 10px 15px 10px 15px;
+  font-size: 1em;
+  background-color: white;
+  border: 1px solid black;
+  text-decoration: none;
+  border-radius: 5px;
+}
+.accept-button:hover{
+  cursor:pointer;
+  color: #37BFDB;
+}
+.accept-button:disabled {
+  pointer-events: none;
+  border: 1px solid rgb(155, 155, 155);
+  opacity: 0.7;
+}

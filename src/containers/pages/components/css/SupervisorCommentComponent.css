@@ -1,0 +1,38 @@
+.sup-comment {
+    position: relative;
+    width: 100%;
+    margin: auto;
+    font-family: 'Prompt', sans-serif;
+}
+
+.sup-comment textarea {
+    border-radius: 7px;
+    border-width: thin;
+    padding: 1%;
+    height: 10em;
+    width: 100%;
+    resize: none;
+    overflow: scroll;
+    margin-bottom: 1%;
+}
+
+.sup-comment textarea::-webkit-scrollbar {
+    display: none;
+}
+
+.sup-comment textarea:disabled {
+    border-color: rgb(234, 234, 234);
+}
+
+.blue-text {
+    color: rgb(44, 154, 205);
+    font-size: 1.7em;
+    text-shadow: 0px 3px 1px rgba(0, 0, 0, 0.05);
+    font-weight: bold;
+}
+
+.underline {
+    padding-bottom: 1%;
+    border-bottom: 0.1em solid #bbbbbb;
+    box-shadow: 0px 3px 1px rgba(0, 0, 0, 0.04);
+}

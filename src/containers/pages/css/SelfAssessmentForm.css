@@ -1,0 +1,92 @@
+.self-assessment-form {
+    position: relative;
+    width: 100%;
+    margin: auto;
+    font-family: 'Prompt', sans-serif;
+    overflow: hidden;
+    padding-top: 5%;
+}
+
+.blue-text {
+    color: rgb(44, 154, 205);
+    font-size: 1.7em;
+    text-shadow: 0px 3px 1px rgba(0, 0, 0, 0.05);
+    font-weight: bold;
+}
+
+.underline {
+    padding-bottom: 1%;
+    border-bottom: 0.1em solid #bbbbbb;
+    box-shadow: 0px 3px 1px rgba(0, 0, 0, 0.04);
+}
+
+.self-assessment-form textarea {
+    border-radius: 7px;
+    border-width: thin;
+    padding: 1%;
+    height: 7em;
+    width: 100%;
+    resize: none;
+    overflow: scroll;
+    margin-bottom: 1%;
+}
+
+.self-assessment-form textarea::-webkit-scrollbar {
+    display: none;
+}
+
+.pages-contrainer {
+    position: relative;
+    table-layout: fixed;
+    transition: 0.5s ease-in-out;
+    left: 0%;
+}
+
+.pages-contrainer td {
+    vertical-align: top;
+}
+
+.pages-contrainer td div table {
+    width: 100%;
+}
+
+.major-respon-table th, .sign-accom-table th, .con-com-table th, .str-improve-table th {
+    text-align: left;
+    padding: 1em 0 0.5em 0;
+}
+
+.major-respon-table td, .sign-accom-table td, .con-com-table td {
+    padding: 1em 0 0 0;
+}
+
+.str-improve-table {
+    table-layout: fixed;
+}
+
+.str-improve-table td {
+    padding: 0.5em 1em;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.str-improve-table td:first-child {
+    background-color: rgb(221, 233, 255);
+}
+
+.str-improve-table td:last-child {
+    background-color: rgb(255, 200, 200);
+}
+
+a{
+  margin-left: 5px;
+}
+
+textarea:disabled{
+  border-color: rgb(234, 234, 234);
+}
+
+.header-self-text{
+    font-size: 16px;
+    font-weight: bold;
+    color:rgb(44, 154, 205);
+}

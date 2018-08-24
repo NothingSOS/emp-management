@@ -4,6 +4,7 @@ import { Table, Label, Form, Grid, Button, Icon } from 'semantic-ui-react';
 import moment from 'moment';
 import PageHeader from './PageHeader';
 import { getYearOptions } from '../utils/options';
+import Can from '../containers/Can';
 
 const mNow = moment().format('MM');
 const yNow = moment().format('YYYY');
@@ -35,12 +36,14 @@ const oneRow = (date, dateName, id, onDeleteHolidayClick) => (
           <Grid.Column width={10}>
             {dateName}
           </Grid.Column>
-          <Grid.Column floated="right" width={6} >
-            <Button animated="fade" style={{ borderStyle: 'solid', borderColor: '#FF0000', backgroundColor: 'white', borderWidth: '1px' }} onClick={() => onDeleteHolidayClick(id, moment(date).format('YYYY'))}>
-              <Button.Content visible><font color="#FF0000" >Delete</font></Button.Content>
-              <Button.Content hidden > <Icon color="red" name="x" /> </Button.Content>
-            </Button>
-          </Grid.Column>
+          <Can activity="holidayDelete">
+            <Grid.Column floated="right" width={6} >
+              <Button animated="fade" style={{ borderStyle: 'solid', borderColor: '#FF0000', backgroundColor: 'white', borderWidth: '1px' }} onClick={() => onDeleteHolidayClick(id, moment(date).format('YYYY'))}>
+                <Button.Content visible><font color="#FF0000" >Delete</font></Button.Content>
+                <Button.Content hidden > <Icon color="red" name="x" /> </Button.Content>
+              </Button>
+            </Grid.Column>
+          </Can>
         </Grid.Row>
       </Grid>
     </Table.Cell>
@@ -54,9 +57,11 @@ const Holiday = ({ fetchHolidays, onDeleteHolidayClick, holidays, year, onAddHol
         <Grid.Column >
           <Form.Select placeholder={year} defaultValue={year} options={getYearOptions()} onChange={(e, { value }) => fetchHolidays(value)} />
         </Grid.Column>
-        <Grid.Column floated="right" width={3}>
-          <Button onClick={onAddHolidayClick}>Add</Button>
-        </Grid.Column>
+        <Can activity="holidayAdd">
+          <Grid.Column floated="right" width={3}>
+            <Button onClick={onAddHolidayClick}>Add</Button>
+          </Grid.Column>
+        </Can>
       </Grid.Row>
     </Grid>
     <Table striped celled>

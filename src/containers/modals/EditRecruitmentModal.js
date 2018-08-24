@@ -41,7 +41,7 @@ const EditRecruitmentModal = ({
         {confirm && <Button loading={submitting} disabled={submitting} onClick={onClose}>No</Button>}
       </SUIModal.Actions>
     </SUIModal>
-  );
+);
 
 EditRecruitmentModal.defaultProps = {
   confirm: false,
@@ -246,21 +246,21 @@ const enhance = compose(
     componentDidMount() {
       const { date, time, onClose, checkStatus } = this.props;
       // Check that date time is empty or not (validation)
-      let applicantsStatus = Object.keys(checkStatus)
+      const applicantsStatus = Object.keys(checkStatus)
         .filter(key => checkStatus[key] === 'Complete' || checkStatus[key] === 'Approve'
           || checkStatus[key] === 'Sign Contract' || checkStatus[key] === 'Exam' || checkStatus[key] === 'Interview');
-      if (applicantsStatus.length > 0) {
-        // Complete doesn't use time so filter non complete out
-        applicantsStatus = Object.keys(checkStatus).filter(key => checkStatus[key] === 'Complete');
-        if ((!validateDate(date) || !validateTime(time)) && applicantsStatus.length === 0) {
-          alert('Date or Time is EMPTY!, Please fill it.\n[Date Format => YYYY-MM-DD]\n[Time Format => HH:mm]'); // eslint-disable-line no-alert
-          onClose();
-        }
-        else if (applicantsStatus.length > 0 && !validateDate(date)) {
-          alert('Date is EMPTY!, Please fill it.\n[Date Format => YYYY-MM-DD]'); // eslint-disable-line no-alert
-          onClose();
-        }
-      }
+      // if (applicantsStatus.length > 0) {
+      //   // Complete doesn't use time so filter non complete out
+      //   applicantsStatus = Object.keys(checkStatus).filter(key => checkStatus[key] === 'Complete');
+      //   if ((!validateDate(date) || !validateTime(time)) && applicantsStatus.length === 0) {
+      //     alert('Date or Time is EMPTY!, Please fill it.\n[Date Format => YYYY-MM-DD]\n[Time Format => HH:mm]'); // eslint-disable-line no-alert
+      //     onClose();
+      //   }
+      //   else if (applicantsStatus.length > 0 && !validateDate(date)) {
+      //     alert('Date is EMPTY!, Please fill it.\n[Date Format => YYYY-MM-DD]'); // eslint-disable-line no-alert
+      //     onClose();
+      //   }
+      // }
       // Check that user is select status or not when user press confirm button
       if (checkStatus.length !== 0) {
         const notEmptyStatus = Object.keys(checkStatus).filter(key => checkStatus[key] !== '');

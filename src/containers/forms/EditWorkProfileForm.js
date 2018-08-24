@@ -10,8 +10,10 @@ import { masterTableToOptions } from '../../utils/helper';
 
 const validate = (values) => {
   const errors = {};
-  errors.startDate = validator.dateBefore(values.startDate, values.endDate);
-  errors.endDate = validator.dateAfter(values.endDate, values.startDate);
+  if (values.endDate) {
+    errors.startDate = validator.dateBefore(values.startDate, values.endDate);
+    errors.endDate = validator.dateAfter(values.endDate, values.startDate);
+  }
   errors.probationDate = validator.probationDateAfter(values.probationDate, values.startDate);
   return errors;
 };
@@ -86,8 +88,6 @@ const EditWorkProfileForm = ({ masterTable, handleSubmit, submitting }) => (
         type="date"
         label="End date"
         placeholder="End date"
-        disabled={submitting}
-        validate={validator.required}
       />
     </Form.Group>
     <Field

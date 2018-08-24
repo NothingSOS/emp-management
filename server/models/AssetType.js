@@ -5,11 +5,10 @@ const AssetType = {};
 
 AssetType.create = (assetType, id) => (
   db.one(
-    'INSERT INTO asset_types (name, description, status, created_user, updated_user) VALUES ($1, $2, $3, $4, $5) RETURNING 1',
+    'INSERT INTO asset_types (name, description, created_user, updated_user) VALUES ($1, $2, $3, $4) RETURNING id',
     [
       assetType.name,
       assetType.description,
-      assetType.status,
       id,
       id
     ]
@@ -30,8 +29,16 @@ AssetType.update = (assetType, id) => (
   )
 );
 
+AssetType.findById = id => (
+  db.oneOrNone('SELECT * FROM asset_types WHERE id = $1', [id])
+);
+
 AssetType.findAll = () => (
   db.manyOrNone('SELECT * FROM asset_types WHERE status = $1', ['Active'])
+);
+
+AssetType.delete = id => (
+  db.none('DELETE FROM asset_types WHERE id = $1', [id])
 );
 
 module.exports = AssetType;

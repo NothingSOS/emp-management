@@ -5,7 +5,7 @@ const Certificate = {};
 
 Certificate.create = (certificate, id) => (
   db.one(
-    'INSERT INTO certificates (name, description, institute, created_user, updated_user) VALUES ($1, $2, $3, $4, $5) RETURNING 1',
+    'INSERT INTO certificates (name, description, institute, created_user, updated_user) VALUES ($1, $2, $3, $4, $5) RETURNING id',
     [
       certificate.name,
       certificate.description,
@@ -30,8 +30,16 @@ Certificate.update = (certificate, id) => (
   )
 );
 
+Certificate.findById = id => (
+  db.oneOrNone('SELECT * FROM certificates WHERE id = $1', [id])
+);
+
 Certificate.findAll = () => (
   db.manyOrNone('SELECT * FROM certificates')
+);
+
+Certificate.delete = id => (
+  db.none('DELETE FROM certificates WHERE id = $1', [id])
 );
 
 module.exports = Certificate;

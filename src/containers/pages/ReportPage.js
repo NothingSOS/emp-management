@@ -10,27 +10,37 @@ import { getYearOptions, getMonthOptions } from '../../utils/options';
 import { fetchOwnProjectRequest, downloadReportRequest, fetchProjectMemberRequest } from '../../actions/report';
 import { projectsToOptions, projectDetailToMemberOptions } from '../../selectors/report';
 
-const reportOptions = [
-  { key: 'normal', value: 'Timesheet (Normal)', text: 'Timesheet (Normal)' },
-  { key: 'normal-person', value: 'Timesheet (Normal) per Person', text: 'Timesheet (Normal) per Person' },
-  { key: 'special', value: 'Timesheet (Special)', text: 'Timesheet (Special)' },
-  { key: 'special-person', value: 'Timesheet (Special) per Person', text: 'Timesheet (Special) per Person' },
-  { key: 'summary-month', value: 'Summary Timesheet (Year)', text: 'Summary Timesheet (Year)' },
-  { key: 'summary-year', value: 'Summary Timesheet (Month)', text: 'Summary Timesheet (Month)' },
-  { key: 'summary-leave', value: 'Summary Leave', text: 'Summary Leave' },
-  { key: 'resource', value: 'Resource Available', text: 'Resource Available' }
-];
+
+const reportOptions = (can) => {
+  const report = [{ key: 'normal', value: 'Timesheet (Normal)', text: 'Timesheet (Normal)' }];
+  if (can.reportTimesheetNormalAll) {
+    report.push({ key: 'normal-person', value: 'Timesheet (Normal) per Person', text: 'Timesheet (Normal) per Person' });
+  }
+  report.push({ key: 'special', value: 'Timesheet (Special)', text: 'Timesheet (Special)' });
+  if (can.reportTimesheetSpecialAll) {
+    report.push({ key: 'special-person', value: 'Timesheet (Special) per Person', text: 'Timesheet (Special) per Person' });
+  }
+  if (can.reportSummaryTimesheetYear) {
+    report.push({ key: 'summary-year', value: 'Summary Timesheet (Year)', text: 'Summary Timesheet (Year)' });
+  }
+  if (can.reportSummaryLeave) {
+    report.push({ key: 'summary-leave', value: 'Summary Leave', text: 'Summary Leave' });
+  }
+  // { key: 'summary-month', value: 'Summary Timesheet (Month)', text: 'Summary Timesheet (Month)' },
+  // { key: 'resource', value: 'Resource Available', text: 'Resource Available' }
+  return report;
+};
 
 const templateOptions = [
   { key: 'Playtorium', value: 'Playtorium', text: 'Playtorium' },
   { key: 'MFEC', value: 'MFEC', text: 'MFEC' }
 ];
 
-const ReportPage = ({ fetchOwnProject, userId, year, month, reportType, projectOptions, memberOptions, handleSubmit, downloadReport, fetchProjectMember }) => (
+const ReportPage = ({ fetchOwnProject, userId, year, month, reportType, projectOptions, memberOptions, handleSubmit, downloadReport, fetchProjectMember, can }) => (
   <div>
     <PageHeader text="Report" icon="file powerpoint" />
     <Form onSubmit={handleSubmit(downloadReport)}>
-      <Field name="reportType" as={Form.Select} component={Input} label="Report type" placeholder="Report type" options={reportOptions} onChange={(e, newValue) => fetchOwnProject(userId, year, month, newValue)} />
+      <Field name="reportType" as={Form.Select} component={Input} label="Report type" placeholder="Report type" options={reportOptions(can)} onChange={(e, newValue) => fetchOwnProject(userId, year, month, newValue)} />
       <Form.Group widths="equal">
         <Field name="year" as={Form.Select} component={Input} label="Year" placeholder="Year" onChange={(e, newValue) => fetchOwnProject(userId, newValue, month)} options={getYearOptions()} />
         {(reportType !== 'Summary Timesheet (Year)' && reportType !== 'Summary Leave') &&
@@ -57,7 +67,8 @@ ReportPage.propTypes = {
   downloadReport: PropTypes.func.isRequired,
   userId: PropTypes.number.isRequired,
   year: PropTypes.number.isRequired,
-  month: PropTypes.number.isRequired
+  month: PropTypes.number.isRequired,
+  can: PropTypes.object.isRequired
 };
 
 const selector = formValueSelector('report');
@@ -75,7 +86,8 @@ const mapStateToProps = state => ({
   month: state.report.month,
   reportType: selector(state, 'reportType'),
   projectOptions: projectsToOptions(state),
-  memberOptions: projectDetailToMemberOptions(state)
+  memberOptions: projectDetailToMemberOptions(state),
+  can: state.accessControl.can
 });
 
 const mapDispatchToProps = dispatch => ({

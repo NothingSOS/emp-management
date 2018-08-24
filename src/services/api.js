@@ -1,3 +1,5 @@
+import { call } from '../../node_modules/redux-saga/effects';
+
 let token;
 
 const callApi = (endpoint, request) => {
@@ -148,6 +150,130 @@ api.fetchAcessTypes = () => (
   callApi('/api/access-control')
 );
 
+// Asset Type
+
+api.addAssetType = body => (
+  callApi('/api/asset-types', {
+    method: 'POST',
+    body
+  })
+);
+
+api.deleteAssetType = body => (
+  callApi('/api/asset-types', {
+    method: 'DELETE',
+    body
+  })
+);
+
+// Asset
+
+api.addAsset = body => (
+  callApi('/api/assets', {
+    method: 'POST',
+    body
+  })
+);
+
+api.deleteAsset = body => (
+  callApi('/api/assets', {
+    method: 'DELETE',
+    body
+  })
+);
+
+// Certificate
+
+api.addCertificate = body => (
+  callApi('/api/certificates', {
+    method: 'POST',
+    body
+  })
+);
+
+api.deleteCertificate = body => (
+  callApi('/api/certificates', {
+    method: 'DELETE',
+    body
+  })
+);
+
+// Contract
+
+api.addContract = body => (
+  callApi('/api/contracts', {
+    method: 'POST',
+    body
+  })
+);
+
+api.deleteContract = body => (
+  callApi('/api/contracts', {
+    method: 'DELETE',
+    body
+  })
+);
+
+// Degree
+api.addDegree = body => (
+  callApi('/api/degrees', {
+    method: 'POST',
+    body
+  })
+);
+
+// Department
+api.addDepartment = body => (
+  callApi('/api/departments', {
+    method: 'POST',
+    body
+  })
+);
+
+// Faculty
+api.addFaculty = body => (
+  callApi('/api/faculties', {
+    method: 'POST',
+    body
+  })
+);
+
+// Level
+
+api.addLevel = body => (
+  callApi('/api/levels', {
+    method: 'POST',
+    body
+  })
+);
+
+// Major
+
+api.addMajor = body => (
+  callApi('/api/majors', {
+    method: 'POST',
+    body
+  })
+);
+
+// Position
+
+api.addPosition = body => (
+  callApi('/api/positions', {
+    method: 'POST',
+    body
+  })
+);
+
+// University
+
+api.addUniversity = body => (
+  callApi('/api/universities', {
+    method: 'POST',
+    body
+  })
+);
+
 // Profile
 
 api.fetchGeneralProfile = userId => (
@@ -164,6 +290,10 @@ api.fetchEducationProfile = userId => (
 
 api.fetchCertificateProfile = userId => (
   callApi(`/api/has-certificates?userId=${userId}`)
+);
+
+api.fetchToeicProfile = userId => (
+  callApi(`/api/toeic?userId=${userId}`)
 );
 
 api.fetchAssetProfile = userId => (
@@ -230,6 +360,13 @@ api.createCertificateProfile = body => (
   })
 );
 
+api.createToeicProfile = body => (
+  callApi('/api/toeic', {
+    method: 'POST',
+    body
+  })
+);
+
 api.createAssetProfile = body => (
   callApi('/api/has-assets', {
     method: 'POST',
@@ -256,6 +393,13 @@ api.deleteEducationProfile = body => (
 
 api.deleteCertificateProfile = body => (
   callApi('/api/has-certificates', {
+    method: 'DELETE',
+    body
+  })
+);
+
+api.deleteToeicProfile = body => (
+  callApi('/api/toeic', {
     method: 'DELETE',
     body
   })
@@ -439,13 +583,86 @@ api.fetchAccessControl = () => (
   callApi(`/api/access-control`)
 );
 
+api.deleteTimesheet = body => (
+  callApi('/api/timesheets', {
+    method: 'DELETE',
+    body
+  })
+);
+
+// Erp
+api.createErp = body => (
+  callApi('/api/billrecords-control', {
+    method: 'POST',
+    body
+  })
+);
+
+api.fetchErp = () => (
+  callApi(`/api/billrecords-control/`)
+);
+
+api.fetchErpDetail = body => (
+  callApi(`/api/billrecords-editcontrol/`, {
+    method: 'POST',
+    body
+  })
+);
+
+api.createErpDetail = body => (
+  callApi(`/api/billrecords-createeditcontrol/`, {
+    method: 'POST',
+    body
+  })
+);
+
+api.deleteErp = body => (
+  callApi(`/api/billrecords-control/`, {
+    method: 'DELETE',
+    body
+  })
+);
+
+
+api.uploadErp = body => (
+  callApi(`/api/billrecords-imgupload/upload`, {
+    headers: {
+      Authorization: ('Bearer ').concat(localStorage.getItem('accessToken'))
+    },
+    method: 'POST',
+    body
+  })
+);
+
+api.updateUploadImage = body => (
+  callApi(`/api/billrecords-imgupload/`, {
+    method: 'POST',
+    body
+  })
+);
+
+api.fetchApprove = () => (
+  callApi(`/api/approverecords-control/`)
+);
+
+api.getExcel = id => (
+  download(`/api/billxlsx-control/?id=${id}`)
+);
+
+api.approveUpdate = body => (
+  callApi(`/api/approverecords-control/`, {
+    method: 'POST',
+    body
+  })
+);
+
 // Applicant
 api.fetchApplicant = () => (
   callApi('/api/applicants')
 );
 
 api.fetchTestStatus = rowId => (
-  callApi('api/applicants/get-test-status', {
+  callApi('/api/applicants/get-test-status', {
     method: 'POST',
     body: {
       rowId,
@@ -463,77 +680,77 @@ api.fetchPositionRecruitment = () => (
 );
 
 api.changeRecruitmentStatus = body => (
-  callApi('api/applicants/update-status', {
+  callApi('/api/applicants/update-status', {
     method: 'PUT',
     body
   })
 );
 
 api.updateRecruitmentInterviewDateTime = body => (
-  callApi('api/applicants/update-interview-datetime', {
+  callApi('/api/applicants/update-interview-datetime', {
     method: 'PUT',
     body
   })
 );
 
 api.updateRecruitmentExamDateTime = body => (
-  callApi('api/applicants/update-exam-datetime', {
+  callApi('/api/applicants/update-exam-datetime', {
     method: 'PUT',
     body
   })
 );
 
 api.updateRecruitmentSignDateTime = body => (
-  callApi('api/applicants/update-sign-datetime', {
+  callApi('/api/applicants/update-sign-datetime', {
     method: 'PUT',
     body
   })
 );
 
 api.updateRecruitmentCompleteDateTime = body => (
-  callApi('api/applicants/update-first-date', {
+  callApi('/api/applicants/update-first-date', {
     method: 'PUT',
     body
   })
 );
 
 api.updateRecruitmentRejectDate = body => (
-  callApi('api/applicants/update-reject-date', {
+  callApi('/api/applicants/update-reject-date', {
     method: 'PUT',
     body
   })
 );
 
 api.updateRecruitmentCancelDate = body => (
-  callApi('api/applicants/update-cancel-date', {
+  callApi('/api/applicants/update-cancel-date', {
     method: 'PUT',
     body
   })
 );
 
 api.updateRecruitmentBlacklistDate = body => (
-  callApi('api/applicants/update-blacklist-date', {
+  callApi('/api/applicants/update-blacklist-date', {
     method: 'PUT',
     body
   })
 );
 
 api.updateRecruitmentNote = body => (
-  callApi('api/applicants/update-note', {
+  callApi('/api/applicants/update-note', {
     method: 'PUT',
     body
   })
 );
 
 api.updateRecruitmentInterviewResult = body => (
-  callApi('api/applicants/update-interview-result', {
+  callApi('/api/applicants/update-interview-result', {
     method: 'PUT',
     body
   })
 );
 
 api.updateRecruitmentSignedPosition = body => (
-  callApi('api/applicants/update-signed-position', {
+  callApi('/api/applicants/update-signed-position', {
     method: 'PUT',
     body
   })
@@ -608,21 +825,21 @@ api.uploadGradeProgress = gradingList => (
 // Recruitment
 
 api.getExamUser = body => (
-  callApi('api/applicants/get-exam-user', {
+  callApi('/api/applicants/get-exam-user', {
     method: 'POST',
     body
   })
 );
 
 api.activateExamUser = body => (
-  callApi('api/applicants/activate-exam-user', {
+  callApi('/api/applicants/activate-exam-user', {
     method: 'POST',
     body
   })
 );
 
 api.updateRecruitmentTestStatus = body => (
-  callApi('api/applicants/update-test-status', {
+  callApi('/api/applicants/update-test-status', {
     method: 'POST',
     body
   })
@@ -814,6 +1031,81 @@ api.getRowId = (id, testDate) => (
       id,
       testDate,
     }
+  })
+);
+
+// Evaluate
+
+api.checkProbation = id => (
+  callApi(`/api/probation/check?id=${id}`)
+);
+
+api.checkPerformance = id => (
+  callApi(`/api/performance/check?id=${id}`)
+);
+
+api.checkSelfAssessment = id => (
+  callApi(`/api/selfassessment/check?id=${id}`)
+);
+
+api.fetchProbation = data => (
+  callApi(`/api/probation/?id=${data[0]}&proId=${data[1]}`)
+);
+
+api.fetchPerformance = data => (
+  callApi(`/api/performance/?id=${data[0]}&year=${data[1]}`)
+);
+
+api.fetchSelfAssessment = id => (
+  callApi(`/api/selfassessment/?id=${id}`)
+);
+
+api.addProbation = body => (
+  callApi('/api/probation', {
+    method: 'POST',
+    body
+  })
+);
+
+api.updateProbation = body => (
+  callApi('/api/probation', {
+    method: 'PUT',
+    body
+  })
+);
+
+api.addPerformance = body => (
+  callApi('/api/performance', {
+    method: 'POST',
+    body
+  })
+);
+
+api.updatePerformance = body => (
+  callApi('/api/performance', {
+    method: 'PUT',
+    body
+  })
+);
+
+api.addSelfAssessment = body => (
+  callApi('/api/selfassessment', {
+    method: 'POST',
+    body
+  })
+);
+
+api.updateSelfAssessment = body => (
+  callApi('/api/selfassessment', {
+    method: 'PUT',
+    body
+  })
+);
+
+api.submitSelfAssessment = body => (
+  callApi('/api/selfassessment/submit', {
+    method: 'PUT',
+    body
   })
 );
 

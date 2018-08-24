@@ -1,0 +1,42 @@
+.goal-table {
+    table-layout: fixed;
+    font-family: 'Prompt', sans-serif;
+}
+
+.goal-table th {
+    padding: 1em 0 0.5em 0;
+    text-align: left;
+}
+
+.goal-table td {
+    padding-top: 1em;
+    font-size: 16px;
+}
+
+.goal-table td textarea {
+    font-size: 14px;
+}
+
+.goal-table td textarea {
+    border-radius: 7px;
+    border-width: thin;
+    padding: 1%;
+    height: 7em;
+    width: 100%;
+    resize: none;
+    overflow: scroll;
+    margin-bottom: 1%;
+}
+
+.blue-text {
+    color: rgb(44, 154, 205);
+    font-size: 1.7em;
+    text-shadow: 0px 3px 1px rgba(0, 0, 0, 0.05);
+    font-weight: bold;
+}
+
+.underline {
+    padding-bottom: 1%;
+    border-bottom: 0.1em solid #bbbbbb;
+    box-shadow: 0px 3px 1px rgba(0, 0, 0, 0.04);
+}

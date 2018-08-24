@@ -65,7 +65,7 @@ exports.updateProfileImg = (req, res, next) => {
   }
   // for user
   else if (req.accessControl.employeeInfoEditOwn) {
-    if (req.body.userId === req.user.id) {
+    if (parseInt(req.body.userId, 10) === req.user.id) {
       EmployeeInfo.updateProfileImg(path, req.body.userId, req.user.id)
         .then(() => {
           res.json({ path });

@@ -4,16 +4,16 @@ const AccessControl = {};
 
 AccessControl.create = (accessControl, id) => (
   db.one(
-    `INSERT INTO access_control 
+    `INSERT INTO access_control
     (
-      name, 
-      timesheet_add_own, 
-      timesheet_add_other, 
-      timesheet_edit_own, 
-      timesheet_edit_other, 
-      timesheet_view_own, 
-      timesheet_view_other, 
-      timesheet_delete_own, 
+      name,
+      timesheet_add_own,
+      timesheet_add_other,
+      timesheet_edit_own,
+      timesheet_edit_other,
+      timesheet_view_own,
+      timesheet_view_other,
+      timesheet_delete_own,
       timesheet_delete_other,
       leave_add_own,
       leave_add_other,
@@ -75,7 +75,7 @@ AccessControl.findAll = () => (
 );
 
 AccessControl.findById = id => (
-  db.one('SELECT * FROM access_control WHERE id = $1', [id])
+  db.oneOrNone('SELECT * FROM access_control WHERE id = $1', [id])
 );
 
 module.exports = AccessControl;

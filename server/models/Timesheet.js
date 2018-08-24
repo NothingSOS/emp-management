@@ -50,9 +50,9 @@ Timesheet.findTimesheetInProject = (year, month, projectId, userId) => (
 );
 
 Timesheet.findSummaryTimesheet = year => (
-  db.manyOrNone(`SELECT users.id, CONCAT(employee_info.first_name, ' ', employee_info.last_name) as name, 
+  db.manyOrNone(`SELECT users.id, CONCAT(employee_info.first_name, ' ', employee_info.last_name) as name,
   timesheets.project_id, EXTRACT(MONTH FROM timesheets.date) as month, SUM(timesheets.totalhours) / $1 as days
-  FROM users INNER JOIN timesheets ON users.id = timesheets.user_id INNER JOIN employee_info 
+  FROM users INNER JOIN timesheets ON users.id = timesheets.user_id INNER JOIN employee_info
   ON users.id = employee_info.user_id
   WHERE EXTRACT(year from timesheets.date) = $2
   GROUP BY users.id, timesheets.project_id, month, name
@@ -73,10 +73,10 @@ Timesheet.findSummaryTimesheetInMonth = (projectId, year, month) => (
 );
 
 Timesheet.findByMonthAndYear = (month, year, userId) => (
-  db.manyOrNone(`SELECT timesheets.id, timesheets.project_id, projects.name, timesheets.date, 
+  db.manyOrNone(`SELECT timesheets.id, timesheets.project_id, projects.name, timesheets.date,
   timesheets.time_in, timesheets.time_out, timesheets.task, timesheets.description, timesheets.totalhours
-  FROM timesheets INNER JOIN projects ON timesheets.project_id = projects.id 
-  WHERE EXTRACT(month from timesheets.date) = $1 AND EXTRACT(year from timesheets.date) = $2 
+  FROM timesheets INNER JOIN projects ON timesheets.project_id = projects.id
+  WHERE EXTRACT(month from timesheets.date) = $1 AND EXTRACT(year from timesheets.date) = $2
   AND timesheets.user_id = $3 ORDER BY timesheets.date, timesheets.time_in`, [month, year, userId])
 );
 

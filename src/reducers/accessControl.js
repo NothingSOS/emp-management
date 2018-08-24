@@ -2,7 +2,9 @@ import * as actionTypes from '../constants/actionTypes';
 
 const initialState = {
   fetched: false,
-  can: null
+  can: {
+    view: true
+  }
 };
 
 const accessControl = (state = initialState, action) => {
@@ -16,7 +18,10 @@ const accessControl = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-        can: action.payload.accessControl,
+        can: {
+          ...state.can,
+          ...action.payload.accessControl
+        },
         fetched: true
       };
     case actionTypes.ACCESS_CONTROL_FETCH_FAILURE:
@@ -24,6 +29,10 @@ const accessControl = (state = initialState, action) => {
         ...state,
         isFetching: false,
         message: action.payload.message
+      };
+    case actionTypes.LOGOUT:
+      return {
+        initialState
       };
     default:
       return state;

@@ -6,8 +6,12 @@ exports.create = (req, res, next) => {
     newAsset.picture = `/server/storage/private/asset/${req.file.filename}`;
   }
   Asset.create(newAsset, req.user.id)
-    .then((createdAsset) => {
-      res.json(createdAsset);
+    .then((result) => {
+      Asset.findById(result.id)
+        .then((asset) => {
+          res.json(asset);
+        })
+        .catch(next);
     })
     .catch(next);
 };
@@ -25,6 +29,18 @@ exports.findAll = (req, res, next) => {
   Asset.findAll()
     .then((assets) => {
       res.json(assets);
+    })
+    .catch(next);
+};
+
+exports.delete = (req, res, next) => {
+  Asset.delete(req.body.id)
+    .then(() => {
+      Asset.findAll()
+        .then((assets) => {
+          res.json(assets);
+        })
+        .catch(next);
     })
     .catch(next);
 };

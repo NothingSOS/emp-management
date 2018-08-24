@@ -6,8 +6,8 @@ const transporter = nodemailer.createTransport(smtpTransport({
   host: 'cpanel01wh.bkk1.cloud.z.com',
   port: 465,
   auth: {
-    user: 'masaru39@playtorium.co.th',
-    pass: 'z123456@plays'
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASS
   },
   secure: true
 }));
@@ -43,7 +43,7 @@ exports.updateInterviewDateTime = (req, res, next) => {
   Applicant.findInfoById(editApplicant.rowId).then((selectApplicant) => {
     if (!(selectApplicant.interviewDate === null && selectApplicant.interviewTime === null)) {
       const mailOptions = {
-        from: 'masaru39@playtorium.co.th',
+        from: process.env.MAIL_USER,
         to: `${selectApplicant.email}`,
         subject: 'HR Playtorium : Interview Appointment เปลี่ยนวัน',
         html: `<p>Dear Khun  ${selectApplicant.firstName} ,</p>
@@ -81,7 +81,7 @@ exports.updateInterviewDateTime = (req, res, next) => {
     }
     else {
       const mailOptions = {
-        from: 'masaru39@playtorium.co.th',
+        from: process.env.MAIL_USER,
         to: `${selectApplicant.email}`,
         subject: 'HR Playtorium : Interview Appointment',
         html: `<p>Dear Khun  ${selectApplicant.firstName} ,</p>
@@ -141,7 +141,7 @@ exports.updateSignDateTime = (req, res, next) => {
   Applicant.findInfoById(editApplicant.rowId).then((selectApplicant) => {
     if (!(selectApplicant.signDate === null && selectApplicant.signTime === null)) {
       const mailOptions = {
-        from: 'masaru39@playtorium.co.th',
+        from: process.env.MAIL_USER,
         to: `${selectApplicant.email}`,
         subject: `HR Playtorium : Employment Contract Appointment for ${selectApplicant.signedPosition} (Change)`,
         html: `<p>Dear Khun  ${selectApplicant.firstName} ,</p>
@@ -181,7 +181,7 @@ exports.updateSignDateTime = (req, res, next) => {
     }
     else {
       const mailOptions = {
-        from: 'masaru39@playtorium.co.th',
+        from: process.env.MAIL_USER,
         to: `${selectApplicant.email}`,
         subject: `HR Playtorium : Employment Contract Appointment for ${selectApplicant.signedPosition}`,
         html: `<p>Dear Khun  ${selectApplicant.firstName} ,</p>
@@ -268,7 +268,7 @@ exports.updateExamDate = (req, res, next) => {
   Applicant.findInfoById(editApplicant.rowId).then((selectApplicant) => {
     if (!(selectApplicant.examDate === null && selectApplicant.examTime === null)) {
       const mailOptions = {
-        from: 'masaru39@playtorium.co.th',
+        from: process.env.MAIL_USER,
         to: `${selectApplicant.email}`,
         subject: 'HR Playtorium : Interview Appointment เปลี่ยนสอบ',
         html: `<p>Dear Khun  ${selectApplicant.firstName} ,</p>

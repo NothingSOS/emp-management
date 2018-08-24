@@ -13,7 +13,7 @@ const Applicant = {};
 
 Applicant.create = applicant => (
   db.one(
-    'INSERT INTO applicants (first_name, last_name, position, mobile_number, email, first_name_th, last_name_th, citizen_id, status, registration_date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING row_id',
+    'INSERT INTO applicants (first_name, last_name, position, mobile_number, email, first_name_th, last_name_th, citizen_id, status, registration_date, test_status, interview_done) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING row_id',
     [
       applicant.firstName,
       applicant.lastName,
@@ -25,6 +25,8 @@ Applicant.create = applicant => (
       applicant.citizenID,
       'Apply',
       applicant.registrationDate,
+      'NotTest',
+      false
     ]
   )
   // edit here
@@ -227,6 +229,7 @@ Applicant.getAndUpdateRequiredExam = (rowId, testDate, lifetime) => (
     + ' ON epr.epr_position = ANY( a.position )'
     + ' WHERE a.row_id = $1', [rowId])
     .then((result) => {
+      console.log(result);
       // need to have data for each position first! (It's not handle the position that not have exam required list)
       let getExamIdCommand = 'SELECT ex_category as category, ex_subcategory as subcategory, ex_type as type, ARRAY_AGG( ex_id ) as ex_id_list FROM exams';
 

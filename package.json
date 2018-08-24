@@ -6,7 +6,7 @@
   "scripts": {
     "start:server": "npx nodemon server",
     "start:client": "webpack-dev-server --mode development --open",
-    "start": "npx concurrently \"yarn start:server\" \"yarn start:client\"",
+    "start": "npx concurrently \"yarn start:server\" \"yarn start:client\" ",
     "dev": "webpack --mode development",
     "build": "webpack --mode production"
   },
@@ -62,7 +62,7 @@
     "jsonwebtoken": "^8.2.0",
     "lodash": "^4.17.10",
     "mime": "^2.3.1",
-    "moment": "^2.21.0",
+    "moment": "^2.22.2",
     "moment-timezone": "0.4.0",
     "morgan": "^1.9.0",
     "multer": "^1.3.0",
@@ -79,14 +79,19 @@
     "react": "^16.2.0",
     "react-avatar-editor": "^11.0.4",
     "react-big-calendar": "^0.19.1",
+    "react-bootstrap-date-picker": "^5.1.0",
+    "react-calendar": "^2.15.2",
     "react-countdown-now": "^1.3.0",
-    "react-datepicker": "^1.5.0",
+    "react-datepicker": "^1.6.0",
     "react-dates": "^16.7.0",
     "react-day-picker": "^7.1.9",
     "react-dom": "^16.2.0",
     "react-drafts": "^1.0.3",
+    "react-moment": "^0.7.9",
+    "react-number-format": "^3.4.3",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
+    "react-scroll": "^1.7.9",
     "react-with-direction": "1.1.0",
     "react-with-styles": "3.2.0",
     "recompose": "^0.27.0",
@@ -97,9 +102,8 @@
     "redux-thunk": "^2.2.0",
     "save": "^2.3.2",
     "semantic-ui-react": "0.79.0",
-    "xlsx": "^0.13.0",
-    "vaadin-date-picker": "^2.0.4"
-  },
-  "repository": "https://github.com/NothingSOS/emp-management.git",
-  "author": "nihcet <techinkid@gmail.com>"
+    "thai-baht-text": "^1.0.7",
+    "vaadin-date-picker": "^2.0.4",
+    "xlsx": "^0.13.0"
+  }
 }

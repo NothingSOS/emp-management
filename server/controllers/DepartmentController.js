@@ -3,8 +3,12 @@ const Department = require('../models/Department');
 exports.create = (req, res, next) => {
   const newDepartment = req.body.department;
   Department.create(newDepartment, req.user.id)
-    .then((createdDepartment) => {
-      res.json(createdDepartment);
+    .then((result) => {
+      Department.findById(result.id)
+        .then((department) => {
+          res.json(department);
+        })
+        .catch(next);
     })
     .catch(next);
 };

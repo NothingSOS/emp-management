@@ -20,6 +20,7 @@ exports.create = (req, res, next) => {
   if (req.accessControl.hasAssetAddAll) {
     if (req.body.ownFlag) {
       const newAsset = req.body;
+      newAsset.ownFlag = 'MySelf';
       if (req.file) {
         newAsset.picture = `/server/storage/private/asset/${req.file.filename}`;
       }

@@ -201,7 +201,7 @@ const ViewResultModal = ({
         </SUIModal.Content>
       </SUIModal>
     </div>
-  );
+);
 
 ViewResultModal.propTypes = {
   person: PropTypes.object.isRequired,

@@ -55,11 +55,11 @@ LeaveRequest.findByYearAndMonth = (year, month, userId) => (
 );
 
 LeaveRequest.findSummaryLeave = year => (
-  db.manyOrNone(`SELECT users.id, CONCAT(employee_info.first_name, ' ', employee_info.last_name) as name, 
+  db.manyOrNone(`SELECT users.id, CONCAT(employee_info.first_name, ' ', employee_info.last_name) as name,
   employee_info.nick_name, employee_info.mobile_number, employee_work.start_date, leave_requests.leave_type, EXTRACT(month from leave_date) as month, SUM(totalhours) / $1 as days
   FROM users INNER JOIN employee_info ON users.id = employee_info.user_id AND users.status = $2
   INNER JOIN employee_work ON employee_info.user_id = employee_work.user_id
-  LEFT OUTER JOIN leave_requests ON employee_info.user_id = leave_requests.user_id 
+  LEFT OUTER JOIN leave_requests ON employee_info.user_id = leave_requests.user_id
   AND EXTRACT(year from leave_requests.leave_date) = $3
   GROUP BY users.id, leave_requests.leave_type, month, name, employee_info.nick_name, employee_info.mobile_number, employee_work.start_date
   ORDER BY users.id, leave_requests.leave_type, month`, [8, 'Active', year])

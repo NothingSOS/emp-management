@@ -72,8 +72,8 @@ Project.findMemberProject = projectId => (
 );
 
 Project.findProjectByTimesheet = (userId, year, month) => (
-  db.manyOrNone(`SELECT DISTINCT timesheets.project_id, projects.name FROM timesheets INNER JOIN projects ON 
-  timesheets.project_id = projects.id AND EXTRACT(year from timesheets.date) = $1 AND 
+  db.manyOrNone(`SELECT DISTINCT timesheets.project_id, projects.name FROM timesheets INNER JOIN projects ON
+  timesheets.project_id = projects.id AND EXTRACT(year from timesheets.date) = $1 AND
   EXTRACT(month from timesheets.date) = $2 AND timesheets.user_id = $3`, [year, month, userId])
 );
 

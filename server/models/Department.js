@@ -5,10 +5,9 @@ const Department = {};
 
 Department.create = (department, id) => (
   db.one(
-    'INSERT INTO departments (name, status, created_user, updated_user) VALUES ($1, $2, $3, $4) RETURNING 1',
+    'INSERT INTO departments (name, created_user, updated_user) VALUES ($1, $2, $3) RETURNING id',
     [
       department.name,
-      department.status,
       id,
       id
     ]

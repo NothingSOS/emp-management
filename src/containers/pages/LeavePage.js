@@ -10,7 +10,6 @@ import {
 } from '../../actions/leave';
 import { openModal } from '../../actions/modal';
 import * as modalNames from '../../constants/modalNames';
-import { getVisibilityLeaves } from '../../selectors/leave';
 import Leave from '../../components/Leave';
 import Loader from '../../components/Loader';
 import { getTotalPages, getVisibleLeaves } from '../../selectors/leave';

@@ -3,8 +3,12 @@ const Level = require('../models/Level');
 exports.create = (req, res, next) => {
   const newLevel = req.body.level;
   Level.create(newLevel, req.user.id)
-    .then((createdLevel) => {
-      res.json(createdLevel);
+    .then((result) => {
+      Level.findById(result.id)
+        .then((level) => {
+          res.json(level);
+        })
+        .catch(next);
     })
     .catch(next);
 };

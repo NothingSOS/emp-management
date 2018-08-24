@@ -61,6 +61,7 @@ const row = (item, { checkStatus, date, time, submitting, positions, selectPosit
       </Table.Row>
     );
   }
+  return '';
 };
 // const EditRecruitmentForm = ({ data, checkStatus, onConfirm, date, time }) => (
 const EditRecruitmentForm = ({ data, checkStatus, date, time, handleSubmit, submitting, positions, selectPosition }) => (

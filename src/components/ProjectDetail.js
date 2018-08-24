@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Segment, Grid, Header, Icon, Table, Button, List } from 'semantic-ui-react';
 import UploadFile from '../components/UploadFile';
+import Can from '../containers/Can';
 
 const membersDetail = (memberDetail, projectId, onDeleteClick) => (
   <Table.Row key={memberDetail.userId}>
@@ -13,10 +14,12 @@ const membersDetail = (memberDetail, projectId, onDeleteClick) => (
     <Table.Cell>{memberDetail.startDate ? moment(memberDetail.startDate).format('DD/MM/YYYY') : '-'}</Table.Cell>
     <Table.Cell>{memberDetail.endDate ? moment(memberDetail.endDate).format('DD/MM/YYYY') : '-'}</Table.Cell>
     <Table.Cell>
-      <Button animated="fade" style={{ borderStyle: 'solid', borderColor: '#FF0000', backgroundColor: 'white', borderWidth: '1px' }} onClick={() => onDeleteClick(memberDetail.userId, projectId)}>
-        <Button.Content visible><font color="#FF0000" >Delete</font></Button.Content>
-        <Button.Content hidden > <Icon color="red" name="user delete" /> </Button.Content>
-      </Button>
+      <Can activity="hasProjectDelete">
+        <Button animated="fade" style={{ borderStyle: 'solid', borderColor: '#FF0000', backgroundColor: 'white', borderWidth: '1px' }} onClick={() => onDeleteClick(memberDetail.userId, projectId)}>
+          <Button.Content visible><font color="#FF0000" >Delete</font></Button.Content>
+          <Button.Content hidden > <Icon color="red" name="user delete" /> </Button.Content>
+        </Button>
+      </Can>
     </Table.Cell>
   </Table.Row>
 );
@@ -34,9 +37,11 @@ const ProjectDetail = ({ projectDetail, onEditClick, onAddMemberClick, onDeleteM
               </Header.Content>
             </Header>
           </Grid.Column>
-          <Grid.Column floated="right" >
-            <Icon link name="edit" size="large" onClick={onEditClick} />
-          </Grid.Column>
+          <Can activity="projectEdit">
+            <Grid.Column floated="right" >
+              <Icon link name="edit" size="large" onClick={onEditClick} />
+            </Grid.Column>
+          </Can>
         </Grid.Row>
       </Grid>
     </Segment>
@@ -79,11 +84,15 @@ const ProjectDetail = ({ projectDetail, onEditClick, onAddMemberClick, onDeleteM
             {projectDetail.files.map(file => (
               <List.Item key={file.id}>
                 <a href onClick={() => handleDownloadFile(file.id, file.name)}>{`${file.name} `}</a>
-                <a href onClick={() => handleDeleteFile(file.id)}>[delete]</a>
+                <Can activity="projectEdit">
+                  <a href onClick={() => handleDeleteFile(file.id)}>[delete]</a>
+                </Can>
               </List.Item>
             ))}
           </List>
-          <UploadFile onUploadSubmit={handleUploadFile} args={[projectDetail.projectId]} />
+          <Can activity="projectEdit">
+            <UploadFile onUploadSubmit={handleUploadFile} args={[projectDetail.projectId]} />
+          </Can>
         </Grid.Column>
       </Grid>
     </Segment>
@@ -98,9 +107,11 @@ const ProjectDetail = ({ projectDetail, onEditClick, onAddMemberClick, onDeleteM
               </Header.Content>
             </Header>
           </Grid.Column>
-          <Grid.Column floated="right" >
-            <Icon link name="add user" size="large" onClick={onAddMemberClick} />
-          </Grid.Column>
+          <Can activity="hasProjectDelete">
+            <Grid.Column floated="right" >
+              <Icon link name="add user" size="large" onClick={onAddMemberClick} />
+            </Grid.Column>
+          </Can>
         </Grid.Row>
       </Grid>
     </Segment>

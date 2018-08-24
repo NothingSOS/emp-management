@@ -3,8 +3,12 @@ const Faculty = require('../models/Faculty');
 exports.create = (req, res, next) => {
   const newFaculty = req.body.faculty;
   Faculty.create(newFaculty, req.user.id)
-    .then((createdFaculty) => {
-      res.json(createdFaculty);
+    .then((result) => {
+      Faculty.findById(result.id)
+        .then((faculty) => {
+          res.json(faculty);
+        })
+        .catch(next);
     })
     .catch(next);
 };

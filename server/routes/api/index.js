@@ -36,6 +36,16 @@ const leaveHistory = require('./leaveHistory');
 const toeic = require('./toeic');
 const promoteHistory = require('./promoteHistory');
 const line = require('./line');
+const probation = require('./probation');
+const performance = require('./performance');
+const selfAssessment = require('./selfAssessment');
+const billrecordcontrol = require('./billrecordcontrol');
+const billrecordimg = require('./billrecordimg');
+const billrecordeditconrtol = require('./billrecordeditcontrol');
+const billrecordcreateeditconrtol = require('./billrecordcreateeditcontrol');
+const approverecordcontrol = require('./approvebillrecord');
+const billxlsxcontrol = require('./billxlsxcontrol');
+const applyPosition = require('./applyPosition');
 
 router.use('/employee-info', employeeInfo);
 
@@ -92,6 +102,7 @@ router.use('/exam', exam);
 router.use('/takeExam', takeExam);
 
 router.use('/takeexamagreement', takeExamAgreement);
+
 router.use('/master-table', masterATable);
 
 router.use('/work-experience', workExperience);
@@ -103,5 +114,25 @@ router.use('/toeic', toeic);
 router.use('/promote-history', promoteHistory);
 
 router.use('/line', line);
+
+router.use('/probation', probation);
+
+router.use('/performance', performance);
+
+router.use('/selfassessment', selfAssessment);
+
+router.use('/billrecords-control', billrecordcontrol);
+
+router.use('/billrecords-imgupload', billrecordimg);
+
+router.use('/billrecords-editcontrol', billrecordeditconrtol);
+
+router.use('/billrecords-createeditcontrol', billrecordcreateeditconrtol);
+
+router.use('/approverecords-control', approverecordcontrol);
+
+router.use('/billxlsx-control', billxlsxcontrol);
+
+router.use('/apply-positions', applyPosition);
 
 module.exports = router;

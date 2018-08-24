@@ -46,7 +46,7 @@ EmployeeWork.findAllByUserId = userId => (
 );
 
 EmployeeWork.findOwnByUserId = userId => (
-  db.oneOrNone('SELECT department_id, position_id, level_id, user_id FROM employee_work WHERE user_id = $1', [userId])
+  db.oneOrNone('SELECT department_id, position_id, level_id, user_id, boss_id, start_date, engineer FROM employee_work WHERE user_id = $1', [userId])
 );
 
 module.exports = EmployeeWork;

@@ -3,8 +3,12 @@ const University = require('../models/University');
 exports.create = (req, res, next) => {
   const newUniversity = req.body.university;
   University.create(newUniversity, req.user.id)
-    .then((createdUniversity) => {
-      res.json(createdUniversity);
+    .then((result) => {
+      University.findById(result.id)
+        .then((university) => {
+          res.json(university);
+        })
+        .catch(next);
     })
     .catch(next);
 };

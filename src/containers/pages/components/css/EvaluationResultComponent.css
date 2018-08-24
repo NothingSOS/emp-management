@@ -1,0 +1,85 @@
+.eva-result-container {
+    position: relative;
+    width: 100%;
+    margin: auto;
+    font-family: 'Prompt', sans-serif;
+}
+
+.outer-table {
+  width: 100%;
+}
+
+.eva-result-container div:not(className='react-datepicker-popper'){
+  margin: 0;
+}
+
+.outer-table td {
+    text-align: left;
+}
+
+.outer-table th {
+    text-align: left;
+}
+.outer-table th:nth-child(1){
+  padding: 1% 0.2% 1% 0.2%;
+}
+.outer-table th, .outer-table td {
+  padding: 0;
+}
+
+/* .outer-table tr {
+  padding: 2em, 0;
+} */
+
+.blue-text {
+    color: rgb(44, 154, 205);
+    font-size: 1.7em;
+    text-shadow: 0px 3px 1px rgba(0, 0, 0, 0.05);
+    font-weight: bold;
+}
+
+.underline {
+    padding-bottom: 1%;
+    border-bottom: 0.1em solid #bbbbbb;
+    box-shadow: 0px 3px 1px rgba(0, 0, 0, 0.04);
+}
+
+.inner-table-second {
+    margin: auto;
+    width: 80%;
+}
+
+
+.slide-show {
+    transition: 0.4s;
+    padding: 0%;
+    overflow: hidden;
+}
+
+.outer-table table tr:nth-child(1) td{
+  padding: 0.3em 0 0.3em 0;
+}
+
+.slide-show td {
+    padding: 0;
+}
+#pro-element1 , #pro-element1 td{
+  padding: 0;
+}
+#pro-element3,{
+  padding: 0;
+}
+#pro-element3 td{
+  padding: 0 0 0.5em 0 ;
+}
+#pro-element2 {
+  padding: 0;
+}
+#pro-element2 td{
+  padding: 0.5em 0 0 0 ;
+
+}
+
+.eva-result-container table td div:not([class]){
+    display: inline-block;
+ }

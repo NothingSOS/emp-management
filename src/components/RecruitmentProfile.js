@@ -21,7 +21,7 @@ const RecruitmentProfile = ({ recruitmentProfile }) => (
 );
 
 RecruitmentProfile.propTypes = {
-  recruitmentProfile: PropTypes.object.isRequired
+  recruitmentProfile: PropTypes.array.isRequired
 };
 
 export default RecruitmentProfile;

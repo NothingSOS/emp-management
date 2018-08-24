@@ -1,0 +1,379 @@
+
+.Body{
+  background-color: white;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  font-family: 'Prompt', sans-serif;
+
+}
+.div_logo {
+  position: relative;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  height: 45%;
+}
+.logo{
+  display: inline-block;
+  width: 45%;
+}
+.profile{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 2%;
+}
+
+.profile_table{
+  table-layout: fixed;
+}
+.topic{
+  padding-left: 3%;
+}
+.topic_1{
+  width: 10%;
+  font-weight: bold;
+}
+.topic_2{
+  width: 14%;
+  font-weight: bold;
+}
+.show_1{
+  width: 38%;
+}
+.show_2{
+  width: 38%;
+}
+
+.table_main{
+  margin-top: 1%;
+}
+.table_header{
+  text-align: left;
+}
+.No{
+  width: 4%;
+  text-align: center;
+}
+.Weight{
+  text-align: center;
+}
+
+.grid{
+  table-layout: fixed;
+  margin-bottom: 2%;
+}
+.grid-res{
+  table-layout: fixed;
+  margin-bottom: 0.3%;
+}
+.grid tr{
+  height: 50px;
+}
+
+.choice_tr{
+  color: white
+}
+
+.option1_row{
+
+}
+.Submit-button{
+  position: relative;
+  padding: 10px 15px 10px 15px;
+  font-size: 1em;
+  background-color: white;
+  border: 1px solid black;
+  text-decoration: none;
+  border-radius: 5px;
+  z-index: 2;
+  transition: 0.2s;
+}
+.Submit-button:hover{
+  cursor:pointer;
+  color: #ffffff;
+  background-color: #00bf15;
+  border-color: #00bf15;
+}
+.Accept-button{
+  position: relative;
+  padding: 10px 15px 10px 15px;
+  font-size: 1em;
+  background-color: white;
+  border: 1px solid black;
+  text-decoration: none;
+  border-radius: 5px;
+}
+.Accept-button:hover{
+  cursor:pointer;
+  color: #37BFDB;
+}
+.dddddd{
+  //background-color: red;
+  padding-top: 2%;
+  width: 100%;
+}
+.result{
+
+}
+.comment{
+  border-radius: 7px;
+  border-width: thin;
+  padding: 1%;
+  height: 10em;
+  width: 100%;
+  resize: none;
+  overflow: scroll;
+  margin-bottom: 1%;
+}
+.comment::-webkit-scrollbar{
+  display: none;
+}
+
+h1{
+  text-align: center;
+  font-size: 4em;
+  margin-bottom: -2%;
+}
+
+table{
+  //border: 1px solid black;
+  table-layout: fixed;
+  background-color: white;
+  text-align: left;
+  width: 100%;
+}
+th{
+  //border: 1px solid black;
+  padding: 1%;
+  text-align: center;
+}
+td{
+  //border: 1px solid black;
+  padding-left: 1%;
+  padding-right: 1%;
+  padding-top: 0.5%;
+  padding-bottom: 0.5%;
+}
+@media screen and (max-width: 9902px) {
+  h1{
+
+  }
+}
+input{
+  width: 100%;
+  box-sizing: border-box;
+}
+input[type='checkbox']{
+  margin-right: 1vw;
+  width: auto;
+  box-sizing: content-box;
+}
+input[type='radio']{
+  margin-right: 1vw;
+  width: auto;
+  box-sizing: content-box;
+}
+select-selected{
+  border-radius: 5px;
+  display: none;
+}
+.mark{
+  position: relative;
+  height: 2em;
+  width: 2em;
+
+  transition: 0.2s;
+}
+.div_mark{
+  position: relative;
+  display: inline-block;
+  overflow: visible;
+}
+.div_mark1{
+  position: absolute;
+  display: inline-block;
+  overflow: hidden;
+  width: 0rem;
+  top: 50%;
+  left: 75%;
+  transition: 0.3s;
+}
+.div_mark2{
+  position: absolute;
+  display: inline-block;
+  overflow: hidden;
+  width: 0rem;
+  top: 50%;
+  left: 75%;
+  transition: 0.3s;
+}
+.div_mark3{
+  position: absolute;
+  display: inline-block;
+  overflow: hidden;
+  width: 0rem;
+  top: 50%;
+  left: 75%;
+  transition: 0.3s;
+}
+.zzz{
+  position: fixed;
+  z-index: 2;
+  top:0;
+  left:0;
+  background-color: red;
+  width: 200px;
+  height: 200px;
+}
+.blue{
+  color: rgb(44,154,205);
+  font-size: 1.7em;
+  text-shadow: 0px 3px 1px rgba(0,0,0,0.05);
+
+}
+.th_total{
+  width: 14%;
+}
+.lll{
+  padding-bottom: 1%;
+  border-bottom: 0.1em solid #bbbbbb;
+  box-shadow: 0px 3px 1px rgba(0,0,0,0.04);
+}
+.result-table-hidden{
+  height: 0;
+  overflow: hidden;
+  transition : 0.3s;
+}
+.result-table{
+  height: auto;
+  overflow: visible;
+  transition : 0.3s;
+}
+.date{
+  font-weight:lighter;
+}
+.calendar{
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
+  left: 0%;
+  height: 0;
+  min-width: 270px;
+  transition: 0.3s;
+  transition-timing-function: ease-in-out;
+}
+.date_input{
+  font-size: 1em;
+  border-top-style: none;
+  border-left-style: none;
+  border-right-style: none;
+  border-bottom: 1px solid black;
+  position: relative;
+  z-index: 0;
+}
+.date_input1{
+  font-size: 1em;
+  border-top-style: none;
+  border-left-style: none;
+  border-right-style: none;
+  border-bottom: 1px solid black;
+  position: relative;
+  display: none;
+  z-index: 0;
+  transition: 0.2s;
+}
+
+.date_input2{
+  font-size: 1em;
+  border-top-style: none;
+  display :none;
+  border-left-style: none;
+  border-right-style: none;
+  border-bottom: 1px solid black;
+  position: relative;
+  z-index: 0;
+}
+.react-calendar{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.div_ca{
+  position: relative;
+}
+.logo_back{
+  width: 25%;
+  height: 100%;
+  position: absolute;
+  z-index: 5;
+  right: 2%;
+  top: 0;
+  opacity: 0.02;
+  pointer-events: none;
+}
+.b{
+  outline: inherit;
+  position: relative;
+  transform: translate(-50%,-50%);
+  overflow: hidden;
+  display: flex;
+  left: 50%;
+  top:50%;
+  padding: 0;
+  transition: 0.2s;
+  width: 5em;
+  height: 5em;
+  border: none;
+  border-radius: 5px
+}
+
+.b .icon{
+  position: relative;
+  width: 5em;
+  height: 5em;
+  overflow: hidden;
+  //border-radius: 5px;
+
+  display: block;
+  transition: 0.2s;
+  background-color: #ffffff;
+}
+.ic{
+  width: 100%;
+}
+
+.b .text{
+  width: 0%;
+  height: 5em;
+  //border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+  transition:0.2s;
+  display: block;
+  background-color: #60a955;
+  ;
+}
+.b .text span{
+  color: white;
+  font-size: 2em;
+  position: absolute;
+  transform: translate(-50%,-50%);
+  top: 50%;
+  left: 50%;
+}
+.b:hover{
+  width: 15em;
+}
+.b:hover .icon{
+
+}
+.b:hover .text{
+  width:10em;
+}
+.buttonGroup{
+  display: inline-flex;
+  margin-right: 5px
+}

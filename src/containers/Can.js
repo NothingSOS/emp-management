@@ -4,16 +4,18 @@ import { connect } from 'react-redux';
 import { compose, lifecycle } from 'recompose';
 import { fetchAccessControlRequest } from '../actions/accessControl';
 
-const Can = ({ activity, can, conditions, isFetching, children }) => {
+const Can = ({ activity, can, conditions, isFetching, children, page }) => {
   if (isFetching || !can) return <div />;
   else if (can[activity] && conditions.every(c => c)) return children;
+  else if (page) return 'You can not access this page';
   return <div />;
 };
 
 Can.defaultProps = {
   isFetching: true,
   can: null,
-  conditions: []
+  conditions: [],
+  page: false
 };
 
 Can.propTypes = {
@@ -21,7 +23,8 @@ Can.propTypes = {
   can: PropTypes.object,
   conditions: PropTypes.array,
   isFetching: PropTypes.bool,
-  children: PropTypes.any.isRequired
+  children: PropTypes.any.isRequired,
+  page: PropTypes.bool
 };
 
 const mapStateToProps = state => ({

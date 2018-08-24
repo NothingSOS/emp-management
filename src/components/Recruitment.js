@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Segment, Grid, Menu } from 'semantic-ui-react';
+import { Segment, Grid, Menu, Button } from 'semantic-ui-react';
 import AllTable from './RecruitmentTable/AllTable';
 import ApplyTable from './RecruitmentTable/ApplyTable';
 import ApproveTable from './RecruitmentTable/ApproveTable';
@@ -26,6 +26,7 @@ const getActiveTable = (
   clearStatus,
   onClickGrade,
   modalWarningExIdList,
+  onRefreshRecruitment
 ) => {
   let filteredData = [];
   switch (activeItem) {
@@ -179,8 +180,12 @@ const Recruitment = ({
   changeStatus,
   clearStatus,
   onClickGrade,
-  modalWarningExIdList, }) => (
+  modalWarningExIdList,
+  onRefreshRecruitment }) => (
     <Segment raised>
+      <Button onClick={onRefreshRecruitment}>
+        Refresh
+      </Button>
       <Grid>
         <Grid.Row>
           <Grid.Column width={16}>
@@ -213,12 +218,13 @@ const Recruitment = ({
               clearStatus,
               onClickGrade,
               modalWarningExIdList,
+              onRefreshRecruitment
             )}
           </Grid.Column>
         </Grid.Row>
       </Grid>
     </Segment>
-  );
+);
 
 Recruitment.propTypes = {
   changeActiveItem: PropTypes.func.isRequired,
@@ -234,6 +240,7 @@ Recruitment.propTypes = {
   clearStatus: PropTypes.func.isRequired,
   onClickGrade: PropTypes.func.isRequired,
   modalWarningExIdList: PropTypes.array.isRequired,
+  onRefreshRecruitment: PropTypes.func.isRequired
 };
 
 export default Recruitment;

@@ -51,14 +51,14 @@ HasProject.delete = (userId, projectId) => (
 );
 
 HasProject.findWorkProjectDate = (year, month, userId) => (
-  db.manyOrNone(`SELECT users.id, CONCAT(employee_info.first_name, ' ', employee_info.last_name) AS name, employee_info.nick_name, 
-    positions.name AS position_name, has_projects.project_id, projects.start_date, projects.end_date 
+  db.manyOrNone(`SELECT users.id, CONCAT(employee_info.first_name, ' ', employee_info.last_name) AS name, employee_info.nick_name,
+    positions.name AS position_name, has_projects.project_id, projects.start_date, projects.end_date
     FROM users INNER JOIN employee_info ON users.id = employee_info.user_id
     INNER JOIN employee_work ON users.id = employee_work.user_id
     LEFT OUTER JOIN positions ON employee_work.position_id = positions.id
-    LEFT OUTER JOIN has_projects ON users.id = has_projects.user_id 
-    LEFT OUTER JOIN projects ON has_projects.project_id = projects.id AND 
-    EXTRACT(year from projects.end_date) = $1 AND EXTRACT(month from projects.end_date) >= $2 
+    LEFT OUTER JOIN has_projects ON users.id = has_projects.user_id
+    LEFT OUTER JOIN projects ON has_projects.project_id = projects.id AND
+    EXTRACT(year from projects.end_date) = $1 AND EXTRACT(month from projects.end_date) >= $2
     WHERE users.id = $3 ORDER BY projects.start_date, projects.end_date`, [year, month, userId])
 );
 

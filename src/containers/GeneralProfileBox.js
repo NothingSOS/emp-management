@@ -24,7 +24,7 @@ const GeneralProfileBox = ({ generalProfile, onEditClick, onProfilePictureClick,
       />
     </Segment>
     <Segment padded textAlign="center">
-      {userId === profileId &&
+      {(userId === profileId || can.employeeInfoEditAll) &&
         <Grid>
           <Grid.Column floated="right" computer={1} mobile={2}>
             <Icon name="edit" onClick={onEditClick} link size="large" />

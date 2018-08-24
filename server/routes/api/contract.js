@@ -7,4 +7,6 @@ router.put('/', ContractController.update);
 
 router.get('/', ContractController.findAll);
 
+router.delete('/', ContractController.delete);
+
 module.exports = router;

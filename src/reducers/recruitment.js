@@ -94,7 +94,7 @@ const Recruitment = (state = initialState, action) => {
       const listKey = Object.keys(state.checkStatus);
       listKey.forEach((item) => {
         if (state.checkStatus[item] === 'Approve' || state.checkStatus[item] === 'Sign Contract' || state.checkStatus[item] === 'Complete' || state.checkStatus[item] === 'Interview' || state.checkStatus[item] === 'Exam') {
-          if (!(item === action.payload.key && action.payload.status === state.checkStatus[action.payload.key])) {
+          if (!(item === action.payload.key.toString() && action.payload.status === state.checkStatus[action.payload.key])) {
             isThatStatus = true;
           }
         }

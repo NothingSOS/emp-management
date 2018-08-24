@@ -159,11 +159,7 @@ exports.delete = (req, res, next) => {
       if (timesheet.userId === req.user.id) {
         Timesheet.delete(req.body.id)
           .then(() => {
-            Timesheet.findByUserId(req.body.id)
-              .then((timesheets) => {
-                res.json(timesheets);
-              })
-              .catch(next);
+            res.json('Delete Timesheet Success');
           })
           .catch(next);
       }

@@ -7,4 +7,6 @@ router.put('/', CertificateController.update);
 
 router.get('/', CertificateController.findAll);
 
+router.delete('/', CertificateController.delete);
+
 module.exports = router;

@@ -1,0 +1,13 @@
+i.close.icon {
+  color: #000 !important;
+  top: 0 !important;
+  right: 0 !important;
+}
+.navDiv{
+  position: absolute;
+  transform: translateX(-50%);
+  left: 50%;
+}
+.navDiv span{
+  padding: 1.5em;
+}

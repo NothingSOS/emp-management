@@ -5,11 +5,10 @@ const Position = {};
 
 Position.create = (position, id) => (
   db.one(
-    'INSERT INTO positions (name, description, status, created_user, updated_user) VALUES ($1, $2, $3, $4, $5) RETURNING 1',
+    'INSERT INTO positions (name, description, created_user, updated_user) VALUES ($1, $2, $3, $4) RETURNING id',
     [
       position.name,
       position.description,
-      position.status,
       id,
       id
     ]

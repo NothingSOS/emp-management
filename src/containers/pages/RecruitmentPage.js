@@ -31,6 +31,7 @@ const RecruitmentPage = ({
   clearedStatus,
   onClickGrade,
   modalWarningExIdList,
+  onRefreshRecruitment
 }) => {
   const handleSort = (key) => {
     if (sortKey !== key) {
@@ -58,6 +59,7 @@ const RecruitmentPage = ({
           clearStatus={clearedStatus}
           onClickGrade={onClickGrade}
           modalWarningExIdList={modalWarningExIdList}
+          onRefreshRecruitment={onRefreshRecruitment}
         />
       }
     </div>
@@ -113,6 +115,7 @@ const mapDispatchToProps = dispatch => ({
   clearedStatus: () => dispatch(clearStatus()),
   // 456 : onClickActivate function
   onClickGrade: (rowId, modalWarningExIdList, id) => dispatch(fetchGradingRequest(rowId, modalWarningExIdList, id, false)),
+  onRefreshRecruitment: () => dispatch(fetchRecruitmentRequest())
 });
 
 const enhance = compose(

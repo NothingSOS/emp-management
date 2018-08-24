@@ -5,7 +5,7 @@ const Faculty = {};
 
 Faculty.create = (faculty, id) => (
   db.one(
-    'INSERT INTO faculties (name, university_id, description, created_user, updated_user) VALUES ($1, $2, $3, $4, $5) RETURNING 1',
+    'INSERT INTO faculties (name, university_id, description, created_user, updated_user) VALUES ($1, $2, $3, $4, $5) RETURNING id',
     [
       faculty.name,
       faculty.universityId,
@@ -33,8 +33,14 @@ Faculty.findByUniversityId = universityId => (
   db.manyOrNone('SELECT * FROM faculties WHERE university_id = $1', [universityId])
 );
 
+Faculty.findById = id => (
+  db.oneOrNone(`SELECT faculties.*, universities.name AS university_name FROM faculties INNER JOIN universities
+  ON faculties.university_id = universities.id WHERE faculties.id = $1`, [id])
+);
+
 Faculty.findAll = () => (
-  db.manyOrNone('SELECT * FROM faculties')
+  db.manyOrNone(`SELECT faculties.*, universities.name AS university_name FROM faculties INNER JOIN universities ON
+  faculties.university_id = universities.id`)
 );
 
 module.exports = Faculty;

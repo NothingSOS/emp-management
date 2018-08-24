@@ -17,9 +17,13 @@ import TakeExamAgreementPage from './pages/TakeExamAgreementPage';
 import TakeExamPage from './pages/TakeExamPage';
 import ReportPage from './pages/ReportPage';
 import AddTaskPage from './pages/AddTaskPage';
+import ErpPage from './pages/ErpPage';
+import ErpApprovePage from './pages/ErpApprovePage';
+import ErpAddPage from './pages/ErpAddPage';
+import ErpBillRecord from './forms/EditBillRecord';
 import HolidayPage from './pages/HolidayPage';
 import LeaveApprovalPage from './pages/LeaveApprovalPage';
-import Can from './Can';
+import MasterTablePage from './pages/MasterTablePage';
 
 const Routes = () => (
   <Switch>
@@ -30,19 +34,22 @@ const Routes = () => (
     <PrivateRoute path="/leave" component={LeavePage} />
     <PrivateRoute exact path="/project" component={ProjectPage} />
     <PrivateRoute path="/project/:id" component={ProjectDetailPage} />
-    <PrivateRoute path="/exam/*" component={ExamPage} />
-    <PrivateRoute exact path="/recruitment" component={RecruitmentPage} />
-    <PrivateRoute path="/recruitment/:id" component={RecruitmentDetailPage} />
     <Route path="/examlogin" component={ExamLoginPage} />
     <ExamRoute path="/takeexam_agreement" component={TakeExamAgreementPage} />
     <ExamRoute path="/takeexam" component={TakeExamPage} />
     <PrivateRoute path="/profile/:id" component={ProfilePage} />
     <PrivateRoute path="/employee" component={EmployeePage} />
     <PrivateRoute path="/report" component={ReportPage} />
+    <PrivateRoute exact path="/erp" component={ErpPage} />
+    <PrivateRoute path="/erp/:id" component={ErpBillRecord} />
+    <PrivateRoute path="/erpApprove" component={ErpApprovePage} />
+    <PrivateRoute path="/add" component={ErpAddPage} />
     <PrivateRoute path="/holiday" component={HolidayPage} />
-    <Can activity="leaveRequestApprove">
-      <PrivateRoute path="/leave-approval" component={LeaveApprovalPage} />
-    </Can>
+    <PrivateRoute exact path="/recruitment" component={RecruitmentPage} can="recruitmentManage" />
+    <PrivateRoute path="/recruitment/:id" component={RecruitmentDetailPage} can="recruitmentManage" />
+    <PrivateRoute path="/exam" component={ExamPage} can="examManage" />
+    <PrivateRoute path="/master-table" component={MasterTablePage} can="masterTableManage" />
+    <PrivateRoute path="/leave-approval" component={LeaveApprovalPage} can="leaveRequestManage" />
   </Switch>
 );
 
