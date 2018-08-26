@@ -64,6 +64,9 @@ export function* addExamTask(action) {
     yield put(addExamSuccess(exams));
     yield put(closeModal());
     action.payload.resolve();
+
+    const examList = yield call(api.fetchExam);
+    yield put(fetchExamSuccess(examList));
   }
   catch (error) {
     yield put(addExamFailure(error));
