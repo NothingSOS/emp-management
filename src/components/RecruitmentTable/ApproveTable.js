@@ -28,10 +28,10 @@ const row = (item, { checkStatus, changeStatus, load, preActivateTakeExam, butto
     {item.testStatus === 'NotTest' &&
       <Table.Cell>
         <Button
-          loading={buttonLoad}
+          loading={buttonLoad !== -1 && buttonLoad === item.rowId}
           fluid
           primary
-          disabled={item.examDate !== moment().format('YYYY-MM-DD') || buttonLoad}
+          disabled={item.examDate !== moment().format('YYYY-MM-DD') || (buttonLoad !== -1 && buttonLoad === item.rowId)}
           onClick={() => preActivateTakeExam(item)}
         >
           Activate
@@ -42,8 +42,8 @@ const row = (item, { checkStatus, changeStatus, load, preActivateTakeExam, butto
       <Table.Cell>
         <Button
           onClick={() => (onClickGrade(item.rowId, modalWarningExIdList, item.citizenId))}
-          disabled={buttonLoad}
-          loading={buttonLoad}
+          disabled={buttonLoad !== -1 && buttonLoad === item.rowId}
+          loading={buttonLoad !== -1 && buttonLoad === item.rowId}
           fluid
           color="orange"
         >
@@ -163,7 +163,7 @@ ApproveTable.propTypes = {
   setApproveTime: PropTypes.func.isRequired,
   isUseDate: PropTypes.bool.isRequired,
   preActivateTakeExam: PropTypes.func.isRequired,
-  buttonLoad: PropTypes.bool.isRequired,
+  buttonLoad: PropTypes.number.isRequired,
   onClickGrade: PropTypes.func.isRequired,
   today: PropTypes.string.isRequired,
   modalWarningExIdList: PropTypes.array.isRequired,

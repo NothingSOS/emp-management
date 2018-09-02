@@ -361,8 +361,11 @@ export const randomExam = rowId => ({
   }
 });
 
-export const setUpModal = () => ({
-  type: actionTypes.RECRUITMENT_SET_UP_MODAL
+export const setUpModal = affectRow => ({
+  type: actionTypes.RECRUITMENT_SET_UP_MODAL,
+  payload: {
+    affectRow
+  }
 });
 
 export const setUpModalComplete = data => ({

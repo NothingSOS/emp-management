@@ -13,7 +13,7 @@ const initialState = {
   positions: [],
   signedPosition: {},
   isUseDate: false,
-  buttonLoad: false,
+  buttonLoad: -1,
   isModalFetching: false,
   gradingId: '',
   gradingList: [],
@@ -270,12 +270,12 @@ const Recruitment = (state = initialState, action) => {
     case actionTypes.RECRUITMENT_SET_UP_MODAL:
       return {
         ...state,
-        buttonLoad: true
+        buttonLoad: action.payload.affectRow
       };
     case actionTypes.RECRUITMENT_SET_UP_MODAL_COMPLETE:
       return {
         ...state,
-        buttonLoad: false,
+        buttonLoad: -1,
         dataModal: action.payload.data,
         modalSubmit: false
       };

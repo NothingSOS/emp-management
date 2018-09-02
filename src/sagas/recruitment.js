@@ -300,7 +300,7 @@ export function* updateRecruitmentSignedPositionTask(action) {
 
 export function* preActivateTakeExamTask(action) {
   try {
-    yield put(setUpModal());
+    yield put(setUpModal(action.payload.person.rowId));
     const examUser = yield call(api.getExamUser, {
       rowId: action.payload.person.rowId,
       testDate: action.payload.person.examDate,
